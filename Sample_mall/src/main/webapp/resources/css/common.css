@@ -1,0 +1,194 @@
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  width: 100%;
+  height : 100%;
+  margin : 0;
+  padding : 0;
+}
+
+.bodywrap {
+  width: 100%;
+  height: 100%;
+  margin : 0;
+  padding : 0;
+}
+
+a {
+  text-decoration: none;
+  color: black;
+}
+
+/* HEADER */
+
+.header .mainLogo {
+  background-image: url("../img/mainLogo.jpg");
+}
+
+.header {
+  display: flex;
+  height : 20%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+}
+
+.header .logo {
+  width: 60%;
+}
+
+.header .headText {
+  height: 95%;
+  width: 40%;
+
+}
+
+.loginMenu {
+  height: 5%;
+  margin: 0;
+  padding: 0 2em;
+  float: right;
+  display: flex;
+  list-style: none;
+}
+
+.loginMenu a {
+  font-size: 0.2em;
+}
+
+.loginMenu a:hover {
+  color : #55b5f7;
+}
+
+.loginMenu li {
+  padding: 0 0.7em;
+}
+
+
+/* .header h1 {
+  float: inherit;
+  color: #a4f7e4;
+  margin:0;
+  padding:0;
+  font-size: 6em;
+} */
+
+
+
+
+
+/* .submitBtn{
+  width: 100%;
+  background-color: #A9E2F3;
+} */
+/******************************/
+
+/* body:before{
+  content:'';
+  height:100%;
+  display:inline-block;
+  vertical-align:middle;
+} */
+
+
+/* MENUBAR */
+.menuBar {
+  width: 100%;
+  height: 8%;
+}
+
+.menuList {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  width: 100%;
+  background-color: #55b5f7;
+
+}
+
+.menuList li {
+  text-align: center;
+  padding: 0 3em;
+  cursor: pointer;
+}
+
+.menuList li a {
+  font-size: 1.2em;
+}
+
+.menuList li:hover, .menuList li:hover a {
+  background-color: #fff;
+  color: #55b5f7;
+  transition:400ms ease all;
+}
+
+
+
+/* CONTAINER */
+
+.container {
+  height: 61%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  overflow-x: auto;
+}
+
+.bestItem p {
+  margin: 0;
+  padding: 0.5em 0;
+  font-size: 2em;
+  text-align: center;
+}
+
+.items {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  align-items: center;
+}
+
+.items img {
+  flex : 1;
+  padding: 0 2em;
+  align-items: center;
+  /* object-fit: contain; */
+}
+
+.itemInfo {
+  text-align: center;
+}
+
+.itemInfo:hover {
+  text-decoration: underline;
+}
+
+.items a {
+  flex : 1;
+  align-items: center;
+}
+
+
+/* FOOTER */
+
+footer {
+  width: 100%;
+  height: 3%;
+  margin: 0;
+  padding: 0;
+  position: fixed;
+  bottom: 0;
+  text-align: center;
+}
+
+
+/* @media all and (max-width : 768px) {
+  .items img {
+    flex-wrap: wrap;
+    padding: 0 2em;
+  }
+} */
