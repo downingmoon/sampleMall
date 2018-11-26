@@ -7,5 +7,7 @@ import com.sample.shop.model.prodVO;
 public interface ClientMapper {
 
 	public List<prodVO> getProdList();
+	
+	public prodVO getProdDetail(int p_no);
 
 }

@@ -18,5 +18,9 @@ public class ClientService {
 		return mapper.getProdList();
 	}
 	
+	public prodVO getProdDetail(int p_no) {
+		return mapper.getProdDetail(p_no);
+	}
+	
 
 }

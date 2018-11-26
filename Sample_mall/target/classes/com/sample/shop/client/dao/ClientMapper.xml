@@ -6,4 +6,8 @@
 	<select id="getProdList" resultType="com.sample.shop.model.prodVO">
 		SELECT * FROM prod
 	</select>
+	
+	<select id="getProdDetail" resultType="com.sample.shop.model.prodVO">
+		SELECT P_NAME, P_PRICE, P_INFO, P_NO FROM PROD WHERE P_NO = #{P_NO}
+	</select>
 </mapper>
