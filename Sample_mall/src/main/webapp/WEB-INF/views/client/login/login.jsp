@@ -11,16 +11,16 @@
   <body>
 
     <div class="loginFrm">
-      <form action="#" method="post" onsubmit="return loginFrm()" name="loginForm">
+      <form action="login" method="post" onsubmit="return loginFrm()" name="loginForm">
         <table class="loginTable">
           <tr>
             <td>
-              <input type="text" name="u_id" size="20" maxlength="20" placeholder="아이디 입력">
+              <input type="text" id="username" name="u_id" size="20" maxlength="20" placeholder="아이디 입력">
             </td>
           </tr>
           <tr>
             <td>
-              <input type="password" name="u_pw" size="20" maxlength="20" placeholder="비밀번호 입력">
+              <input type="password" id="password" name="u_pw" size="20" maxlength="20" placeholder="비밀번호 입력">
             </td>
           </tr>
           <tr>

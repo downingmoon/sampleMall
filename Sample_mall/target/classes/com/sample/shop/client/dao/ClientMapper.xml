@@ -7,7 +7,14 @@
 		SELECT * FROM prod
 	</select>
 	
-	<select id="getProdDetail" resultType="com.sample.shop.model.prodVO">
+	<select id="getProdDetail" resultType="prodVO">
 		SELECT P_NAME, P_PRICE, P_INFO, P_NO FROM PROD WHERE P_NO = #{P_NO}
+	</select>
+	
+	<select id="userJoin">
+		INSERT INTO mall_user
+		(u_no, u_id, u_pw, u_name, u_auth)
+		values
+		(seq_mall_user.nextval, #{u_id}, #{u_pw}, #{u_name}, #{u_auth})
 	</select>
 </mapper>

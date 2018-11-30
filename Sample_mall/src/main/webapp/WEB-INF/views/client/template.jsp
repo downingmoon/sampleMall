@@ -29,8 +29,40 @@
 			return false;
 		}
 		// TODO: function 한개 추가하기, 로그인한 사용자 이름 가져오는 함수
-		alert("(이름넣기)님 환영합니다.");
-		return false;
+		return true;
+		alert( frm.u_id.value +"님 환영합니다.");
+	}
+	
+	function joinFrm() {
+		var frm = document.joinForm;
+		
+		if (frm.u_id.value == "") {
+			frm.u_id.focus();
+			alert("ID가 입력되지 않았습니다.");
+			return false;
+		} else if (frm.u_pw.value == "") {
+			frm.u_pw.focus();
+			alert("비밀번호가 입력되지 않았습니다.");
+			return false;
+		} else if (frm.u_pw.value != frm.u_pwChk.value) {
+			frm.u_pwChk.focus();
+			alert("비밀번호와 비밀번호 확인이 일치하지 않습니다.");
+			return false;
+		} else if (frm.u_pwChk.value == "") {
+			frm.u_pwChk.focus();
+			alert("비밀번호 확인이 입력되지 않았습니다.");
+			return false;
+		} else if (frm.u_name.value == "") {
+			frm.u_name.focus();
+			alert("이름이 입력되지 않았습니다.");
+			return false;
+		} else if (frm.u_auth.value == "") {
+			frm.u_auth.focus();
+			alert("권한이 입력되지 않았습니다.");
+			return false;
+		}
+		alert(frm.u_name.value + "님 회원가입 완료. 다시 로그인 해주세요.");
+		return true;
 	}
 
 	function clkTr(board_no) {
@@ -47,11 +79,6 @@
 		form.submit();
 	}
 
-	function clkLogin() {
-		var popUrl = "${pageContext.request.contextPath}/client/login";
-		var popOption = "width=200px,height=100px,left=700px,top=300px,resizable=no,menubar=no,directories=no"
-		window.open(popUrl, "", popOption);
-	}
 </script>
 </head>
 <body>

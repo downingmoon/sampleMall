@@ -1,14 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 
-<script>
-	function clkLogin() {
-		var popUrl = "${pageContext.request.contextPath}/client/login";
-		var popOption = "width=200px,height=100px,left=700px,top=300px,resizable=no,menubar=no,directories=no"
-		window.open(popUrl, "", popOption);
-	}
-</script>
-
 <div class="header">
 	<div class="logo">
 		<a href="list" style="cursor: pointer;"> 
@@ -17,8 +9,8 @@
 	</div>
 	<div class="headText">
 		<ul class="loginMenu">
-			<li><a href="javascript:clkLogin()">로그인</a></li>
-			<li><a href="#">회원가입</a></li>
+			<li><a href="${pageContext.request.contextPath}/client/login">로그인</a></li>
+			<li><a href="${pageContext.request.contextPath}/client/join">회원가입</a></li>
 			<li><a href="#">마이페이지</a></li>
 			<li><a href="#">주문조회</a></li>
 			<li><a href="#">1:1문의</a></li>

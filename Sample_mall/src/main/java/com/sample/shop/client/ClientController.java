@@ -2,14 +2,14 @@ package com.sample.shop.client;
 
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.sample.shop.model.UserVO;
 import com.sample.shop.model.prodVO;
 
 @Controller
@@ -36,9 +36,34 @@ public class ClientController {
 		return "client/template";
 	}
 	
+	@RequestMapping("auth_fail")
+	public String auth_fail(Model m) {
+		m.addAttribute("target","auth_fail");
+		return "client/template";
+	}
+	
 	@RequestMapping("login")
-	public String login() {
-		return "client/login/login";
+	public String loginGet(Model m) {
+		m.addAttribute("target","login/login");
+		return "client/template";
+	}
+	
+//	@RequestMapping(value="login", method=RequestMethod.POST)
+//	public String loginPost(UserVO vo) {
+//		return "client/list";
+//	}
+	
+	@RequestMapping("join")
+	public String joinGet(Model m) {
+		m.addAttribute("target", "login/join");
+		return "client/template";
+	}
+	
+	@RequestMapping(value="join", method=RequestMethod.POST)
+	public String joinPost(UserVO vo, Model m) {
+		System.out.println("JOIN POST VO.NAME : " + vo.getU_name());
+		service.userJoin(vo);
+		return "redirect:login";
 	}
 	
 	@RequestMapping("goCart")

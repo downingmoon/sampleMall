@@ -1,6 +1,5 @@
 .submitBtn{
-  background:#a4f7e4;
-  color:#fff;
+  background:#55b5f7;
   border:none;
   position:relative;
   font-size:1em;
@@ -11,7 +10,7 @@
 }
 .submitBtn:hover{
   background:#fff;
-  color:#a4f7e4;
+  color:#55b5f7;
 }
 .submitBtn:before,.submitBtn:after{
   content:'';
