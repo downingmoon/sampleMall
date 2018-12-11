@@ -7,6 +7,42 @@ public class prodVO {
 	private String p_info;
 	private String p_price;
 	private int p_ismain;
+	private String p_maintype;
+	private String p_detailtype;
+	private int p_viewcnt;
+	private int p_salecnt;
+
+	public String getP_maintype() {
+		return p_maintype;
+	}
+
+	public void setP_maintype(String p_maintype) {
+		this.p_maintype = p_maintype;
+	}
+
+	public String getP_detailtype() {
+		return p_detailtype;
+	}
+
+	public void setP_detailtype(String p_detailtype) {
+		this.p_detailtype = p_detailtype;
+	}
+
+	public int getP_viewcnt() {
+		return p_viewcnt;
+	}
+
+	public void setP_viewcnt(int p_viewcnt) {
+		this.p_viewcnt = p_viewcnt;
+	}
+
+	public int getP_salecnt() {
+		return p_salecnt;
+	}
+
+	public void setP_salecnt(int p_salecnt) {
+		this.p_salecnt = p_salecnt;
+	}
 
 	public int getP_no() {
 		return p_no;

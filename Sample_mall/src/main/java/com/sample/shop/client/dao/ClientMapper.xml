@@ -4,7 +4,8 @@
 
 <mapper namespace="com.sample.shop.client.dao.ClientMapper">
 	<select id="getProdList" resultType="com.sample.shop.model.prodVO">
-		SELECT * FROM prod
+		select p_no, p_name, to_char(p_price,'999G999G999')
+		as p_price from prod
 	</select>
 	
 	<select id="getProdDetail" resultType="prodVO">
@@ -16,5 +17,10 @@
 		(u_no, u_id, u_pw, u_name, u_auth)
 		values
 		(seq_mall_user.nextval, #{u_id}, #{u_pw}, #{u_name}, #{u_auth})
+	</select>
+	
+	<select id="getMainTypeList" resultType="prodVO">
+		SELECT p_no, p_name, to_char(p_price, '999G999G999') AS p_price 
+		FROM prod WHERE p_maintype = #{mainType}
 	</select>
 </mapper>

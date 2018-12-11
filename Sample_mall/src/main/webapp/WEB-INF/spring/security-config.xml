@@ -8,7 +8,7 @@
 	<beans:bean id="bcryptPasswordEncoder"
 			class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"/>
 	
-	<http use-expressions="true"> <!-- access에 hasAnyRole 표현식 사용가능하게 하는것 -->
+	<http auto-config="true" use-expressions="true"> <!-- access에 hasAnyRole 표현식 사용가능하게 하는것 -->
 		<!-- 모든사용자가 접근가능 -->
 		
 		<!-- <intercept-url pattern="/user/loginForm" access="permitAll" />
@@ -34,12 +34,21 @@
 			authentication-failure-url="/client/auth_fail" 
 			username-parameter="username" 
 			password-parameter="password" /> 
+			
 		<!-- 로그아웃시 success-url로 이동 -->
-		<logout logout-url="/logout" logout-success-url="/client/login" />
+		<logout invalidate-session="true" logout-url="/j_spring_security_logout" 
+				logout-success-url="/client/login" />
+		
 		<!-- 권한이 없을경우 에러페이지로 이동-->
 		<access-denied-handler error-page="/client/auth_fail" />
+		
 		<!-- false가 되면 post방식때 한 키값을 계속 보내줘야함 -->
 		<csrf disabled="true"/>
+		
+		<session-management>
+			<concurrency-control max-sessions="1"/>
+		</session-management>
+		
 	</http> 
 	
 	<!-- provider, memory에 계속 올라가있기 때문에 in memory 방식임, 값을 변경하려면 서버를 restart 해야한다. --> 
@@ -53,12 +62,12 @@
 					u_id as username,
 					u_pw as password,
 					1 as enabled
-				from yf_user where u_id = ?"
+				from mall_user where u_id = ?"
 				authorities-by-username-query=
 				"select
 					u_id as username,
 					u_auth as authority
-				from yf_user where u_id = ?"
+				from mall_user where u_id = ?"
 				/>
 				<password-encoder hash="bcrypt"/>
 		</authentication-provider>

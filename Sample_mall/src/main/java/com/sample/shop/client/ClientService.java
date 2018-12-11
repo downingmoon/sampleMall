@@ -30,8 +30,15 @@ public class ClientService {
 	public void userJoin(UserVO vo) {
 		String cryptoPw = bpe.encode(vo.getU_pw());
 		vo.setU_pw(cryptoPw);
+		System.out.println("u_id : " + vo.getU_id());
+		System.out.println("u_auth : " + vo.getU_auth());
+		System.out.println("u_name : " + vo.getU_name());
 		System.out.println("cryptoPW : " + cryptoPw);
 		mapper.userJoin(vo);
+	}
+	
+	public List<prodVO> getMainTypeList(String mainType) {
+		return mapper.getMainTypeList(mainType);
 	}
 	
 

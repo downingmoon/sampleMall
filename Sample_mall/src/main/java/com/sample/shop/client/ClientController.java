@@ -38,11 +38,11 @@ public class ClientController {
 	
 	@RequestMapping("auth_fail")
 	public String auth_fail(Model m) {
-		m.addAttribute("target","auth_fail");
+		m.addAttribute("target","login/auth_fail");
 		return "client/template";
 	}
 	
-	@RequestMapping("login")
+	@RequestMapping(value="login", method=RequestMethod.GET)
 	public String loginGet(Model m) {
 		m.addAttribute("target","login/login");
 		return "client/template";
@@ -71,6 +71,14 @@ public class ClientController {
 		prodVO vo = service.getProdDetail(p_no);
 		m.addAttribute("detail",vo);
 		m.addAttribute("target","detail");
+		return "client/template";
+	}
+	
+	@RequestMapping("mainTypeList")
+	public String clothesMenu(@RequestParam String mainType, Model m) {
+		List<prodVO> list = service.getMainTypeList(mainType);
+		m.addAttribute("list",list);
+		m.addAttribute("target","mainTypeList");
 		return "client/template";
 	}
 

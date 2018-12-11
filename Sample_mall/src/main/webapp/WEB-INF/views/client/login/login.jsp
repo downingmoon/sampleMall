@@ -10,27 +10,28 @@
   </head>
   <body>
 
-    <div class="loginFrm">
+    <div class="loginFrm" style="align-items:center;justify-content:center;display:flex;margin-top:135px;">
       <form action="login" method="post" onsubmit="return loginFrm()" name="loginForm">
-        <table class="loginTable">
+        <table class="loginTable" style="width:50%;height:30%;">
           <tr>
             <td>
-              <input type="text" id="username" name="u_id" size="20" maxlength="20" placeholder="아이디 입력">
+              <input style="width:100%;" type="text" id="username" name="username" maxlength="20" placeholder="아이디 입력">
             </td>
           </tr>
           <tr>
             <td>
-              <input type="password" id="password" name="u_pw" size="20" maxlength="20" placeholder="비밀번호 입력">
+              <input style="width:100%;" type="password" id="password" name="password" maxlength="20" placeholder="비밀번호 입력">
             </td>
           </tr>
           <tr>
             <td>
-              <input type="submit" value="로그인" class="submitBtn">
+              <input style="width:100%;" type="submit" value="LOGIN" class="submitBtn">
             </td>
           </tr>
         </table>
       </form>
     </div>
+
 
   </body>
 </html>

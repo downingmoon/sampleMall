@@ -1,5 +1,7 @@
 .submitBtn{
-  background:#55b5f7;
+	font-family: Helvetica, sans-serif;
+	color : #fff;
+  background:#424242;
   border:none;
   position:relative;
   font-size:1em;
@@ -9,8 +11,8 @@
   outline:none;
 }
 .submitBtn:hover{
-  background:#fff;
-  color:#55b5f7;
+  background:#FA5858;
+  color:#fff;
 }
 .submitBtn:before,.submitBtn:after{
   content:'';

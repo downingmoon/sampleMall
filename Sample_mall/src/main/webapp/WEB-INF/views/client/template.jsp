@@ -11,10 +11,14 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/common.css">
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/slideMenu.css">
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/detail.css">
-<script src="${pageContext.request.contextPath}/resources/js/slideMenu.js"></script>
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/resources/css/common.css">
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/resources/css/slideMenu.css">
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/resources/css/detail.css">
+<script
+	src="${pageContext.request.contextPath}/resources/js/slideMenu.js"></script>
 <script>
 	function loginFrm() {
 		var frm = document.loginForm;
@@ -30,12 +34,12 @@
 		}
 		// TODO: function 한개 추가하기, 로그인한 사용자 이름 가져오는 함수
 		return true;
-		alert( frm.u_id.value +"님 환영합니다.");
+		alert(frm.u_id.value + "님 환영합니다.");
 	}
-	
+
 	function joinFrm() {
 		var frm = document.joinForm;
-		
+
 		if (frm.u_id.value == "") {
 			frm.u_id.focus();
 			alert("ID가 입력되지 않았습니다.");
@@ -78,7 +82,6 @@
 		document.body.appendChild(form);
 		form.submit();
 	}
-
 </script>
 </head>
 <body>
@@ -87,12 +90,12 @@
 		<jsp:include page="default/header.jsp" />
 
 		<div class="container">
-		
+
 			<jsp:include page="${target}.jsp" />
-		
+
 		</div>
-		
-		<jsp:include page="default/footer.jsp"/>
+
+		<jsp:include page="default/footer.jsp" />
 
 	</div>
 

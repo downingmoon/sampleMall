@@ -12,4 +12,6 @@ public interface ClientMapper {
 	public prodVO getProdDetail(int p_no);
 
 	public void userJoin(UserVO vo);
+	
+	public List<prodVO> getMainTypeList(String mainType);
 }
