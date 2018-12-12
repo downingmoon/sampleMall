@@ -14,4 +14,10 @@ public interface ClientMapper {
 	public void userJoin(UserVO vo);
 	
 	public List<prodVO> getMainTypeList(String mainType);
+	
+	public List<prodVO> searchItems(String searchKeyword);
+	
+	public UserVO userInfo(String u_id);
+	
+	public void cartInsert(int p_no, int u_no);
 }

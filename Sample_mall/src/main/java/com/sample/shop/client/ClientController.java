@@ -48,11 +48,6 @@ public class ClientController {
 		return "client/template";
 	}
 	
-//	@RequestMapping(value="login", method=RequestMethod.POST)
-//	public String loginPost(UserVO vo) {
-//		return "client/list";
-//	}
-	
 	@RequestMapping("join")
 	public String joinGet(Model m) {
 		m.addAttribute("target", "login/join");
@@ -66,19 +61,51 @@ public class ClientController {
 		return "redirect:login";
 	}
 	
-	@RequestMapping("goCart")
-	public String goCart(@RequestParam int p_no, Model m) {
-		prodVO vo = service.getProdDetail(p_no);
-		m.addAttribute("detail",vo);
-		m.addAttribute("target","detail");
-		return "client/template";
-	}
-	
 	@RequestMapping("mainTypeList")
 	public String clothesMenu(@RequestParam String mainType, Model m) {
 		List<prodVO> list = service.getMainTypeList(mainType);
+		m.addAttribute("category",mainType);
 		m.addAttribute("list",list);
 		m.addAttribute("target","mainTypeList");
+		return "client/template";
+	}
+	
+	@RequestMapping("searchItem")
+	public String searchItem(String searchKeyword,Model m) {
+		List<prodVO> list = service.searchItems(searchKeyword);
+		m.addAttribute("word",searchKeyword);
+		m.addAttribute("list",list);
+		m.addAttribute("target", "searchPage");
+		return "client/template";
+	}
+	
+	@RequestMapping("noticeAndEvents")
+	public String noticeAndEvects(Model m) {
+		m.addAttribute("target","notice");
+		return "client/template";
+	}
+	
+	@RequestMapping("mypage")
+	public String mypageGet(String id, Model m) {
+		UserVO vo = service.userInfo(id);
+		m.addAttribute("vo",vo);
+		m.addAttribute("target","mypageBefore");
+		return "client/template";
+	}
+	
+	@RequestMapping(value="mypage", method=RequestMethod.POST)
+	public String mypagePost(String id, Model m) {
+		UserVO vo = service.userInfo(id);
+		m.addAttribute("vo",vo);
+		m.addAttribute("target","mypage");
+		return "client/template";
+	}
+	
+	@RequestMapping("goCart")
+	public String cartInsert(@RequestParam String u_id, @RequestParam int p_no, Model m) {
+		System.out.println("controller p_no : " + p_no);
+		service.cartInsert(u_id, p_no);
+		m.addAttribute("target", "cart");
 		return "client/template";
 	}
 

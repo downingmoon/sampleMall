@@ -18,7 +18,7 @@
 		<!-- <intercept-url pattern="/client/login/login" access="permitAll" /> -->
 		<!-- <intercept-url pattern="/admin/**" access="hasRole('ROLE_ADM')" />  -->
 		<!-- user 혹은 admin 이어야만 access 가능, /**은 모든 경로에 사용.(/*은 1개의 depth 까지만 적용) -->
-		<intercept-url pattern="/client/detail" access="hasRole('ROLE_ADM')" />
+		<!-- <intercept-url pattern="/client/detail" access="hasRole('ROLE_ADM')" /> -->
 		<intercept-url pattern="/client/**" access="permitAll" />
 		
 		
@@ -32,7 +32,7 @@
 			default-target-url="/client/list" 
 			login-processing-url="/client/login"
 			authentication-failure-url="/client/auth_fail" 
-			username-parameter="username" 
+			username-parameter="username"
 			password-parameter="password" /> 
 			
 		<!-- 로그아웃시 success-url로 이동 -->

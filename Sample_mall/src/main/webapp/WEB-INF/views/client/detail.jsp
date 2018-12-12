@@ -1,21 +1,33 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-    
+<%@ page import="org.springframework.security.core.Authentication"%>
+<%@ page import="org.springframework.security.core.context.SecurityContextHolder" %>
+<%
+	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+	String username = auth.getName();
+%>  
 <script>
 	
-	function clkGoCart(p_no) {
+	function clkGoCart(p_no,u_no) {
 		var frm = document.createElement("form");
 		frm.method="POST";
 		frm.action="goCart";
 		
-		var ipt1 = document.createElement("input");
-		ipt1.value = p_no;
-		ipt1.name = "p_no";
+		var prodNo = document.createElement("input");
+		prodNo.value = p_no;
+		prodNo.name = "p_no";
 		
-		frm.appendChild(ipt1);
+		var userNo = document.createElement("input");
+		userNo.value = u_no;
+		userNo.name = "u_no";
+		
+		frm.appendChild(prodNo);
+		frm.appendChild(userNo);
 		document.body.appendChild(frm);
-		frm.submit();
-		alert("상품이 장바구니에 담겼습니다.");
+		var yn = submit("상품을 장바구니에 담으시겠습니까?");
+		if(yn == true) {
+			frm.submit();
+		}
 	}
 	
 </script>
@@ -23,10 +35,14 @@
 <div class="detail">
 	<img src="${pageContext.request.contextPath}/resources/img/bestItem/${detail.p_no}.jpg">
 		<div class="detailInfo">
+			<form action="goCart" method="post">
 			<p style="font-size: 2em;">상품명 : ${detail.p_name}</p>
 			<p style="font-size : 1em;">가격 : ${detail.p_price}</p>
-			<button onclick="clkGoCart(${detail.p_no})">장바구니 담기</button>
-			<button onclick="clkGoPay(${detail.p_no})">구매하기</button>
+			<button type="submit">장바구니 담기</button>
+			<button type="button" onclick="clkGoPay(${detail.p_no})">구매하기</button>
+			<input type="hidden" name="p_no" value="${detail.p_no}">
+			<input type="hidden" name="u_id" value="<%=username%>">
+			</form>
 		</div>
 			
 </div>

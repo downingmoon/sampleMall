@@ -1,8 +1,22 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+    pageEncoding="UTF-8"%>
+
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<center><h3>${category}</h3></center>
+<center><h3>${word} 검색결과</h3></center>
+
+<form action="detailSearch" method="post">
+	<table>
+		<tr>
+			<th>검색 : </th>
+			<td><input type="text" name="searchKeyword" placeholder="Search"></td>
+		</tr>
+		<tr>
+			<th></th>
+			<td><input type="text" name="searchKeyword" placeholder="Search"></td>
+		</tr>
+	</table>
+</form>
 
 <div class="items">
 		<c:forEach items="${list}" var="list">

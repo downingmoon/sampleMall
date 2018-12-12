@@ -25,4 +25,20 @@
 		SELECT p_no, p_name, to_char(p_price, '999G999G999') AS p_price 
 		FROM prod WHERE p_maintype = #{mainType}
 	</select>
+	
+	<select id="searchItems" resultType="prodVO">
+		SELECT p_no, p_name, to_char(p_price, '999G999G999') AS p_price
+		FROM prod WHERE p_name LIKE '%'||#{searchKeyword}||'%'
+		OR p_info LIKE '%'||#{searchKeyword}||'%'
+	</select>
+	
+	<select id="userInfo" resultType="userVO">
+		SELECT * FROM mall_user WHERE u_id = #{u_id}
+	</select>
+	
+	<insert id="cartInsert">
+		INSERT INTO mall_cart
+		VALUES
+		(seq_mall_cart.nextval, #{p_no}, #{u_no});
+	</insert>
 </mapper>

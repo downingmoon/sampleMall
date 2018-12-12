@@ -3,6 +3,12 @@
 <%@ taglib uri="http://www.springframework.org/security/tags"
 	prefix="sec"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ page import="org.springframework.security.core.Authentication"%>
+<%@ page import="org.springframework.security.core.context.SecurityContextHolder" %>
+<%
+	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+	String username = auth.getName();
+%>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/menuBar.css">
 
 <div class="header">
@@ -15,7 +21,7 @@
 		<ul class="loginMenu">
 			<li>
 				<sec:authorize access="isAnonymous()">
-					<a href="${pageContext.request.contextPath}/client/login">로그인</a>
+					<a href="login">로그인</a>
 				</sec:authorize> 
 				
 				<sec:authorize access="isAuthenticated()">
@@ -26,11 +32,18 @@
 					<a href="${pageContext.request.contextPath}/admin/adminPage">관리자페이지</a>
 				</sec:authorize>
 				</li>
-			<li><a href="${pageContext.request.contextPath}/client/join">회원가입</a></li>
-			<li><a href="#">마이페이지</a></li>
+			<li><a href="join">회원가입</a></li>
+			<li><a href="mypage?id=<%=username%>">마이페이지</a></li>
 			<li><a href="#">주문조회</a></li>
 			<li><a href="#">1:1문의</a></li>
 		</ul>
+		<!-- 
+		<ul class="userInfoMenu">
+			<li> <%=username%>님 환영합니다. </li>
+			<li>가용 포인트 : 0점</li>
+			<li>등급 : 일반</li>
+		</ul>
+		 -->
 	</div>
 </div>
 <!-- 
@@ -99,11 +112,11 @@
 					</ul>
 				</li>
 				<li>
-					<a href="events">Events</a>
+					<a href="noticeAndEvents">Notcie/Events</a>
 				</li>
 				<li class='last'>
 					<form action="searchItem" method="post">
-						<input type="text" placeholder="Search">
+						<input type="text" name="searchKeyword" placeholder="Search">
 					</form>
 				</li>
 			</ul>

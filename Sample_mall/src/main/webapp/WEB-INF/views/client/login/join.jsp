@@ -30,9 +30,10 @@
 		</tr>
 		<tr>
 			<th>주소(선택)</th>
-			<td><input type="text" name="" class="postcodify_address" placeholder="기본주소"/>
-			<input type="text" name="" class="postcodify_details" placeholder="상세주소"/>
-			<button type="button"id="postcodify_search_button">검색</button>
+			<td>
+				<input type="text" name="u_mainaddress" class="postcodify_address" placeholder="기본주소"/>
+				<input type="text" name="u_subaddress" class="postcodify_details" placeholder="상세주소"/>
+				<button type="button"id="postcodify_search_button">검색</button>
 			</td>
 		</tr>
 		<tr>

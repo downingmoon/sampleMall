@@ -3,6 +3,8 @@ package com.sample.shop.client;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -30,12 +32,28 @@ public class ClientService {
 	public void userJoin(UserVO vo) {
 		String cryptoPw = bpe.encode(vo.getU_pw());
 		vo.setU_pw(cryptoPw);
-		System.out.println(vo.getU_mainaddress());
-		//mapper.userJoin(vo);
+		mapper.userJoin(vo);
 	}
 	
 	public List<prodVO> getMainTypeList(String mainType) {
 		return mapper.getMainTypeList(mainType);
+	}
+	
+	public List<prodVO> searchItems(String searchKeyword) {
+		return mapper.searchItems(searchKeyword);
+	}
+	
+	public UserVO userInfo(String u_id) {
+		return mapper.userInfo(u_id);
+	}
+	
+	public void cartInsert(String u_id, int p_no) {
+		System.out.println("service p_no : " + p_no);
+		//UserVO vo = mapper.userInfo(u_id);
+		int u_no = 3;
+		System.out.println("service u_no : " + u_no);
+		
+		mapper.cartInsert(3, u_no);
 	}
 	
 
