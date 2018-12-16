@@ -20,4 +20,6 @@ public interface ClientMapper {
 	public UserVO userInfo(String u_id);
 	
 	public void cartInsert(int p_no, int u_no);
+	
+	public List<prodVO> bestItemList();
 }

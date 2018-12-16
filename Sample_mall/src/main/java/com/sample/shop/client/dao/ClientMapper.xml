@@ -41,4 +41,9 @@
 		VALUES
 		(seq_mall_cart.nextval, #{p_no}, #{u_no});
 	</insert>
+	
+	<select id="bestItemList" resultType="prodVO">
+		SELECT p_no, p_name, to_char(p_price, '999G999G999') AS p_price
+		FROM prod WHERE isbest = 1
+	</select>
 </mapper>

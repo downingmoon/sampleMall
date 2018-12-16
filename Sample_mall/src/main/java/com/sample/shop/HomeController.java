@@ -26,7 +26,7 @@ public class HomeController {
 		System.out.println("list.size : " + list.size());
 		m.addAttribute("list",list);
 		m.addAttribute("target","mainbody");
-		return "client/mainTemplate";
+		return "redirect:client/list";
 	}
 
 }

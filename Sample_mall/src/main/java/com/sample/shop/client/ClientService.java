@@ -56,5 +56,11 @@ public class ClientService {
 		mapper.cartInsert(3, u_no);
 	}
 	
+	public List<prodVO> bestItemList() {
+		List<prodVO> list = mapper.bestItemList();
+		System.out.println("bestItem list size : " + list.size());
+		return mapper.bestItemList();
+	}
+	
 
 }

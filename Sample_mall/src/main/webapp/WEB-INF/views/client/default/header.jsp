@@ -46,26 +46,17 @@
 		 -->
 	</div>
 </div>
-<!-- 
-<nav class="menuBar">
-	<ul class="menuList">
-		<li><a href="list">홈으로</a></li>
-		<li><a href="#">메뉴1</a></li>
-		<li><a href="#">메뉴2</a></li>
-		<li><a href="#">메뉴3</a></li>
-	</ul>
-</nav>
- -->
+
 <div class='menu'>
 			<ul>
 				<li>
 					<a href='list'>Home</a>
 				</li>
 				<li>
-					<a href='BestItems'>Top100</a>
+					<a href='bestItems'>Top100</a>
 				</li>
 				<li class='active sub'>
-					<a href='#'>All Categories</a>
+					<a href='allCategories'>All Categories</a>
 					<ul>
 						<li class='sub'>
 							<a href='mainTypeList?mainType=clothes'>의류</a>

@@ -28,6 +28,15 @@ public class ClientController {
 		return "client/mainTemplate";
 	}
 	
+	@RequestMapping("allCategories")
+	public String allCategories(Model m) {
+		List<prodVO> list = service.getProdList();
+		System.out.println("list.size : " + list.size());
+		m.addAttribute("list",list);
+		m.addAttribute("target","allCategories");
+		return "client/template";
+	}
+	
 	@RequestMapping("detail")
 	public String detail(@RequestParam int p_no, Model m) {
 		prodVO vo = service.getProdDetail(p_no);
@@ -106,6 +115,14 @@ public class ClientController {
 		System.out.println("controller p_no : " + p_no);
 		service.cartInsert(u_id, p_no);
 		m.addAttribute("target", "cart");
+		return "client/template";
+	}
+	
+	@RequestMapping("bestItems")
+	public String bestItemView(Model m) {
+		List<prodVO> list = service.bestItemList();
+		m.addAttribute("list",list);
+		m.addAttribute("target","bestItem");
 		return "client/template";
 	}
 
