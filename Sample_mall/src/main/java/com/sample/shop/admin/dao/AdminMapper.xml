@@ -3,5 +3,21 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.sample.shop.admin.dao.AdminMapper">
+
+	<select id="prodListView" resultType="prodVO">
+		select p_no, p_name, to_char(p_price, '999G999G999') AS p_price
+		, decode(p_maintype,'shoes','신발','clothes','의류', 'others','잡화') as p_maintype
+		, decode(p_detailtype,'workingshoes','운동화','mtm','맨투맨/후드','slacks','슬랙스','jeans','청바지/면바지','coat','코트/점퍼'
+		,'walker','워커/정장화','cap','모자','socks','양말','acc','악세서리') as p_detailtype from prod
+	</select>
+	
+	<select id="prodModList" resultType="prodVO">
+		select p_no, p_name, p_info, p_price, p_maintype , p_detailtype from prod where p_no = #{p_no}
+	</select>
+	
+	<update id="prodMod">
+		UPDATE prod SET p_name = #{p_name}, p_info = #{p_info}, p_price = #{p_price}, p_maintype = #{p_maintype}
+		, p_detailtype = #{p_detailtype} WHERE p_no = #{p_no}
+	</update>
 	
 </mapper>
