@@ -9,7 +9,7 @@
 			<div class="itemInfo">
 				<a href="detail?p_no=${list.p_no}"> <img
 					style="size: width:600px; height: 300px;"
-					src="${pageContext.request.contextPath}/resources/img/bestItem/${list.p_no}.jpg"><br>
+					src="${pageContext.request.contextPath}/resources/img/bestItem/${list.p_mainimg}.jpg"><br>
 					${list.p_name}<br> 가격 : ${list.p_price}원<br>
 				</a><br>
 			</div>

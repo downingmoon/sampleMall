@@ -8,7 +8,7 @@
 %>  
 <script>
 	
-	function clkGoCart(p_no,u_no) {
+	function clkGoCart(p_no,u_no, amount) {
 		var frm = document.createElement("form");
 		frm.method="POST";
 		frm.action="goCart";
@@ -33,13 +33,14 @@
 </script>
 
 <div class="detail">
-	<img src="${pageContext.request.contextPath}/resources/img/bestItem/${detail.p_no}.jpg">
+	<img src="${pageContext.request.contextPath}/resources/img/bestItem/${detail.p_mainimg}.jpg">
 		<div class="detailInfo">
 			<form action="goCart" method="post">
 			<p style="font-size: 2em;">상품명 : ${detail.p_name}</p>
 			<p style="font-size : 1em;">가격 : ${detail.p_price}</p>
+			수량 : <input type="number" id="amount" name="amount" value="1"><br>
 			<button type="submit">장바구니 담기</button>
-			<button type="button" onclick="clkGoPay(${detail.p_no})">구매하기</button>
+			<button type="button" onclick="clkGoPay(${detail.p_no}, document.getElementById('amount'))">구매하기</button>
 			<input type="hidden" name="p_no" value="${detail.p_no}">
 			<input type="hidden" name="u_id" value="<%=username%>">
 			</form>

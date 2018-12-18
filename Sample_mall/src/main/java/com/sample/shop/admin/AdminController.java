@@ -1,5 +1,7 @@
 package com.sample.shop.admin;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.sample.shop.model.prodVO;
 
@@ -81,6 +84,12 @@ public class AdminController {
 		m.addAttribute("target","prodMgr/admProdInsert");
 		m.addAttribute("subTitle","상품등록");
 		return "admin/adminTemplate";
+	}
+	
+	@RequestMapping(value="prodInsert", method=RequestMethod.POST)
+	public String prodInsertPost(prodVO vo, Model m, List<MultipartFile> p_prodImg) {
+		System.out.println("p_prodImg " + p_prodImg.size());
+		return "redirect:prodListView";
 	}
 	
 	

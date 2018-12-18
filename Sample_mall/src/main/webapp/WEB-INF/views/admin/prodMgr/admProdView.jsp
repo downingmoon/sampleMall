@@ -14,7 +14,7 @@
 		location.href="prodMod?p_no=" + p_no;
 	}
 </script>
-<div class="col-md-6">
+<div class="col-md-6" style="width:100%;">
 				<div class="panel panel-primary">
 					<table class="table table-hover" id="dev-table">
 						<thead>

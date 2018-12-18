@@ -11,6 +11,24 @@ public class prodVO {
 	private String p_detailtype;
 	private int p_viewcnt;
 	private int p_salecnt;
+	private int stock;
+	private String p_mainimg;
+
+	public int getStock() {
+		return stock;
+	}
+
+	public void setStock(int stock) {
+		this.stock = stock;
+	}
+
+	public String getP_mainimg() {
+		return p_mainimg;
+	}
+
+	public void setP_mainimg(String p_mainimg) {
+		this.p_mainimg = p_mainimg;
+	}
 
 	public String getP_maintype() {
 		return p_maintype;

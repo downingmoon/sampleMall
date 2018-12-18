@@ -5,11 +5,11 @@
 <mapper namespace="com.sample.shop.client.dao.ClientMapper">
 	<select id="getProdList" resultType="com.sample.shop.model.prodVO">
 		select p_no, p_name, to_char(p_price,'999G999G999')
-		as p_price from prod
+		as p_price, p_mainimg from prod
 	</select>
 	
 	<select id="getProdDetail" resultType="prodVO">
-		SELECT P_NAME, P_PRICE, P_INFO, P_NO FROM PROD WHERE P_NO = #{P_NO}
+		SELECT P_NAME, P_PRICE, P_INFO, P_NO, p_mainimg, stock FROM PROD WHERE P_NO = #{P_NO}
 	</select>
 	
 	<insert id="userJoin">
@@ -22,12 +22,12 @@
 	</insert>
 	
 	<select id="getMainTypeList" resultType="prodVO">
-		SELECT p_no, p_name, to_char(p_price, '999G999G999') AS p_price 
+		SELECT p_no, p_name, to_char(p_price, '999G999G999') AS p_price, p_mainimg, stock
 		FROM prod WHERE p_maintype = #{mainType}
 	</select>
 	
 	<select id="searchItems" resultType="prodVO">
-		SELECT p_no, p_name, to_char(p_price, '999G999G999') AS p_price
+		SELECT p_no, p_name, to_char(p_price, '999G999G999') AS p_price, p_mainimg, stock
 		FROM prod WHERE p_name LIKE '%'||#{searchKeyword}||'%'
 		OR p_info LIKE '%'||#{searchKeyword}||'%'
 	</select>
@@ -43,7 +43,7 @@
 	</insert>
 	
 	<select id="bestItemList" resultType="prodVO">
-		SELECT p_no, p_name, to_char(p_price, '999G999G999') AS p_price
-		FROM prod WHERE isbest = 1
+		SELECT p_no, p_name, to_char(p_price, '999G999G999') AS p_price, p_mainimg, stock
+		FROM prod WHERE isbest = 1 <!-- TODO: isbest 대신 salecnt 높은걸로 바꾸기 -->
 	</select>
 </mapper>
