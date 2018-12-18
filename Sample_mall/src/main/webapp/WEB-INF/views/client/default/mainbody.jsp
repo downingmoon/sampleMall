@@ -37,7 +37,17 @@
 				<a href="detail?p_no=${list.p_no}"> <img
 					style="size: width:600px; height: 300px;"
 					src="${pageContext.request.contextPath}/resources/img/bestItem/${list.p_no}.jpg"><br>
-					${list.p_name}<br> 가격 : ${list.p_price}원<br>
+					${list.p_name}<br> 
+					<c:set var="data" value="${list.stock}" />
+					가격 : ${list.p_price}원<br>
+					<c:choose>
+					<c:when test="${data <= 10 && data > 0}">
+					 품절임박! 남은수량 ${list.stock}개!<br>
+					</c:when>
+					<c:when test="${data == 0}">
+					품절<br>
+					</c:when>
+					</c:choose>
 				</a><br>
 			</div>
 		</c:forEach>

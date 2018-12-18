@@ -5,7 +5,7 @@
 <mapper namespace="com.sample.shop.client.dao.ClientMapper">
 	<select id="getProdList" resultType="com.sample.shop.model.prodVO">
 		select p_no, p_name, to_char(p_price,'999G999G999')
-		as p_price, p_mainimg from prod
+		as p_price, p_mainimg, stock from prod
 	</select>
 	
 	<select id="getProdDetail" resultType="prodVO">
