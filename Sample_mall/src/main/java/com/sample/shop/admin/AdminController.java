@@ -1,8 +1,10 @@
 package com.sample.shop.admin;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.List;
+
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -89,6 +91,29 @@ public class AdminController {
 	@RequestMapping(value="prodInsert", method=RequestMethod.POST)
 	public String prodInsertPost(prodVO vo, Model m, List<MultipartFile> p_prodImg) {
 		System.out.println("p_prodImg " + p_prodImg.size());
+		return "redirect:prodListView";
+	}
+	
+	@RequestMapping("prodImport")
+	public String prodImportGet(Model m) {
+		List<prodVO> list = service.prodListView();
+		m.addAttribute("list",list);
+		m.addAttribute("target","prodMgr/admProdImport");
+		m.addAttribute("subTitle","상품입고");
+		return "admin/adminTemplate";
+	}
+	
+	@RequestMapping(value="prodImport", method=RequestMethod.POST)
+	public String prodImportPost(int p_no, int stock, HttpServletResponse response) {
+		System.out.println("controller. stock : " + stock);
+		service.prodImport(p_no, stock);
+		PrintWriter writer;
+		try {
+			writer = response.getWriter();
+			writer.println("<script>alert('입고가 완료되었습니다. '); location.href='prodListView';</script>");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		return "redirect:prodListView";
 	}
 	

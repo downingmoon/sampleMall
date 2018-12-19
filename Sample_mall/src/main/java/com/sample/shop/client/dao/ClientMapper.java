@@ -2,6 +2,8 @@ package com.sample.shop.client.dao;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.sample.shop.model.UserVO;
 import com.sample.shop.model.prodVO;
 
@@ -19,7 +21,7 @@ public interface ClientMapper {
 	
 	public UserVO userInfo(String u_id);
 	
-	public void cartInsert(int p_no, int u_no);
+	public void cartInsert(@Param("p_no")int p_no, @Param("u_no")int u_no);
 	
 	public List<prodVO> bestItemList();
 }

@@ -13,6 +13,15 @@ public class prodVO {
 	private int p_salecnt;
 	private int stock;
 	private String p_mainimg;
+	private String p_detailimg;
+
+	public String getP_detailimg() {
+		return p_detailimg;
+	}
+
+	public void setP_detailimg(String p_detailimg) {
+		this.p_detailimg = p_detailimg;
+	}
 
 	public int getStock() {
 		return stock;

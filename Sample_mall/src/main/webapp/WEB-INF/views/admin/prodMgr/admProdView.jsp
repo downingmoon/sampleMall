@@ -7,7 +7,10 @@
 	}
 	
 	function clkDelete(p_no) {
-		location.href="admProdDelete?p_no=" + p_no;
+		if(confirm("정말로 삭제하시겠습니까?") == true) {
+			alert("삭제되었습니다.");
+			location.href="admProdDelete?p_no=" + p_no;
+		}
 	}
 	
 	function clkMod(p_no) {

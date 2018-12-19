@@ -2,7 +2,9 @@ package com.sample.shop.admin;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -43,6 +45,13 @@ public class AdminService {
 			e.printStackTrace();
 		}
 		
+	}
+	
+	public void prodImport(int p_no, int stock) {
+		System.out.println("service. stock : " + stock);
+		System.out.println(p_no);
+		
+		mapper.prodImport(p_no, stock);
 	}
 
 }

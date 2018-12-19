@@ -2,6 +2,8 @@ package com.sample.shop.admin.dao;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.sample.shop.model.prodVO;
 
 public interface AdminMapper {
@@ -11,5 +13,7 @@ public interface AdminMapper {
 	public void prodMod(prodVO vo);
 	
 	public prodVO prodModList(int p_no);
+	
+	public void prodImport(@Param("p_no")int p_no,@Param("stock")int stock);
 
 }

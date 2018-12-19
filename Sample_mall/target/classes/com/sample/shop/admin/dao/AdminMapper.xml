@@ -20,4 +20,8 @@
 		, p_detailtype = #{p_detailtype} WHERE p_no = #{p_no}
 	</update>
 	
+	<update id="prodImport">
+		UPDATE prod SET stock = stock + #{stock} WHERE p_no = #{p_no}
+	</update>
+	
 </mapper>
