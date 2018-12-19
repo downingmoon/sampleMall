@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.sample.shop.model.UserVO;
+import com.sample.shop.model.boardVO;
 import com.sample.shop.model.prodVO;
 
 @Controller
@@ -90,7 +91,29 @@ public class ClientController {
 	
 	@RequestMapping("noticeAndEvents")
 	public String noticeAndEvects(Model m) {
+		List<boardVO> list = service.getBoardList();
+		m.addAttribute("list", list);
 		m.addAttribute("target","notice");
+		return "client/template";
+	}
+	
+	@RequestMapping("boardWrite")
+	public String boardWriteGet(Model m) {
+		m.addAttribute("target","boardWrite");
+		return "client/template";
+	}
+	
+	@RequestMapping(value="boardWrite", method=RequestMethod.POST)
+	public String boardWritePost(boardVO vo) {
+		service.boardWrite(vo);
+		return "redirect:noticeAndEvents";
+	}
+	
+	@RequestMapping("boardDetail")
+	public String boardDetailGet(int b_no, Model m) {
+		boardVO vo = service.boardDetail(b_no);
+		m.addAttribute("vo", vo);
+		m.addAttribute("target", "boardDetail");
 		return "client/template";
 	}
 	
@@ -98,17 +121,16 @@ public class ClientController {
 	public String mypageGet(String id, Model m) {
 		UserVO vo = service.userInfo(id);
 		m.addAttribute("vo",vo);
-		m.addAttribute("target","mypageBefore");
+		m.addAttribute("target","mypage");
 		return "client/template";
 	}
 	
 	@RequestMapping(value="mypage", method=RequestMethod.POST)
-	public String mypagePost(String id, Model m) {
-		UserVO vo = service.userInfo(id);
-		m.addAttribute("vo",vo);
-		m.addAttribute("target","mypage");
-		return "client/template";
+	public String mypagePost(UserVO vo) {
+		service.userInfoUpdate(vo);
+		return "redirect:mypage";
 	}
+	
 	
 	@RequestMapping("goCart")
 	public String cartInsert(@RequestParam String u_id, @RequestParam int p_no, Model m) {

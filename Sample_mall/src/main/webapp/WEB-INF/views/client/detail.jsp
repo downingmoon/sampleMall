@@ -35,7 +35,7 @@
 <div class="detail">
 	<img src="${pageContext.request.contextPath}/resources/img/bestItem/${detail.p_mainimg}.jpg">
 		<div class="detailInfo">
-			<form action="goCart" method="post">
+			<form action="goCart" method="post" onsubmit="return clkGoCart()">
 			<p style="font-size: 2em;">상품명 : ${detail.p_name}</p>
 			<p style="font-size : 1em;">가격 : ${detail.p_price}</p>
 			수량 : <input type="number" id="amount" name="amount" value="1"><br>

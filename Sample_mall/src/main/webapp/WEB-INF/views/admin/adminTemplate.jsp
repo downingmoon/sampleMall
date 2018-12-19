@@ -28,6 +28,7 @@
 				<li><a href="prodMgr">상품관리</a></li>
 				<li><a href="saleMgr">주문관리</a></li>
 				<li><a href="custMgr">고객관리</a></li>
+				<li><a href="/shop">쇼핑몰 가기</a></li>
 			</ul>
 		</div>
 		<div class="col-md-10 col-lg-10 content">

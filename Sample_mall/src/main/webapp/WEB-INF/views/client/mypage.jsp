@@ -14,8 +14,8 @@
 		                </div>
 		            </div>
 		            <div class="row">
-		                <div class="col-md-12">
-		                    <form>
+		                <div class="col-md-6">
+		                    <form action="mypage" method="post">
                               <div class="form-group row">
                                 <label for="username" class="col-4 col-form-label">이름</label> 
                                 <div class="col-8">
@@ -45,8 +45,8 @@
                                 <button type="button"id="postcodify_search_button">검색</button>
                                 </label> 
                                 <div class="col-8">
-                                  <input id="email" name="mainaddress" value="${vo.u_mainaddress}" class="form-control here postcodify_address" type="text">
-                                  <input id="email" name="subaddress" value="${vo.u_subaddress}" class="form-control here postcodify_details" type="text">
+                                  <input id="email" name="u_mainaddress" value="${vo.u_mainaddress}" class="form-control here postcodify_address" type="text">
+                                  <input id="email" name="u_subaddress" value="${vo.u_subaddress}" class="form-control here postcodify_details" type="text">
                                 </div>
                               </div>
                               <div class="form-group row">
@@ -69,6 +69,7 @@
                               </div> 
                               <div class="form-group row">
                                 <div class="offset-4 col-8">
+                                <input type="hidden" name="u_no" value="${vo.u_no}">
                                   <center><button name="submit" type="submit" class="btn btn-primary">정보 수정</button></center>
                                 </div>
                               </div>

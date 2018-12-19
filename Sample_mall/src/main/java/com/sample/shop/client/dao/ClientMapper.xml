@@ -12,6 +12,23 @@
 		SELECT P_NAME, P_PRICE, P_INFO, P_NO, p_mainimg, stock FROM PROD WHERE P_NO = #{P_NO}
 	</select>
 	
+	<select id="getBoardList" resultType="boardVO">
+		SELECT b_no, b_title, to_char(b_regdate,'YY.MM.DD') as b_regdate, b_type FROM mall_board
+		ORDER BY b_no DESC
+	</select>
+	
+	<select id="boardDetail" resultType="boardVO">
+		SELECT b_no, b_title, b_content, to_char(b_regdate,'YY.MM.DD') as b_regdate, b_type
+		FROM mall_board WHERE b_no = #{b_no}
+	</select>
+	
+	<insert id="boardWrite">
+		INSERT INTO mall_board
+		(b_no, b_title, b_content, b_type)
+		VALUES
+		(seq_mall_board.nextval, #{b_title}, #{b_content}, #{b_type})
+	</insert>
+	
 	<insert id="userJoin">
 		INSERT INTO mall_user
 		(u_no, u_id, u_pw, u_name, u_mainaddress, u_subaddress, u_birth, u_phone
@@ -35,6 +52,11 @@
 	<select id="userInfo" resultType="userVO">
 		SELECT * FROM mall_user WHERE u_id = #{u_id}
 	</select>
+	
+	<update id="userInfoUpdate">
+		UPDATE mall_user SET u_name = #{u_name}, u_mainaddress = #{u_mainaddress}, u_subaddress = #{u_subaddress}
+		, u_phone = #{u_phone}, u_birth = #{u_birth} WHERE u_no = #{u_no}
+	</update>
 	
 	<insert id="cartInsert">
 		INSERT INTO mall_cart

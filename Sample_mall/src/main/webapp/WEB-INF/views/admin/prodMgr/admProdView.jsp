@@ -28,6 +28,7 @@
 								<th>대분류</th>
 								<th>소분류</th>
 								<th>판매수량</th>
+								<th>재고</th>
 								<th></th>
 							</tr>
 						</thead>
@@ -40,6 +41,7 @@
 								<td>${list.p_maintype}</td>
 								<td>${list.p_detailtype}</td>
 								<td>${list.p_salecnt}</td>
+								<td>${list.stock}</td>
 								<td style="display:flex;">
 									<button type="button" onclick="clkMod(${list.p_no})" class="btn btn-info btn-sm blue">
                 					<span class="glyphicon glyphicon-pencil"></span></button>

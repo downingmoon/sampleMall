@@ -11,12 +11,9 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<link rel="stylesheet"
-	href="${pageContext.request.contextPath}/resources/css/common.css">
-<link rel="stylesheet"
-	href="${pageContext.request.contextPath}/resources/css/slideMenu.css">
-<script
-	src="${pageContext.request.contextPath}/resources/js/slideMenu.js"></script>
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/common.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/slideMenu.css">
+<script src="${pageContext.request.contextPath}/resources/js/slideMenu.js"></script>
 <script>
 	function loginFrm() {
 		var frm = document.loginForm;

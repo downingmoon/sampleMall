@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec"%>
 
 <div class="panel panel-default panel-table">
 	<div class="panel-heading">
@@ -17,19 +18,21 @@
 		<table class="table table-striped table-bordered table-list">
 			<thead>
 				<tr>
-					<th>종류</th>
+					<th>분류</th>
 					<th class="hidden-xs">글 번호</th>
 					<th style="width:60%;">제목</th>
 					<th>작성일자</th>
 				</tr>
 			</thead>
 			<tbody>
-				<tr>
-					<td>이벤트</td>
-					<td class="hidden-xs">1</td>
-					<td>Open Event</td>
-					<td>18.12.12</td>
-				</tr>
+				<c:forEach var="list" items="${list}">
+					<tr>
+						<td>${list.b_type}</td>
+						<td class="hidden-xs">${list.b_no}</td>
+						<td><a href="boardDetail?b_no=${list.b_no}">${list.b_title}</a></td>
+						<td>${list.b_regdate}</td>
+					</tr>
+				</c:forEach>
 			</tbody>
 		</table>
 
@@ -37,7 +40,7 @@
 	<div class="panel-footer">
 		<div class="row">
 			<div class="col col-xs-8">
-				<ul class="pagination hidden-xs pull-right">
+				<ul class="pagination hidden-xs pull-left">
 					<li><a href="#">1</a></li>
 					<li><a href="#">2</a></li>
 					<li><a href="#">3</a></li>
@@ -48,6 +51,9 @@
 					<li><a href="#">«</a></li>
 					<li><a href="#">»</a></li>
 				</ul>
+				<sec:authorize access="hasRole('ROLE_ADM')">
+					<button type="button" class="btn btn-sm btn-primary pull-right" onclick="location.href='boardWrite'">글쓰기</button>
+				</sec:authorize>
 			</div>
 		</div>
 	</div>
