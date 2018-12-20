@@ -142,18 +142,21 @@ $(document).ready(function() {
 			<div class="itemInfo">
 				<a href="detail?p_no=${list.p_no}"> 
 				<img style="size: width:600px; height: 300px;" 
-				src="${pageContext.request.contextPath}/resources/img/bestItem/${list.p_mainimg}.jpg"><br>
+				src="/shop/resources/img/product/mainImg/${list.p_no}/${list.p_mainimg}.jpg"><br>
 					${list.p_name}<br>
 					<c:set var="data" value="${list.stock}" />
-					가격 : ${list.p_price}원<br>
-					<c:choose>
-					<c:when test="${data <= 10 && data > 0}">
-					 품절임박! 남은수량 ${list.stock}개!<br>
-					</c:when>
-					<c:when test="${data == 0}">
-					품절<br>
-					</c:when>
-					</c:choose>
+						<c:choose>
+							<c:when test="${data <= 10 && data > 0}">
+								가격 : ${list.p_price}원<br>
+					 			품절임박! 남은수량 ${list.stock}개!<br>
+							</c:when>
+							<c:when test="${data == 0}">
+								<div class="blinkcss">품절<br></div>
+							</c:when>
+							<c:otherwise>
+								가격 : ${list.p_price}원<br>
+							</c:otherwise>
+						</c:choose>
 				</a><br>
 			</div>
 		</c:forEach>

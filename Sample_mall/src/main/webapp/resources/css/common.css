@@ -173,6 +173,19 @@ a {
   align-items: center;
 }
 
+@-webkit-keyframes blink {
+ 0% {background-color: red;}
+ 50% {background-color: yellow;}
+}
+
+.blinkcss {
+ width : 30%;
+ text-align : center;
+ font-weight:bold;
+ animation: blink 1s step-end infinite;
+ -webkit-animation: blink 1s step-end infinite;
+}
+
 
 /* FOOTER */
 

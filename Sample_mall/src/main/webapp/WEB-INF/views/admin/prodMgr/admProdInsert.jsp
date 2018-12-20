@@ -16,8 +16,8 @@
 							<table class="table table-user-information">
 								<tbody>
 									<tr>
-										<td>상품번호:</td>
-										<td><input class="form-control" type="text" name="p_no"></td>
+										<td>상품번호 : </td>
+										<td><input class="form-control" type="text" name="p_no" value="${p_no}"></td>
 									</tr>
 									<tr>
 										<td>상품명 : </td>

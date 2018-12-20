@@ -65,7 +65,10 @@
 	</insert>
 	
 	<select id="bestItemList" resultType="prodVO">
-		SELECT p_no, p_name, to_char(p_price, '999G999G999') AS p_price, p_mainimg, stock
-		FROM prod WHERE isbest = 1 <!-- TODO: isbest 대신 salecnt 높은걸로 바꾸기 -->
+	<![CDATA[
+		SELECT * FROM (SELECT p_no, p_name, to_char(p_price, '999G999G999') AS p_price, p_mainimg, stock FROM prod WHERE p_salecnt >= 100) 
+        WHERE ROWNUM <= 100
+    ]]>
 	</select>
+	
 </mapper>

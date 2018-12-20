@@ -12,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.sample.shop.model.prodVO;
 
@@ -83,14 +84,16 @@ public class AdminController {
 	
 	@RequestMapping("prodInsert")
 	public String prodInsertGet(Model m) {
+		int maxP_no = service.getMaxProdNo();
 		m.addAttribute("target","prodMgr/admProdInsert");
 		m.addAttribute("subTitle","상품등록");
+		m.addAttribute("p_no", maxP_no);
 		return "admin/adminTemplate";
 	}
 	
 	@RequestMapping(value="prodInsert", method=RequestMethod.POST)
 	public String prodInsertPost(prodVO vo, Model m, List<MultipartFile> p_prodImg) {
-		System.out.println("p_prodImg " + p_prodImg.size());
+		service.prodInsert(vo, p_prodImg);
 		return "redirect:prodListView";
 	}
 	
@@ -114,6 +117,13 @@ public class AdminController {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		return "redirect:prodListView";
+	}
+	
+	@RequestMapping("admProdDelete")
+	public String prodDelete(int p_no) {
+		service.prodImgDelete(p_no);
+		service.prodDelete(p_no);
 		return "redirect:prodListView";
 	}
 	

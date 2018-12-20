@@ -22,6 +22,7 @@ public class ClientController {
 	
 	@RequestMapping("list")
 	public String list(Model m) {
+		//TODO : slider이미지에 뿌릴 베스트아이템 리스트 가져오기
 		List<prodVO> list = service.getProdList();
 		System.out.println("list.size : " + list.size());
 		m.addAttribute("list",list);

@@ -8,11 +8,15 @@
 		select p_no, p_name, to_char(p_price, '999G999G999') AS p_price
 		, decode(p_maintype,'shoes','신발','clothes','의류', 'others','잡화') as p_maintype
 		, decode(p_detailtype,'workingshoes','운동화','mtm','맨투맨/후드','slacks','슬랙스','jeans','청바지/면바지','coat','코트/점퍼'
-		,'walker','워커/정장화','cap','모자','socks','양말','acc','악세서리') as p_detailtype, stock from prod
+		,'walker','워커/정장화','cap','모자','socks','양말','acc','악세서리') as p_detailtype, stock, p_salecnt from prod
 	</select>
 	
 	<select id="prodModList" resultType="prodVO">
 		select p_no, p_name, p_info, p_price, p_maintype , p_detailtype, stock from prod where p_no = #{p_no}
+	</select>
+	
+	<select id="getMaxProdNo" resultType="_int">
+		SELECT nvl(max(p_no), 0) +1 AS p_no FROM prod
 	</select>
 	
 	<update id="prodMod">
@@ -23,5 +27,27 @@
 	<update id="prodImport">
 		UPDATE prod SET stock = stock + #{stock} WHERE p_no = #{p_no}
 	</update>
+	
+	<insert id="prodInsert">
+		INSERT INTO prod
+		(p_no, p_name, p_price, p_info, p_maintype, p_detailtype, p_mainimg)
+		VALUES
+		(#{p_no}, #{p_name}, #{p_price}, #{p_info}, #{p_maintype}, #{p_detailtype}, #{p_mainimg})
+	</insert>
+	
+	<insert id="prodImgInsert">
+		INSERT INTO prod_detailimg
+		(p_no, p_detailimg)
+		values
+		(#{p_no}, #{p_detailimg})
+	</insert>
+	
+	<delete id="prodDelete">
+		DELETE FROM prod WHERE p_no = #{p_no}
+	</delete>
+	
+	<delete id="prodImgDelete">
+		DELETE FROM prod_detailimg WHERE p_no = #{p_no}
+	</delete>
 	
 </mapper>

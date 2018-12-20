@@ -25,7 +25,7 @@
 									</tr>
 									<tr>
 										<td>내용: </td>
-										<td><textarea class="form-control" rows="20" name="b_content">${vo.b_content}</textarea></td>
+										<td>${vo.b_content}</td>
 									</tr>
 								</tbody>
 							</table>
