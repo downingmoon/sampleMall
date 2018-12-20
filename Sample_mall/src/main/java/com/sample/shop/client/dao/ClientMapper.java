@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Param;
 
 import com.sample.shop.model.UserVO;
 import com.sample.shop.model.boardVO;
+import com.sample.shop.model.cartVO;
 import com.sample.shop.model.prodVO;
 
 public interface ClientMapper {
@@ -28,7 +29,9 @@ public interface ClientMapper {
 	
 	public UserVO userInfo(String u_id);
 	
-	public void cartInsert(@Param("p_no")int p_no, @Param("u_no")int u_no);
+	public void cartInsert(@Param("p_no")int p_no, @Param("u_id")String u_id, @Param("amount")int amount);
+	
+	public List<cartVO> getCartList(@Param("u_id") String u_id);
 	
 	public List<prodVO> bestItemList();
 	

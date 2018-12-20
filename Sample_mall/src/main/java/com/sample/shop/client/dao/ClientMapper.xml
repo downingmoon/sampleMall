@@ -60,9 +60,16 @@
 	
 	<insert id="cartInsert">
 		INSERT INTO mall_cart
+		(c_no,u_no, p_no, amount)
 		VALUES
-		(seq_mall_cart.nextval, #{p_no}, #{u_no});
+		((SELECT NVL(MAX(c_no), 0) + 1 FROM mall_cart WHERE u_no = (SELECT u_no FROM mall_user WHERE u_id = #{u_id}))
+		,(SELECT u_no FROM mall_user WHERE u_id = #{u_id}),#{p_no}, #{amount})
 	</insert>
+	
+	<select id="getCartList" resultType="cartVO">
+		SELECT c.c_no, p.p_name, to_char(p.p_price, '999G999G999') AS p_price, c.amount, c.p_no, (SELECT u_no FROM mall_user WHERE u_id = #{u_id}) AS u_no 
+		FROM prod p, mall_cart c WHERE p.p_no = c.p_no
+	</select>
 	
 	<select id="bestItemList" resultType="prodVO">
 	<![CDATA[

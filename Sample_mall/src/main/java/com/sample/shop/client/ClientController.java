@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.sample.shop.model.UserVO;
 import com.sample.shop.model.boardVO;
+import com.sample.shop.model.cartVO;
 import com.sample.shop.model.prodVO;
 
 @Controller
@@ -132,20 +133,26 @@ public class ClientController {
 		return "redirect:mypage";
 	}
 	
-	
-	@RequestMapping("goCart")
-	public String cartInsert(@RequestParam String u_id, @RequestParam int p_no, Model m) {
-		System.out.println("controller p_no : " + p_no);
-		service.cartInsert(u_id, p_no);
-		m.addAttribute("target", "cart");
-		return "client/template";
-	}
-	
 	@RequestMapping("bestItems")
 	public String bestItemView(Model m) {
 		List<prodVO> list = service.bestItemList();
 		m.addAttribute("list",list);
 		m.addAttribute("target","bestItem");
+		return "client/template";
+	}
+	
+	@RequestMapping("addToCartAjax")
+	public String addToCart(String u_id, int amount, int p_no) {
+		System.out.println("uid : " + u_id + " amount : " + amount + " pno : " + p_no);
+		service.cartInsert(p_no, u_id, amount);
+		return "redirect:list";
+	}
+	
+	@RequestMapping("goCart")
+	public String goCart(Model m, String u_id) {
+		List<cartVO> list = service.getCartList(u_id);
+		m.addAttribute("list",list);
+		m.addAttribute("target","cart");
 		return "client/template";
 	}
 

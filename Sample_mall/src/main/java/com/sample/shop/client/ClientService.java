@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.sample.shop.client.dao.ClientMapper;
 import com.sample.shop.model.UserVO;
 import com.sample.shop.model.boardVO;
+import com.sample.shop.model.cartVO;
 import com.sample.shop.model.prodVO;
 
 @Service
@@ -62,13 +63,12 @@ public class ClientService {
 		mapper.userInfoUpdate(vo);
 	}
 	
-	public void cartInsert(String u_id, int p_no) {
-		System.out.println("service p_no : " + p_no);
-		//UserVO vo = mapper.userInfo(u_id);
-		int u_no = 3;
-		System.out.println("service u_no : " + u_no);
-		
-		mapper.cartInsert(3, u_no);
+	public void cartInsert(int p_no, String u_id, int amount) {
+		mapper.cartInsert(p_no, u_id, amount);
+	}
+	
+	public List<cartVO> getCartList(String u_id) {
+		return mapper.getCartList(u_id);
 	}
 	
 	public List<prodVO> bestItemList() {
