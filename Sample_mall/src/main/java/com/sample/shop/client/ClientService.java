@@ -77,5 +77,9 @@ public class ClientService {
 		return mapper.bestItemList();
 	}
 	
+	public void wishInsert(String u_id, int p_no) {
+		mapper.wishInsert(u_id, p_no);
+	}
+	
 
 }

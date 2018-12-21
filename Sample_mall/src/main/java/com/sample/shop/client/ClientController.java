@@ -27,8 +27,8 @@ public class ClientController {
 		List<prodVO> list = service.getProdList();
 		System.out.println("list.size : " + list.size());
 		m.addAttribute("list",list);
-		m.addAttribute("target","mainbody");
-		return "client/mainTemplate";
+		m.addAttribute("target","default/mainbody");
+		return "client/template";
 	}
 	
 	@RequestMapping("allCategories")
@@ -154,6 +154,12 @@ public class ClientController {
 		m.addAttribute("list",list);
 		m.addAttribute("target","cart");
 		return "client/template";
+	}
+	
+	@RequestMapping("wishListInsertAjax")
+	public String wishListInsert(String u_id, int p_no) {
+		service.wishInsert(u_id, p_no);
+		return "redirect:wishList";
 	}
 
 }

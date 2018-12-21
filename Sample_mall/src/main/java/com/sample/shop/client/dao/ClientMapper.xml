@@ -9,7 +9,7 @@
 	</select>
 	
 	<select id="getProdDetail" resultType="prodVO">
-		SELECT P_NAME, P_PRICE, P_INFO, P_NO, p_mainimg, stock FROM PROD WHERE P_NO = #{P_NO}
+		SELECT P_NAME, to_char(p_price, '999G999G999') AS p_price, P_INFO, P_NO, p_mainimg, stock FROM PROD WHERE P_NO = #{P_NO}
 	</select>
 	
 	<select id="getBoardList" resultType="boardVO">
@@ -77,5 +77,13 @@
         WHERE ROWNUM <= 100
     ]]>
 	</select>
+	
+	<insert id="wishInsert">
+		INSERT INTO mall_wishlist
+		(w_no, u_no, p_no)
+		VALUES
+		((SELECT NVL(MAX(w_no), 0) + 1 FROM mall_wishlist WHERE u_no = (SELECT u_no FROM mall_user WHERE u_id = #{u_id}))
+		, (SELECT u_no FROM mall_user WHERE u_id = #{u_id}), #{p_no})
+	</insert>
 	
 </mapper>

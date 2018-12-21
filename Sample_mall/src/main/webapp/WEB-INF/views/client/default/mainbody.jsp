@@ -11,8 +11,9 @@
 			<div class="inner">
 				<ul>
 					<c:forEach items="${list}" var="list">
-					<li><a href="detail?p_no=${list.p_no}">
-						<img class="thumb" src="${pageContext.request.contextPath}/resources/img/slider/${list.p_no}.jpg"></a>
+					<li>
+						<img class="thumb" src="${pageContext.request.contextPath}/resources/img/slider/${list.p_no}.jpg">
+						<a href="detail?p_no=${list.p_no}">${list.p_name}</a>
 					</li>
 					</c:forEach>
 				</ul>
@@ -25,9 +26,9 @@
 	<!-- TODO: 베스트 상품 띄우기 -->
 	<p>BEST ITEM</p>
 
-	<div class="items">
+	<div class="row">
 		<c:forEach items="${list}" var="list">
-			<div class="itemInfo">
+			<div class="col-md-3 col-xs-6 col-lg-3 col-xl-2">
 				<a href="detail?p_no=${list.p_no}"> 
 				<img style="size: width:600px; height: 300px;" src="/shop/resources/img/product/mainImg/${list.p_no}/${list.p_mainimg}.jpg"><br> 
 					${list.p_name}<br> 
@@ -38,7 +39,7 @@
 					 			품절임박! 남은수량 ${list.stock}개!<br>
 							</c:when>
 							<c:when test="${data == 0}">
-								<div class="blinkcss">품절<br></div>
+								<span class="label label-danger">품절</span>
 							</c:when>
 							<c:otherwise>
 								가격 : ${list.p_price}원<br>
@@ -47,6 +48,6 @@
 				</a><br>
 			</div>
 		</c:forEach>
-
+	</div>
 	</div>
 </div>

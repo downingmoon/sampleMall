@@ -10,15 +10,15 @@
 %>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/menuBar.css">
 
-<div class="header">
-	<div class="logo">
+<div class="row">
+	<div class="logo col-md-5">
 		<a href="list" style="cursor: pointer;"> <img
 			src="${pageContext.request.contextPath}/resources/img/mainLogo.jpg"
 			style="width: 100%; height: 100%; object-fit: contain;" /></a>
 	</div>
-	<div class="headText">
-		<ul class="loginMenu">
-			<li>
+	<div class="headText col-md-7 navbar-right">
+		<ol class="breadcrumb" style="background-color: #fff">
+  			<li>
 				<sec:authorize access="isAnonymous()">
 					<a href="login">로그인</a>
 				</sec:authorize> 
@@ -30,13 +30,13 @@
 				<sec:authorize access="hasRole('ROLE_ADM')">
 					<a href="${pageContext.request.contextPath}/admin/adminPage">관리자페이지</a>
 				</sec:authorize>
-				</li>
+			</li>
 			<li><a href="join">회원가입</a></li>
 			<li><a href="mypage?id=<%=username%>">마이페이지</a></li>
-			<li><a href="goCart?u_id=<%=username%>">장바구니</a></li>
+			<li><a href="goCart?u_id=<%=username%>">장바구니&nbsp;<span class="badge">42</span></a></li>
 			<li><a href="#">주문조회</a></li>
 			<li><a href="#">1:1문의</a></li>
-		</ul>
+		</ol>
 		<!-- 
 		<ul class="userInfoMenu">
 			<li> <%=username%>님 환영합니다. </li>

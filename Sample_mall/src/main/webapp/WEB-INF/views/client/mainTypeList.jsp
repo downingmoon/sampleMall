@@ -4,9 +4,9 @@
 
 <center><h3>${category}</h3></center>
 
-<div class="items">
+<div class="row">
 		<c:forEach items="${list}" var="list">
-			<div class="itemInfo">
+			<div class="col-md-3 col-xs-6 col-lg-3 col-xl-2">
 				<a href="detail?p_no=${list.p_no}"> <img
 					style="size: width:600px; height: 300px;"
 					src="/shop/resources/img/product/mainImg/${list.p_no}/${list.p_mainimg}.jpg"><br>
@@ -18,7 +18,7 @@
 					 			품절임박! 남은수량 ${list.stock}개!<br>
 							</c:when>
 							<c:when test="${data == 0}">
-								<div class="blinkcss">품절<br></div>
+								<span class="label label-danger">품절</span>
 							</c:when>
 							<c:otherwise>
 								가격 : ${list.p_price}원<br>
@@ -27,5 +27,5 @@
 				</a><br>
 			</div>
 		</c:forEach>
-
+	</div>
 	</div>

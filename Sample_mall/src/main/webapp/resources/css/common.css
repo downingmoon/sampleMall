@@ -4,14 +4,14 @@
 
 html, body {
   width: 100%;
-  height : 100%;
+  overflow-x : hidden;
   margin : 0;
   padding : 0;
 }
 
 .bodywrap {
   width: 100%;
-  height: 100%;
+  
   margin : 0;
   padding : 0;
 }
@@ -29,76 +29,43 @@ a {
 
 .header {
   display: flex;
-  height : 20%;
+  
   width: 100%;
   margin: 0;
   padding: 0;
   text-align: center;
 }
-
+/*
 .header .logo {
   width: 60%;
 }
 
 .header .headText {
-  height: 95%;
+  
   width: 40%;
 
 }
-
-.loginMenu {
-  height: 5%;
-  margin: 0;
-  padding: 0 2em;
-  float: right;
-  display: flex;
-  list-style: none;
+*/
+.breadcrumb {
+	text-align: right;
 }
 
-.loginMenu a {
-  font-size: 0.2em;
+.breadcumb li a {
+	padding : 10px 30px;
+	text-decoration: none;
 }
 
-.loginMenu a:hover {
+.breadcrumb li a:hover {
 	transition : 500ms ease all;
   	color : #FA5858;
+	
 }
-
-.loginMenu li {
-  padding: 0 0.7em;
-}
-
-
-/* .header h1 {
-  float: inherit;
-  color: #a4f7e4;
-  margin:0;
-  padding:0;
-  font-size: 6em;
-} */
-
-
-
-
-
-/* .submitBtn{
-  width: 100%;
-  background-color: #A9E2F3;
-} */
-/******************************/
-
-/* body:before{
-  content:'';
-  height:100%;
-  display:inline-block;
-  vertical-align:middle;
-} */
 
 
 /* MENUBAR */
 .menuBar {
   width: 100%;
-  height: 8%;
+  
 }
 
 .menuList {
@@ -132,7 +99,7 @@ a {
 /* CONTAINER */
 
 .container {
-  height: 80%;
+  
   width: 100%;
   margin: 0;
   padding: 0;
@@ -173,25 +140,11 @@ a {
   align-items: center;
 }
 
-@-webkit-keyframes blink {
- 0% {background-color: red;}
- 50% {background-color: yellow;}
-}
-
-.blinkcss {
- width : 30%;
- text-align : center;
- font-weight:bold;
- animation: blink 1s step-end infinite;
- -webkit-animation: blink 1s step-end infinite;
-}
-
-
 /* FOOTER */
 
 footer {
   width: 100%;
-  height: 3%;
+  
   margin: 0;
   padding: 0;
   bottom: 0;

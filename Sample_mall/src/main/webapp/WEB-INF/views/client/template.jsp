@@ -16,10 +16,10 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/common.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/slideMenu.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/detail.css">
+  <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/login.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
-<script
-	src="${pageContext.request.contextPath}/resources/js/slideMenu.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/slideMenu.js"></script>
 <script>
 	function loginFrm() {
 		var frm = document.loginForm;
@@ -90,12 +90,8 @@
 
 		<jsp:include page="default/header.jsp" />
 
-		<div class="container">
-
-			<jsp:include page="${target}.jsp" />
-
-		</div>
-
+		<jsp:include page="${target}.jsp" />
+		
 		<jsp:include page="default/footer.jsp" />
 
 	</div>

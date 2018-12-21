@@ -1,3 +1,4 @@
+
 package com.sample.shop.client.dao;
 
 import java.util.List;
@@ -36,4 +37,6 @@ public interface ClientMapper {
 	public List<prodVO> bestItemList();
 	
 	public void userInfoUpdate(UserVO vo);
+	
+	public void wishInsert(@Param("u_id")String u_id, @Param("p_no")int p_no);
 }

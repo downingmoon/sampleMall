@@ -1,14 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html lang="ko" dir="ltr">
-  <head>
-    <meta charset="utf-8">
-    <title>로그인</title>
-  <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/common.css">
-  <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/login.css">
-  </head>
-  <body>
+
 
     <div class="loginFrm" style="align-items:center;justify-content:center;display:flex;margin-top:135px;">
       <form action="login" method="post" onsubmit="return loginFrm()" name="loginForm">
@@ -32,6 +24,3 @@
       </form>
     </div>
 
-
-  </body>
-</html>
