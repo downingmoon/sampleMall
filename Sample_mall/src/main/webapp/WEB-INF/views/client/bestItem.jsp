@@ -18,7 +18,11 @@ window.onload = startBlink;
 </script>
 
 <center><h3>TOP100</h3></center>
-
+<c:choose>
+	<c:when test="${list.size() == 0}">
+		<center><h4>등록된 상품이 없습니다.</h4></center>
+	</c:when>
+	<c:otherwise>
 
 <div class="row">
 		<c:forEach items="${list}" var="list">
@@ -43,4 +47,5 @@ window.onload = startBlink;
 			</div>
 		</c:forEach>
 	</div>
-	</div>
+	</c:otherwise>
+	</c:choose>

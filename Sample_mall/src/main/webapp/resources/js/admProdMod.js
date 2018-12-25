@@ -247,10 +247,6 @@ $(document).ready(function() {
 			alert("상품정보가 입력되지 않았습니다.");
 			frm.p_info.focus();
 			return false;
-		} else if(document.getElementById('input_imgs').value == "") {
-			alert("상품 이미지가 선택되지 않았습니다.");
-			document.getElementById('input_imgs').focus();
-			return false;
 		}
 		alert("상품정보가 수정되었습니다.");
 		return true;

@@ -2,6 +2,7 @@ package com.sample.shop.admin;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.URLDecoder;
 import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
@@ -109,6 +110,7 @@ public class AdminController {
 	@RequestMapping(value="prodImport", method=RequestMethod.POST)
 	public String prodImportPost(int p_no, int stock, HttpServletResponse response) {
 		System.out.println("controller. stock : " + stock);
+		System.out.println("controller. pno : " + p_no);
 		service.prodImport(p_no, stock);
 		PrintWriter writer;
 		try {
@@ -125,6 +127,19 @@ public class AdminController {
 		service.prodImgDelete(p_no);
 		service.prodDelete(p_no);
 		return "redirect:prodListView";
+	}
+	
+	@RequestMapping("mainImageUpload")
+	public String mainImageUploadGet(Model m) {
+		m.addAttribute("target","prodMgr/admMainImageUpload");
+		m.addAttribute("subTitle","메인이미지 등록");
+		return "admin/adminTemplate";
+	}
+	
+	@RequestMapping(value="mainImageUpload", method=RequestMethod.POST)
+	public String mainImageUploadPost(MultipartFile p_prodImg) {
+		service.mainImageUpload(p_prodImg);
+		return "redirect:prodMgr";
 	}
 	
 	

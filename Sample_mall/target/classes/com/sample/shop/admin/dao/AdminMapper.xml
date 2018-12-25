@@ -30,9 +30,9 @@
 	
 	<insert id="prodInsert">
 		INSERT INTO prod
-		(p_no, p_name, p_price, p_info, p_maintype, p_detailtype, p_mainimg)
+		(p_no, p_name, p_price, p_info, p_maintype, p_detailtype, p_mainimg, stock)
 		VALUES
-		(#{p_no}, #{p_name}, #{p_price}, #{p_info}, #{p_maintype}, #{p_detailtype}, #{p_mainimg})
+		(#{p_no}, #{p_name}, #{p_price}, #{p_info}, #{p_maintype}, #{p_detailtype}, #{p_mainimg}, #{stock})
 	</insert>
 	
 	<insert id="prodImgInsert">
@@ -49,5 +49,16 @@
 	<delete id="prodImgDelete">
 		DELETE FROM prod_detailimg WHERE p_no = #{p_no}
 	</delete>
+	
+	<insert id="mainImageUpload">
+		INSERT INTO mall_mainimage
+		(m_no, m_imgname)
+		VALUES
+		(#{m_no}, #{m_imgname})
+	</insert>
+	
+	<select id="getImageNo" resultType="_int">
+		SELECT NVL(MAX(m_no), 0) + 1 AS m_no FROM mall_mainimage
+	</select>
 	
 </mapper>

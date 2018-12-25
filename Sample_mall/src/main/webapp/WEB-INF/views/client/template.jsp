@@ -13,7 +13,9 @@
 <title>Insert title here</title>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/board.css">
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/common.css">
+
+<!--link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/common.css"-->
+
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/slideMenu.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/detail.css">
   <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/login.css">

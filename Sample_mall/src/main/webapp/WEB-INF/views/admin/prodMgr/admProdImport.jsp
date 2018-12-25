@@ -4,6 +4,12 @@
 <script src="${pageContext.request.contextPath}/resources/js/admProdMod.js"></script>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/admProdInsert.css">
 
+<script>
+	$(function() {
+		$('.')
+	})
+</script>
+
 <form action="prodImport" method="post" onsubmit="return chkSubmit()" onreset="return chkReset()" name="frm" enctype="multipart/form-data">
 <div class="container">
 	<div class="row">
@@ -16,7 +22,7 @@
 								<tbody>
 									<tr>
 										<td>입고된 상품번호:</td>
-										<td><select class="form-control" name="p_no">
+										<td><select class="form-control" name="p_no" class="p_no">
 										<c:forEach var="list" items="${list}">
 											<option value="${list.p_no}">${list.p_no}-${list.p_name}</option>
 										</c:forEach>
@@ -24,7 +30,7 @@
 									</tr>
 									<tr>
 										<td>입고수량 : </td>
-										<td><input class="form-control" type="number" name="stock"></td>
+										<td><input class="form-control" type="number" name="stock" class="stock"></td>
 									</tr>
 								</tbody>
 							</table>

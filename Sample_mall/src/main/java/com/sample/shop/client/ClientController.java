@@ -12,7 +12,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.sample.shop.model.UserVO;
 import com.sample.shop.model.boardVO;
 import com.sample.shop.model.cartVO;
+import com.sample.shop.model.mainImgVO;
 import com.sample.shop.model.prodVO;
+import com.sample.shop.model.purchaseVO;
 
 @Controller
 @RequestMapping("client")
@@ -23,10 +25,10 @@ public class ClientController {
 	
 	@RequestMapping("list")
 	public String list(Model m) {
-		//TODO : slider이미지에 뿌릴 베스트아이템 리스트 가져오기
+		List<mainImgVO> imgList = service.getMainImages();
 		List<prodVO> list = service.getProdList();
-		System.out.println("list.size : " + list.size());
 		m.addAttribute("list",list);
+		m.addAttribute("mainImg",imgList);
 		m.addAttribute("target","default/mainbody");
 		return "client/template";
 	}
@@ -43,6 +45,8 @@ public class ClientController {
 	@RequestMapping("detail")
 	public String detail(@RequestParam int p_no, Model m) {
 		prodVO vo = service.getProdDetail(p_no);
+		List<prodVO> detailImageList = service.getDetailImage(p_no);
+		m.addAttribute("list", detailImageList);
 		m.addAttribute("detail",vo);
 		m.addAttribute("target","detail");
 		return "client/template";
@@ -160,6 +164,49 @@ public class ClientController {
 	public String wishListInsert(String u_id, int p_no) {
 		service.wishInsert(u_id, p_no);
 		return "redirect:wishList";
+	}
+	
+	@RequestMapping("buyProd")
+	public String buyProduct(int p_no, String u_id, String p_name, int amount, String p_price, Model m) {
+		int u_no = service.getUserNo(u_id);
+		UserVO vo = service.userInfo(u_id);
+		m.addAttribute("uVo", vo);
+		m.addAttribute("u_no",u_no);
+		m.addAttribute("p_no",p_no);
+		m.addAttribute("p_name",p_name);
+		m.addAttribute("amount",amount);
+		m.addAttribute("p_price", p_price);
+		m.addAttribute("target","purchasePage");
+		return "client/template";
+	}
+	
+	@RequestMapping(value="purchaseComplete", method=RequestMethod.POST)
+	public String buyProductPost(Model m,purchaseVO vo, String mainAddr, String subAddr ) {
+		String b_address = mainAddr+ " "+ subAddr;
+		vo.setB_address(b_address);
+		service.buyProduct(vo);
+		
+		vo  = service.getPurchaseInfo(vo.getB_no(), vo.getB_u_no());
+		m.addAttribute("vo", vo);
+		m.addAttribute("target","purchaseComplete");
+		return "client/template";
+	}
+	
+	@RequestMapping("orderView")
+	public String getPurchaseList(Model m, String u_id) {
+		int u_no = service.getUserNo(u_id);
+		List<purchaseVO> list = service.getPurchaseList(u_no);
+		m.addAttribute("target", "orderList");
+		m.addAttribute("list", list);
+		m.addAttribute("u_no", u_no);
+		return "client/template";
+	}
+	@RequestMapping("orderDetail")
+	public String orderDetail(Model m,String b_no, int u_no) {
+		purchaseVO vo = service.getPurchaseInfo(b_no, u_no);
+		m.addAttribute("target","purchaseComplete");
+		m.addAttribute("vo", vo);
+		return "client/template";
 	}
 
 }

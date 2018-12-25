@@ -1,5 +1,8 @@
 package com.sample.shop.client;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +13,9 @@ import com.sample.shop.client.dao.ClientMapper;
 import com.sample.shop.model.UserVO;
 import com.sample.shop.model.boardVO;
 import com.sample.shop.model.cartVO;
+import com.sample.shop.model.mainImgVO;
 import com.sample.shop.model.prodVO;
+import com.sample.shop.model.purchaseVO;
 
 @Service
 public class ClientService {
@@ -20,6 +25,14 @@ public class ClientService {
 	
 	@Autowired 
 	private BCryptPasswordEncoder bpe;
+	
+	public List<prodVO> getProdListNew() {
+		return mapper.getProdListNew();
+	}
+	
+	public List<mainImgVO> getMainImages() {
+		return mapper.getMainImages();
+	}
 	
 	public List<prodVO> getProdList() {
 		return mapper.getProdList();
@@ -41,6 +54,10 @@ public class ClientService {
 		return mapper.getProdDetail(p_no);
 	}
 	
+	public List<prodVO> getDetailImage(int p_no) {
+		return mapper.getDetailImage(p_no);
+	}
+	
 	public void userJoin(UserVO vo) {
 		String cryptoPw = bpe.encode(vo.getU_pw());
 		vo.setU_pw(cryptoPw);
@@ -53,6 +70,11 @@ public class ClientService {
 	
 	public List<prodVO> searchItems(String searchKeyword) {
 		return mapper.searchItems(searchKeyword);
+	}
+	
+	//User Id로 User Number 구해오는것.
+	public int getUserNo(String u_id) {
+		return mapper.getUserNo(u_id);
 	}
 	
 	public UserVO userInfo(String u_id) {
@@ -81,5 +103,30 @@ public class ClientService {
 		mapper.wishInsert(u_id, p_no);
 	}
 	
+	// ----------물건구매----------
+	public void buyProduct(purchaseVO vo) {
+		System.out.println("bpno : " + vo.getB_p_no());
+		System.out.println("bpname : " + vo.getB_p_name());
+		System.out.println("buno : " + vo.getB_u_no());
+		System.out.println("bpamount : " + vo.getB_amount());
+		System.out.println("b_rec name : " + vo.getB_receivername());
+		System.out.println("b_rec phone : " + vo.getB_receiverphone());
+		String date = new SimpleDateFormat("yyyyMMdd").format(Calendar.getInstance().getTime());
+		System.out.println("day + pno + uno : "+ date + vo.getB_p_no() + vo.getB_u_no());
+		String b_no = date + Integer.toString(vo.getB_p_no()) + Integer.toString(vo.getB_u_no());
+		vo.setB_no(b_no);
+		mapper.buyProduct(vo);
+		mapper.doMinusStock(vo.getB_amount(), vo.getB_p_no());
+	}
+	
+	//주문내역 (구매직후)
+	public purchaseVO getPurchaseInfo(String b_no, int b_u_no) {
+		return mapper.getPurchaseInfo(b_no, b_u_no);
+	}
+	
+	//주문내역 (header)
+	public List<purchaseVO> getPurchaseList(int u_no) {
+		return mapper.getPurchaseList(u_no);
+	}
 
 }

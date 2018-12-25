@@ -3,7 +3,11 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <center><h3>${category}</h3></center>
-
+<c:choose>
+	<c:when test="${list.size() == 0}">
+		<center><h4>등록된 상품이 없습니다.</h4></center>
+	</c:when>
+	<c:otherwise>
 <div class="row">
 		<c:forEach items="${list}" var="list">
 			<div class="col-md-3 col-xs-6 col-lg-3 col-xl-2">
@@ -28,4 +32,5 @@
 			</div>
 		</c:forEach>
 	</div>
-	</div>
+	</c:otherwise>
+</c:choose>

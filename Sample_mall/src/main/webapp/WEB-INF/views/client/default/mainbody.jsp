@@ -10,10 +10,9 @@
 		<div id="thumbnail-slider">
 			<div class="inner">
 				<ul>
-					<c:forEach items="${list}" var="list">
+					<c:forEach items="${mainImg}" var="mainImg">
 					<li>
-						<img class="thumb" src="${pageContext.request.contextPath}/resources/img/slider/${list.p_no}.jpg">
-						<a href="detail?p_no=${list.p_no}">${list.p_name}</a>
+						<img class="thumb" src="/shop/resources/img/mainPageImage/${mainImg.m_no}/${mainImg.m_imgname}">
 					</li>
 					</c:forEach>
 				</ul>
@@ -25,7 +24,11 @@
 <div class="bestItem">
 	<!-- TODO: 베스트 상품 띄우기 -->
 	<p>BEST ITEM</p>
-
+<c:choose>
+	<c:when test="${list.size() == 0}">
+		<center><h4>등록된 상품이 없습니다.</h4></center>
+	</c:when>
+	<c:otherwise>
 	<div class="row">
 		<c:forEach items="${list}" var="list">
 			<div class="col-md-3 col-xs-6 col-lg-3 col-xl-2">
@@ -49,5 +52,7 @@
 			</div>
 		</c:forEach>
 	</div>
+	</c:otherwise>
+	</c:choose>
 	</div>
-</div>
+

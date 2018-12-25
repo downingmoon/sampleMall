@@ -38,7 +38,7 @@ public class AdminService {
 	 */
 
 	// File Naming
-	private String createFileName(prodVO vo, String extName) {
+	private String createFileName(String extName) {
 		System.out.println("----create file name method ----");
 		String fileName = "";
 		UUID uuid = UUID.randomUUID();
@@ -77,7 +77,7 @@ public class AdminService {
 				thumbPath.mkdirs();
 			}
 			
-			String fileName = createFileName(vo, extName);
+			String fileName = createFileName(extName);
 			byte[] data = p_prodImg.get(0).getBytes();
 			FileOutputStream fos = new FileOutputStream(mainImgPath + "/" + fileName);
 			fos.write(data);
@@ -86,7 +86,7 @@ public class AdminService {
 			mapper.prodInsert(vo);
 
 			for (int i = 0; i < p_prodImg.size(); i++) {
-				fileName = createFileName(vo, extName);
+				fileName = createFileName(extName);
 				data = p_prodImg.get(i).getBytes();
 				fos = new FileOutputStream(detailImgPath + "/" + fileName);
 				fos.write(data);
@@ -115,38 +115,111 @@ public class AdminService {
 	}
 	
 	public void prodImgDelete(int p_no) {
-		File mainImg = new File("D:\\dev\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp0"
-				+ "\\wtpwebapps\\Sample_mall\\resources\\img\\product\\mainImg\\" + p_no);
-		File detailImg = new File("D:\\dev\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp0"
-				+ "\\wtpwebapps\\Sample_mall\\resources\\img\\product\\detailImg\\" + p_no);
-		if(mainImg.exists() && detailImg.exists()) {
-			if(mainImg.isDirectory() && detailImg.isDirectory()) {
-				File[] mainImgFiles = mainImg.listFiles();
-				// Main Image Delete
-				for(int i = 0; i < mainImgFiles.length; i++) {
-					mainImgFiles[i].delete();
-					System.out.println("Main Img delete : " + mainImgFiles[i].getName() + "delete complete");
+		try {
+			String contextPath = this.getClass().getClassLoader().getResource("").getPath();
+			String fullPath = URLDecoder.decode(contextPath, "UTF-8");
+			String pathArr[] = fullPath.split("WEB-INF/classes/");
+			String targetPath = pathArr[0] + "resources/img/product/";
+			
+			File mainImg = new File(targetPath+ "mainImg/" + p_no);
+			File detailImg = new File(targetPath +"detailImg/" + p_no);
+			if(mainImg.exists() && detailImg.exists()) {
+				if(mainImg.isDirectory() && detailImg.isDirectory()) {
+					File[] mainImgFiles = mainImg.listFiles();
+					// Main Image Delete
+					for(int i = 0; i < mainImgFiles.length; i++) {
+						mainImgFiles[i].delete();
+						System.out.println("Main Img delete : " + mainImgFiles[i].getName() + "delete complete");
+					}
+					mainImg.delete();
+					// Detail Image Delete
+					File[] detailImgFiles = detailImg.listFiles();
+					for(int i = 0; i < detailImgFiles.length; i++) {
+						detailImgFiles[i].delete();
+						System.out.println("Detail Img delete : " + detailImgFiles[i].getName() + "delete complete");
+					}
+					detailImg.delete();
+					
 				}
-				mainImg.delete();
-				// Detail Image Delete
-				File[] detailImgFiles = detailImg.listFiles();
-				for(int i = 0; i < detailImgFiles.length; i++) {
-					detailImgFiles[i].delete();
-					System.out.println("Detail Img delete : " + detailImgFiles[i].getName() + "delete complete");
-				}
-				detailImg.delete();
-				
 			}
+			mapper.prodImgDelete(p_no);
+		} catch(Exception e) {
+			e.printStackTrace();
 		}
 		
-		mapper.prodImgDelete(p_no);
+	}
+	
+	public void mainImgDelete(int m_no) {
+		//TODO : 삭제 service만 구현, mapper db삭제도 해야함
+		try {
+			String contextPath = this.getClass().getClassLoader().getResource("").getPath();
+			System.out.println("context path : " + contextPath);
+			String fullPath = URLDecoder.decode(contextPath, "UTF-8");
+			System.out.println("fullpath : " + fullPath);
+			String pathArr[] = fullPath.split("WEB-INF/classes/");
+			System.out.println("pathArr : " + pathArr[0]);
+			String targetPath = pathArr[0] + "resources/img/product/";
+			System.out.println("targetpath : " + targetPath);
+			
+			
+			File img = new File(targetPath+ "mainPageImage/" + m_no);
+			
+			if(img.exists()) {
+				if(img.isDirectory()) {
+					File[] mainImgFiles = img.listFiles();
+					// Main Page Image Delete
+					for(int i = 0; i < mainImgFiles.length; i++) {
+						mainImgFiles[i].delete();
+						System.out.println("Main Page Img delete : " + mainImgFiles[i].getName() + "delete complete");
+					}
+					img.delete();
+				}
+			}
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public void prodImport(int p_no, int stock) {
 		System.out.println("service. stock : " + stock);
 		System.out.println(p_no);
-
+		System.out.println("service. pno : " + p_no);
 		mapper.prodImport(p_no, stock);
+	}
+	
+	public void mainImageUpload(MultipartFile p_prodImg) {
+		try {
+
+			String originName = p_prodImg.getOriginalFilename();
+			String extName = originName.substring(originName.lastIndexOf("."), originName.length());
+
+			String contextPath = this.getClass().getClassLoader().getResource("").getPath();
+			String fullPath = URLDecoder.decode(contextPath, "UTF-8");
+			String pathArr[] = fullPath.split("WEB-INF/classes/");
+			String targetPath = pathArr[0] + "resources/img/mainPageImage/";
+
+			int m_no = mapper.getImageNo();
+			System.out.println("m_no : " + m_no);
+			String mainImgPath = targetPath + m_no;
+			System.out.println("mainPageImage path : " + mainImgPath);
+			
+
+			File path = new File(mainImgPath);
+			if (!path.exists()) {
+				path.mkdirs();
+			}
+			
+			String m_imgname = createFileName(extName);
+			System.out.println("m_imgname : " + m_imgname);
+			byte[] data = p_prodImg.getBytes();
+			FileOutputStream fos = new FileOutputStream(mainImgPath + "/" + m_imgname);
+			fos.write(data);
+			mapper.mainImageUpload(m_no, m_imgname);
+			
+			fos.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 }

@@ -28,6 +28,10 @@
 										<td><input class="form-control" type="number" name="p_price"></td>
 									</tr>
 									<tr>
+										<td>수량 : </td>
+										<td><input class="form-control" type="number" name="stock"></td>
+									</tr>
+									<tr>
 										<td>대분류 : </td>
 										<td><select class="form-control" name="p_maintype">
 											<option value="">---선택---</option>

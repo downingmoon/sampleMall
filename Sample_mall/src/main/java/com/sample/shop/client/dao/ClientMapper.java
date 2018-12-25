@@ -8,9 +8,15 @@ import org.apache.ibatis.annotations.Param;
 import com.sample.shop.model.UserVO;
 import com.sample.shop.model.boardVO;
 import com.sample.shop.model.cartVO;
+import com.sample.shop.model.mainImgVO;
 import com.sample.shop.model.prodVO;
+import com.sample.shop.model.purchaseVO;
 
 public interface ClientMapper {
+	
+	public List<prodVO> getProdListNew();
+	
+	public List<mainImgVO> getMainImages();
 
 	public List<prodVO> getProdList();
 	
@@ -19,6 +25,8 @@ public interface ClientMapper {
 	public void boardWrite(boardVO vo);
 	
 	public boardVO boardDetail(int b_no);
+	
+	public List<prodVO> getDetailImage(int p_no);
 	
 	public prodVO getProdDetail(int p_no);
 
@@ -39,4 +47,14 @@ public interface ClientMapper {
 	public void userInfoUpdate(UserVO vo);
 	
 	public void wishInsert(@Param("u_id")String u_id, @Param("p_no")int p_no);
+	
+	public int getUserNo(@Param("u_id")String u_id);
+	
+	public void buyProduct(purchaseVO vo);
+	
+	public purchaseVO getPurchaseInfo(@Param("b_no")String b_no, @Param("b_u_no")int b_u_no);
+	
+	public List<purchaseVO> getPurchaseList(int u_no);
+	
+	public void doMinusStock(@Param("stock")int stock, @Param("p_no")int p_no);
 }

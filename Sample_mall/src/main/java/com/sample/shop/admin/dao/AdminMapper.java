@@ -25,5 +25,9 @@ public interface AdminMapper {
 	public void prodImgDelete(int p_no);
 	
 	public void prodImport(@Param("p_no")int p_no,@Param("stock")int stock);
+	
+	public void mainImageUpload(@Param("m_no")int m_no, @Param("m_imgname")String m_imgname);
+	
+	public int getImageNo();
 
 }

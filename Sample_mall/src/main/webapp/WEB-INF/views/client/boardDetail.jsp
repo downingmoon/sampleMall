@@ -1,7 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%
+	pageContext.setAttribute("br", "<br>");
+	pageContext.setAttribute("cn", "\n");
+%>
 <script src="${pageContext.request.contextPath}/resources/js/admProdInsert.js"></script>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/admProdInsert.css">
+
 	
 
 
@@ -16,19 +22,18 @@
 							<table class="table table-user-information">
 								<tbody>
 									<tr>
-										<td>제목:</td>
+										<td style="border-right: 1px solid #ddd">제목:</td>
 										<td>${vo.b_title}</td>
 									</tr>
 									<tr>
-										<td>글 종류 : </td>
-										<td>${vo.b_type}</td>
-									</tr>
-									<tr>
-										<td>내용: </td>
-										<td>${vo.b_content}</td>
+										<td style="border-bottom: 1px solid #ddd">글 종류 : </td>
+										<td style="border-bottom: 1px solid #ddd">${vo.b_type}</td>
 									</tr>
 								</tbody>
 							</table>
+							<div style="width:90%;float: right;">
+								${fn:replace(vo.b_content, cn, br)}
+							</div>
 						</div>
 					</div>
 				</div>

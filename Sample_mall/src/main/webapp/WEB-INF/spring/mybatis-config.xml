@@ -8,6 +8,8 @@
 		<typeAlias alias="UserVO" type="com.sample.shop.model.UserVO" />
 		<typeAlias alias="boardVO" type="com.sample.shop.model.boardVO" />
 		<typeAlias alias="cartVO" type="com.sample.shop.model.cartVO" />
+		<typeAlias alias="mainImgVO" type="com.sample.shop.model.mainImgVO" />
+		<typeAlias alias="purchaseVO" type="com.sample.shop.model.purchaseVO" />
 		<!-- Mapper xml 파일에서 패키지 풀네임 적을필요 없이 userVO만 적어도됨 -->
 	</typeAliases>
 </configuration>
