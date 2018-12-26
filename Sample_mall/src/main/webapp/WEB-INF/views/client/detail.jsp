@@ -98,6 +98,9 @@
                         
                     </div> 
                      -->
+            <c:choose>
+            	<c:when test="${data != 0}">
+            	
 			<form action="buyProd" method="post" name="frm" onsubmit="return chkBeforePay()">
 				<div class="section" style="padding-bottom: 20px;">
 					<h6 class="title-attr">
@@ -152,6 +155,11 @@
 				<input type="hidden" name="p_name" value="${detail.p_name}">
 				<input type="hidden" name="p_price" value="${detail.p_price}">
 			</form>
+			</c:when>
+				<c:otherwise>
+					<h3>해당상품은 품절되었습니다.</h3>
+				</c:otherwise>
+            </c:choose>
 		</div>
 		<div class="col-xs-9 col-md-12 col-lg-12" style="text-align: center">
 			<div style="width: 100%; border-top: 1px solid silver">

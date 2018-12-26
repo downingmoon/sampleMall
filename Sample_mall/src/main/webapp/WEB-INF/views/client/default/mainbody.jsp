@@ -23,7 +23,7 @@
 </div>
 <div class="bestItem">
 	<!-- TODO: 베스트 상품 띄우기 -->
-	<p>BEST ITEM</p>
+	<center><h3 style="margin-bottom:10px;padding:0;">BEST ITEM</h3></center>
 <c:choose>
 	<c:when test="${list.size() == 0}">
 		<center><h4>등록된 상품이 없습니다.</h4></center>

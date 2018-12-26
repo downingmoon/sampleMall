@@ -58,8 +58,6 @@ $(function() {
 		}
 	});
 		
-		
-	
 	$(function(){
 		$('.btn-minus').on('click', function() {
 			var value = $('.amount').val();
