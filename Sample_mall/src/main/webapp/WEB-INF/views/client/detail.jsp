@@ -1,8 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ page import="org.springframework.security.core.Authentication"%>
-<%@ page
-	import="org.springframework.security.core.context.SecurityContextHolder"%>
+<%@ page import="org.springframework.security.core.context.SecurityContextHolder"%>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%
@@ -10,48 +9,7 @@
 	String username = auth.getName();
 %>
 <script src="${pageContext.request.contextPath}/resources/js/detail.js"></script>
-<!-- 
-<div class="detail">
-	<img
-		src="/shop/resources/img/product/mainImg/${detail.p_no}/${detail.p_mainimg}.jpg">
-	<div class="detailInfo">
-		<form action="buyProd" method="post" onsubmit="return clkGoCart()">
-			<p style="font-size: 2em;">상품명 : ${detail.p_name}</p>
-			<p style="font-size: 1em;">
-				<c:set var="data" value="${detail.stock}" />
-				<c:choose>
-					<c:when test="${data <= 10 && data > 0}">
-								가격 : ${detail.p_price}원<br>
-					 			품절임박! 남은수량 ${detail.stock}개!<br>
-					</c:when>
-					<c:when test="${data == 0}">
-						<div class="blinkcss">
-							품절<br>
-						</div>
-					</c:when>
-					<c:otherwise>
-								가격 : ${detail.p_price}원<br>
-					</c:otherwise>
-				</c:choose>
-			</p>
-			수량 : <input type="number" id="amount" name="amount" value="1"><br>
-			<c:choose>
-				<c:when test="${data != 0}">
-					<button type="button" class="addToCart">장바구니 담기</button>
-					<button type="submit" onclick="clkGoPay(${detail.p_no}, document.getElementById('amount'))">구매하기</button>
-				</c:when>
-				<c:otherwise>
-				품절된 상품은 구매할수 없습니다.
-			</c:otherwise>
-			</c:choose>
-			<input type="hidden" name="p_no" id="p_no" value="${detail.p_no}">
-			<input type="hidden" name="u_id" id="u_id" value="<%=username%>">
-		</form>
-	</div>
 
-</div>
-<p>상품상세설명 : ${detail.p_info}</p>
- -->
 <div class="container">
 	<div class="row">
 		<div class="col-xs-4 col-md-4 col-lg-4 item-photo">
@@ -142,9 +100,8 @@
 						</button>
 					</div>
 					<div class="btn-group" role="group">
-						<button type="button" id="wish"
-							class="btn btn-danger addToWishList">
-							<span class="glyphicon glyphicon-heart-empty"
+						<button type="button" id="wishBtn" class="btn btn-danger addToWishList">
+							<span id="wish" class="glyphicon glyphicon-heart-empty"
 								style="margin-right: 20px; font-size: 1em"></span> 상품 찜하기
 						</button>
 						<!-- 찜한 상품은 empty 빼기 -->

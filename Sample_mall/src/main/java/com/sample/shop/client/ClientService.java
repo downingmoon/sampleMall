@@ -5,6 +5,10 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -87,6 +91,18 @@ public class ClientService {
 	
 	public void cartInsert(int p_no, String u_id, int amount) {
 		mapper.cartInsert(p_no, u_id, amount);
+	}
+	
+	public void cartDelete(int c_no, String u_id) {
+		System.out.println("c_no : " + c_no);
+		System.out.println("u_id : " + u_id);
+		int u_no = mapper.getUserNo(u_id);
+		mapper.cartDelete(c_no, u_no);
+	}
+	
+	public int cartCount(String u_id) {
+		int u_no = mapper.getUserNo(u_id);
+		return mapper.cartCount(u_no);
 	}
 	
 	public List<cartVO> getCartList(String u_id) {

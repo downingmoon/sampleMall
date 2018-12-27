@@ -40,6 +40,10 @@ public interface ClientMapper {
 	
 	public void cartInsert(@Param("p_no")int p_no, @Param("u_id")String u_id, @Param("amount")int amount);
 	
+	public void cartDelete(@Param("c_no")int c_no, @Param("u_no")int u_no);
+	
+	public int cartCount(int u_no);
+	
 	public List<cartVO> getCartList(@Param("u_id") String u_id);
 	
 	public List<prodVO> bestItemList();

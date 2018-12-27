@@ -39,7 +39,7 @@ $(function() {
 					u_id:$('#u_id').val(),
 					p_no:$('#p_no').val()
 				},
-				seccess : function() {
+				success : function() {
 					if(confirm('상품이 위시리스트에 추가되었습니다. 위시리스트로 이동하시겠습니까?') == true) {
 						location.href='goWishList?u_id='+ u_id;
 					}
@@ -53,8 +53,16 @@ $(function() {
 	});
 	
 	$(function() {
-		document.getElementById('wish').onclick = function() {
-			  alert('위시리스트 아이콘 바꾸시오');
+		var wishIcon = document.getElementById('wish');
+		var wishBtn = document.getElementById('wishBtn');
+		wishBtn.onclick = function() {
+			if($('#wish').attr('class') == 'glyphicon glyphicon-heart-empty') {
+				wishIcon.classList.remove('glyphicon-heart-empty');
+			  	wishIcon.classList.add('glyphicon-heart');
+			} else {
+				wishIcon.classList.remove('glyphicon-heart');
+			  	wishIcon.classList.add('glyphicon-heart-empty');
+			}
 		}
 	});
 		

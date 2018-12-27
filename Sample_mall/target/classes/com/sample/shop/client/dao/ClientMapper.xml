@@ -76,11 +76,20 @@
 	
 	<insert id="cartInsert">
 		INSERT INTO mall_cart
-		(c_no,u_no, p_no, amount)
+		(seq_c_no, c_no,u_no, p_no, amount)
 		VALUES
-		((SELECT NVL(MAX(c_no), 0) + 1 FROM mall_cart WHERE u_no = (SELECT u_no FROM mall_user WHERE u_id = #{u_id}))
+		((SELECT NVL(MAX(seq_c_no), 0) + 1 FROM mall_cart)
+		,(SELECT NVL(MAX(c_no), 0) + 1 FROM mall_cart WHERE u_no = (SELECT u_no FROM mall_user WHERE u_id = #{u_id}))
 		,(SELECT u_no FROM mall_user WHERE u_id = #{u_id}),#{p_no}, #{amount})
 	</insert>
+	
+	<delete id="cartDelete">
+		DELETE FROM mall_cart WHERE c_no = #{c_no} AND u_no = #{u_no}
+	</delete>
+	
+	<select id="cartCount" resultType="_int">
+		SELECT count(*) AS c_count FROM mall_cart WHERE u_no = #{u_no}
+	</select>
 	
 	<select id="getCartList" resultType="cartVO">
 		SELECT c.c_no, p.p_name, to_char(p.p_price, '999G999G999') AS p_price, c.amount, c.p_no, (SELECT u_no FROM mall_user WHERE u_id = #{u_id}) AS u_no 

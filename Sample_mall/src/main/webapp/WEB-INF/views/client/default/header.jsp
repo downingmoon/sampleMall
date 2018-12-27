@@ -9,7 +9,24 @@
 	String username = auth.getName();
 %>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/menuBar.css">
-
+<script>
+	$(document).ready(function() {
+		alert("ddd");
+		$.ajax({
+			url:"getCartCnt",
+			type:"post",
+			data {
+				u_id: u_id
+			},
+			success: function() {
+				
+			},
+			error : function() {
+				alert("에러발생");
+			}
+		});
+	});
+</script>
 <div class="row">
 	<div class="logo col-md-5">
 		<a href="list" style="cursor: pointer;"> <img

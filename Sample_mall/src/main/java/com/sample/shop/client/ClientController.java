@@ -2,12 +2,16 @@ package com.sample.shop.client;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.sample.shop.model.UserVO;
 import com.sample.shop.model.boardVO;
@@ -43,8 +47,12 @@ public class ClientController {
 	}
 	
 	@RequestMapping("detail")
-	public String detail(@RequestParam int p_no, Model m) {
+	public String detail(@RequestParam int p_no, Model m, HttpServletResponse response) {
 		prodVO vo = service.getProdDetail(p_no);
+//		Cookie cookie = new Cookie("prodName", vo.getP_name());
+//		cookie.setMaxAge(60*60*24); // 1년
+//		response.addCookie(cookie);
+//		
 		List<prodVO> detailImageList = service.getDetailImage(p_no);
 		m.addAttribute("list", detailImageList);
 		m.addAttribute("detail",vo);
@@ -146,9 +154,11 @@ public class ClientController {
 	}
 	
 	@RequestMapping("addToCartAjax")
-	public String addToCart(String u_id, int amount, int p_no) {
+	public String addToCart(String u_id, int amount, int p_no, HttpSession session) {
 		System.out.println("uid : " + u_id + " amount : " + amount + " pno : " + p_no);
 		service.cartInsert(p_no, u_id, amount);
+		int c_count = service.cartCount(u_id);
+		session.setAttribute("c_count", c_count);
 		return "redirect:list";
 	}
 	
@@ -207,6 +217,13 @@ public class ClientController {
 		m.addAttribute("target","purchaseComplete");
 		m.addAttribute("vo", vo);
 		return "client/template";
+	}
+	
+	@RequestMapping("cartDeleteAjax")
+	public String cartDelete(int c_no, String u_id, RedirectAttributes ra) {
+		service.cartDelete(c_no, u_id);
+		ra.addAttribute("u_id", u_id);
+		return "redirect:goCart";
 	}
 
 }
