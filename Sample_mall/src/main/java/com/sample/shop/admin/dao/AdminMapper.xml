@@ -41,7 +41,7 @@
 		values
 		(#{p_no}, #{p_detailimg})
 	</insert>
-	
+	<!-- Admin이 상품 삭제시 장바구니, 위시리스트, 상품이미지(실제이미지) 모두삭제 -->
 	<delete id="prodDelete">
 		DELETE FROM prod WHERE p_no = #{p_no}
 	</delete>
@@ -49,6 +49,15 @@
 	<delete id="prodImgDelete">
 		DELETE FROM prod_detailimg WHERE p_no = #{p_no}
 	</delete>
+	
+	<delete id="wishForceDel">
+		DELETE FROM mall_wishlist WHERE p_no = #{p_no}
+	</delete>
+	
+	<delete id="cartForceDel">
+		DELETE FROM mall_cart WHERE p_no = #{p_no}
+	</delete>
+	<!-- DELETE END -->
 	
 	<insert id="mainImageUpload">
 		INSERT INTO mall_mainimage

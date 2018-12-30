@@ -20,9 +20,16 @@ public interface AdminMapper {
 	
 	public void prodImgInsert(prodVO vo);
 	
-	public void prodDelete(int p_no);
-	
+	// ----- Product Delete -----
+	//1
+	public void cartForceDel(int p_no);
+	//2
+	public void wishForceDel(int p_no);
+	//3
 	public void prodImgDelete(int p_no);
+	//4
+	public void prodDelete(int p_no);
+	// ----- Delete End -----
 	
 	public void prodImport(@Param("p_no")int p_no,@Param("stock")int stock);
 	

@@ -110,7 +110,12 @@ public class AdminService {
 	 * ----------Prod Insert End----------
 	 */
 
+	
+	// Prod Delete (service 하나에서 모두실행)
 	public void prodDelete(int p_no) {
+		mapper.cartForceDel(p_no);
+		mapper.wishForceDel(p_no);
+		//prodDelete는 젤 마지막에 실행해야함(foreign key, cascade 사용안함, Image삭제는 따로실행)
 		mapper.prodDelete(p_no);
 	}
 	
