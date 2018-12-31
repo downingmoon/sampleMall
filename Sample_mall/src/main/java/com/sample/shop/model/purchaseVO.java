@@ -15,6 +15,15 @@ public class purchaseVO {
 	private int b_savingpoint;
 	private String b_receivername;
 	private String b_receiverphone;
+	private String d_del_msg;
+
+	public String getD_del_msg() {
+		return d_del_msg;
+	}
+
+	public void setD_del_msg(String d_del_msg) {
+		this.d_del_msg = d_del_msg;
+	}
 
 	public String getB_u_name() {
 		return b_u_name;

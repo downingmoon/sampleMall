@@ -2,10 +2,13 @@ package com.sample.shop.client;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,7 +31,13 @@ public class ClientController {
 	private ClientService service;
 	
 	@RequestMapping("list")
-	public String list(Model m) {
+	public String list(Model m, HttpServletRequest request) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		String username = auth.getName();
+		//int u_no = service.getUserNo(username);
+		int cnt = service.cartCount(username);
+		HttpSession session = request.getSession(true);
+		session.setAttribute("cnt", cnt);
 		List<mainImgVO> imgList = service.getMainImages();
 		List<prodVO> list = service.getProdList();
 		m.addAttribute("list",list);
@@ -179,6 +188,7 @@ public class ClientController {
 	@RequestMapping("buyProd")
 	public String buyProduct(int p_no, String u_id, String p_name, int amount, String p_price, Model m) {
 		int u_no = service.getUserNo(u_id);
+		String totalPrice = service.priceAndDelcostAdd(p_price);
 		UserVO vo = service.userInfo(u_id);
 		m.addAttribute("uVo", vo);
 		m.addAttribute("u_no",u_no);
@@ -186,6 +196,7 @@ public class ClientController {
 		m.addAttribute("p_name",p_name);
 		m.addAttribute("amount",amount);
 		m.addAttribute("p_price", p_price);
+		m.addAttribute("totalPrice", totalPrice);
 		m.addAttribute("target","purchasePage");
 		return "client/template";
 	}
@@ -220,7 +231,12 @@ public class ClientController {
 	}
 	
 	@RequestMapping("cartDeleteAjax")
-	public String cartDelete(int c_no, String u_id, RedirectAttributes ra) {
+	public String cartDelete(int c_no, String u_id, RedirectAttributes ra, HttpServletRequest request) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		String username = auth.getName();
+		int cnt = service.cartCount(username);
+		HttpSession session = request.getSession(true);
+		session.setAttribute("cnt", cnt);
 		service.cartDelete(c_no, u_id);
 		ra.addAttribute("u_id", u_id);
 		return "redirect:goCart";

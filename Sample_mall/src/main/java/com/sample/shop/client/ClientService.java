@@ -2,14 +2,17 @@ package com.sample.shop.client;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
+import java.util.Enumeration;
 import java.util.List;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletResponse;
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import javax.servlet.http.HttpSessionContext;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -101,8 +104,11 @@ public class ClientService {
 	}
 	
 	public int cartCount(String u_id) {
-		int u_no = mapper.getUserNo(u_id);
-		return mapper.cartCount(u_no);
+		int u_no = 0;
+		if(u_id != null && u_id != "anonymousUser") {
+		u_no = mapper.getUserNo(u_id);
+		}
+		return u_no;
 	}
 	
 	public List<cartVO> getCartList(String u_id) {
@@ -120,6 +126,18 @@ public class ClientService {
 	}
 	
 	// ----------물건구매----------
+	
+	// product 가격 + 배송비 합계 출력용
+	public String priceAndDelcostAdd(String p_price) {
+		System.out.println("p_price : " + p_price);
+		String removeSpace = p_price.replace(" ", "");
+		String removeComma = removeSpace.replace(",", "");
+		System.out.println("rem comma : " + removeComma);
+		int beforePrice = Integer.parseInt(removeComma) + 2500;
+		String afterPrice = String.format("%,d", beforePrice);
+		return afterPrice;
+	}
+	
 	public void buyProduct(purchaseVO vo) {
 		System.out.println("bpno : " + vo.getB_p_no());
 		System.out.println("bpname : " + vo.getB_p_name());
@@ -127,9 +145,12 @@ public class ClientService {
 		System.out.println("bpamount : " + vo.getB_amount());
 		System.out.println("b_rec name : " + vo.getB_receivername());
 		System.out.println("b_rec phone : " + vo.getB_receiverphone());
+		System.out.println("b_del_msg : " + vo.getD_del_msg());
+		int random = (int) (Math.random() * 10000) + 1;
 		String date = new SimpleDateFormat("yyyyMMdd").format(Calendar.getInstance().getTime());
 		System.out.println("day + pno + uno : "+ date + vo.getB_p_no() + vo.getB_u_no());
-		String b_no = date + Integer.toString(vo.getB_p_no()) + Integer.toString(vo.getB_u_no());
+		String b_no = date + Integer.toString(vo.getB_p_no())+"-"+ Integer.toString(vo.getB_u_no())
+						   + Integer.toString(random);
 		vo.setB_no(b_no);
 		mapper.buyProduct(vo);
 		mapper.doMinusStock(vo.getB_amount(), vo.getB_p_no());

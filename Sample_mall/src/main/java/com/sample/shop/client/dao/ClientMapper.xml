@@ -117,19 +117,21 @@
 	
 	<insert id="buyProduct">
 		INSERT INTO prod_buy
-		(b_no, b_u_no, b_p_no, b_p_name, b_amount, b_receivername, b_receiverphone, b_address)
+		(seq_buy, b_no, b_u_no, b_p_no, b_p_name, b_amount, b_receivername, b_receiverphone, b_address, d_del_msg)
 		VALUES
-		(#{b_no}, #{b_u_no}, #{b_p_no}, #{b_p_name}, #{b_amount}, #{b_receivername}, #{b_receiverphone}, #{b_address})
+		((SELECT NVL(MAX(seq_buy), 0) + 1 FROM prod_buy), #{b_no}, #{b_u_no}, #{b_p_no}
+		, #{b_p_name}, #{b_amount}, #{b_receivername}, #{b_receiverphone}, #{b_address}, #{d_del_msg})
 	</insert>
 	
 	<select id="getPurchaseInfo" resultType="purchaseVO">
 		SELECT b_no, (SELECT u_name FROM mall_user WHERE u_no = #{b_u_no}) as b_u_name, b_p_no, b_p_name, 
 		b_amount, b_receivername, b_receiverphone, b_paytype, to_char(b_regdate, 'YYYYMMDD') as b_regdate, 
-		b_paytotal, b_address, b_savingpoint FROM prod_buy WHERE b_no = #{b_no}
+		b_paytotal, b_address, b_savingpoint, d_del_msg FROM prod_buy WHERE b_no = #{b_no}
 	</select>
 	
 	<select id="getPurchaseList" resultType="purchaseVO">
-		SELECT b_no, b_p_name, b_paytype, to_char(b_regdate, 'YYYYMMDD') as b_regdate FROM prod_buy WHERE b_u_no = #{u_no}
+		SELECT b_no, b_p_name, b_paytype, to_char(b_regdate, 'YYYYMMDD') as b_regdate, d_del_msg FROM prod_buy
+		WHERE b_u_no = #{u_no} ORDER BY seq_buy DESC
 	</select>
 	
 	<update id="doMinusStock">

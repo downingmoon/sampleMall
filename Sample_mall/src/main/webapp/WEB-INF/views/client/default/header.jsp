@@ -50,7 +50,7 @@
 			</li>
 			<li><a href="join">회원가입</a></li>
 			<li><a href="mypage?id=<%=username%>">마이페이지</a></li>
-			<li><a href="goCart?u_id=<%=username%>">장바구니&nbsp;<span class="badge">42</span></a></li>
+			<li><a href="goCart?u_id=<%=username%>">장바구니&nbsp;<span class="badge">${cnt}</span></a></li>
 			<li><a href="orderView?u_id=<%=username%>">주문조회</a></li>
 			<li><a href="#">1:1문의</a></li>
 		</ol>

@@ -58,6 +58,10 @@
 										<td><div class="col-md-6">${vo.b_address}</div></td>
 									</tr>
 									<tr>
+										<td>배송메시지 : </td>
+										<td><div class="col-md-6">${vo.d_del_msg}</div></td>
+									</tr>
+									<tr>
 										<td>적립된 포인트 : </td>
 										<td><div class="col-md-6">${vo.b_savingpoint}</div></td>
 									</tr>

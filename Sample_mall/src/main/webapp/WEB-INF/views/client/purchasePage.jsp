@@ -82,7 +82,7 @@
 				</div>
 				<div class="col-md-12">
 					<h3 style="color:red;"><b>총 결제금액</b> : ${p_price}원<small>(상품가격)</small> + 2,500원<small>(배송비)</small></h3><br>
-					<h4 style="color:red;">= 13,502,500원</h4>
+					<h4 style="color:red;">= ${totalPrice}원</h4>
 				</div>
 				</div>
 				<div class="panel-footer"> 
