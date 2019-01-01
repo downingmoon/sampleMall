@@ -8,7 +8,7 @@
 <form action="boardWrite" method="post" onsubmit="return chkSubmit()" onreset="return chkReset()" name="frm">
 <div class="container">
 	<div class="row">
-		<div class="col-xs-10 col-sm-10 col-md-12 col-lg-12 toppad">
+		<div class="col-xs-6 col-sm-6 col-md-12 col-lg-12 toppad">
 			<div class="panel panel-info">
 				<div class="panel-body">
 					<div class="row">

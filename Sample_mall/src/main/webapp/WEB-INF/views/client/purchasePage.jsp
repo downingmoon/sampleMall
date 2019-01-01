@@ -77,11 +77,19 @@
 					<small style="color:#ddd12;">배송메시지를 입력해주세요.</small>
 					<textarea class="form-control" rows="5" name="d_del_msg" placeholder="배송메시지는 최대 30자까지 입력가능합니다."></textarea><br>
 				</div>
+				<div class="col-md-12">
+					<small>결제수단</small><br>
+					<select name="b_paytype" class="form-control">
+						<option value="">-----결제수단을 선택해주세요-----</option>
+						<option value="카드결제">카드결제</option>
+						<option value="계좌이체">계좌이체</option>
+					</select>
+				</div>
 				<div class="col-md-12" style="border-top:1px solid #ddd"><br>
 					<p>사용가능 포인트 : 1000 point</p>
 				</div>
 				<div class="col-md-12">
-					<h3 style="color:red;"><b>총 결제금액</b> : ${p_price}원<small>(상품가격)</small> + 2,500원<small>(배송비)</small></h3><br>
+					<h3 style="color:red;"><b>총 결제금액</b> : ${p_price}원<small>(상품가격)</small> X ${amount} <small>(수량)</small> + 2,500원<small>(배송비)</small></h3><br>
 					<h4 style="color:red;">= ${totalPrice}원</h4>
 				</div>
 				</div>
@@ -101,4 +109,5 @@
 <input type="hidden" name="b_u_no" value="${u_no}">
 <input type="hidden" name="b_p_name" value="${p_name}">
 <input type="hidden" name="b_amount" value="${amount}">
+<input type="hidden" name="totalPrice" value="${totalPrice}">
 </form>

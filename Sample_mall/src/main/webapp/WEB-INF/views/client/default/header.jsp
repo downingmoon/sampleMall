@@ -10,22 +10,25 @@
 %>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/menuBar.css">
 <script>
-	$(document).ready(function() {
-		alert("ddd");
-		$.ajax({
-			url:"getCartCnt",
-			type:"post",
-			data {
-				u_id: u_id
-			},
-			success: function() {
-				
-			},
-			error : function() {
-				alert("에러발생");
-			}
-		});
-	});
+
+	function otoInquire(u_id) {
+		if(u_id == 'anonymousUser') {
+			alert('회원가입 후 이용해주세요.');
+			location.href='join';
+		} else {
+			location.href='otoInquire?u_id='+u_id;
+		}
+	}
+	
+	function goCartClk(u_id) {
+		if(u_id == 'anonymousUser') {
+			alert('비회원 장바구니 구현 준비중');
+			location.href='join';
+		} else {
+			location.href='goCart?u_id='+u_id;
+		}
+	}
+	
 </script>
 <div class="row">
 	<div class="logo col-md-5">
@@ -50,17 +53,11 @@
 			</li>
 			<li><a href="join">회원가입</a></li>
 			<li><a href="mypage?id=<%=username%>">마이페이지</a></li>
-			<li><a href="goCart?u_id=<%=username%>">장바구니&nbsp;<span class="badge">${cnt}</span></a></li>
+			<li><a onclick="goCartClk('<%=username%>')" style="cursor:pointer;">장바구니&nbsp;<span class="badge">${cnt}</span></a></li>
 			<li><a href="orderView?u_id=<%=username%>">주문조회</a></li>
-			<li><a href="#">1:1문의</a></li>
+			<li><a onclick="otoInquire('<%=username%>')" style="cursor:pointer;">1:1문의</a></li>
 		</ol>
-		<!-- 
-		<ul class="userInfoMenu">
-			<li> <%=username%>님 환영합니다. </li>
-			<li>가용 포인트 : 0점</li>
-			<li>등급 : 일반</li>
-		</ul>
-		 -->
+		
 	</div>
 </div>
 

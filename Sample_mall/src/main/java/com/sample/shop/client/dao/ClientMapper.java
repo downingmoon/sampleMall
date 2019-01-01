@@ -8,6 +8,8 @@ import org.apache.ibatis.annotations.Param;
 import com.sample.shop.model.UserVO;
 import com.sample.shop.model.boardVO;
 import com.sample.shop.model.cartVO;
+import com.sample.shop.model.delVO;
+import com.sample.shop.model.inqVO;
 import com.sample.shop.model.mainImgVO;
 import com.sample.shop.model.prodVO;
 import com.sample.shop.model.purchaseVO;
@@ -38,13 +40,17 @@ public interface ClientMapper {
 	
 	public UserVO userInfo(String u_id);
 	
+	public Integer isExist(@Param("p_no")int p_no, @Param("u_no")int u_no);
+	
+	public void cartAmountUpdate(@Param("amount")int amount, @Param("u_no")int u_no, @Param("p_no")int p_no);
+	
 	public void cartInsert(@Param("p_no")int p_no, @Param("u_id")String u_id, @Param("amount")int amount);
 	
 	public void cartDelete(@Param("c_no")int c_no, @Param("u_no")int u_no);
 	
 	public int cartCount(int u_no);
 	
-	public List<cartVO> getCartList(@Param("u_id") String u_id);
+	public List<cartVO> getCartList(@Param("u_no") int u_no);
 	
 	public List<prodVO> bestItemList();
 	
@@ -56,9 +62,13 @@ public interface ClientMapper {
 	
 	public void buyProduct(purchaseVO vo);
 	
+	public void insertToDelivery(delVO vo);
+	
 	public purchaseVO getPurchaseInfo(@Param("b_no")String b_no, @Param("b_u_no")int b_u_no);
 	
 	public List<purchaseVO> getPurchaseList(int u_no);
 	
 	public void doMinusStock(@Param("stock")int stock, @Param("p_no")int p_no);
+	
+	public void otoInquireReg(inqVO vo);
 }

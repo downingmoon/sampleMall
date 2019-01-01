@@ -2,7 +2,6 @@ package com.sample.shop.admin;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.net.URLDecoder;
 import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
@@ -13,9 +12,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import com.sample.shop.model.delVO;
 import com.sample.shop.model.prodVO;
+import com.sample.shop.model.salesVO;
 
 @Controller
 @RequestMapping("admin")
@@ -40,6 +40,8 @@ public class AdminController {
 	
 	@RequestMapping("saleMgr")
 	public String saleMgr(Model m) {
+		int cnt = service.saleCount();
+		m.addAttribute("cnt",cnt);
 		m.addAttribute("target","saleMgr/saleManagement");
 		m.addAttribute("subTitle","주문관리");
 		return "admin/adminTemplate";
@@ -51,6 +53,15 @@ public class AdminController {
 		m.addAttribute("subTitle","고객관리");
 		return "admin/adminTemplate";
 	}
+	
+	@RequestMapping("onLoadFn")
+	public void saleAlert() {
+		service.saleCount();
+	}
+	
+	/*
+	 * 상품관리
+	 */
 	
 	@RequestMapping("prodListView")
 	public String prodListView(Model m) {
@@ -142,6 +153,42 @@ public class AdminController {
 		return "redirect:prodMgr";
 	}
 	
-	
+	/*
+	 *  주문관리
+	 */
 
+	
+	@RequestMapping("saleListView")
+	public String saleListView(Model m) {
+		List<salesVO> list = service.saleListView();
+		m.addAttribute("list",list);
+		m.addAttribute("subTitle","발송대기중인 상품 조회");
+		m.addAttribute("target","saleMgr/saleListView");
+		return "admin/adminTemplate";
+	}
+	
+	@RequestMapping("delComplAjax")
+	public String delComplete(String b_no) {
+		System.out.println("b_no : " + b_no);
+		service.deliverComplete(b_no);
+		return "redirect:saleListView";
+	}
+	
+	@RequestMapping("deliverStatusView")
+	public String deliverStatusView(Model m) {
+		List<delVO> list = service.deliverStatusView();
+		m.addAttribute("list", list);
+		m.addAttribute("subTitle", "배송현황 조회");
+		m.addAttribute("target", "saleMgr/deliverStatusView");
+		return "admin/adminTemplate";
+	}
+	
+	
+	
+	
+	
+	
+	/*
+	 *  고객관리
+	 */
 }

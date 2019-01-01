@@ -19,6 +19,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.sample.shop.model.UserVO;
 import com.sample.shop.model.boardVO;
 import com.sample.shop.model.cartVO;
+import com.sample.shop.model.delVO;
+import com.sample.shop.model.inqVO;
 import com.sample.shop.model.mainImgVO;
 import com.sample.shop.model.prodVO;
 import com.sample.shop.model.purchaseVO;
@@ -31,13 +33,14 @@ public class ClientController {
 	private ClientService service;
 	
 	@RequestMapping("list")
-	public String list(Model m, HttpServletRequest request) {
+	public String list(Model m, HttpServletRequest request, HttpServletResponse response) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		String username = auth.getName();
 		//int u_no = service.getUserNo(username);
 		int cnt = service.cartCount(username);
 		HttpSession session = request.getSession(true);
 		session.setAttribute("cnt", cnt);
+		
 		List<mainImgVO> imgList = service.getMainImages();
 		List<prodVO> list = service.getProdList();
 		m.addAttribute("list",list);
@@ -58,10 +61,12 @@ public class ClientController {
 	@RequestMapping("detail")
 	public String detail(@RequestParam int p_no, Model m, HttpServletResponse response) {
 		prodVO vo = service.getProdDetail(p_no);
-//		Cookie cookie = new Cookie("prodName", vo.getP_name());
+//		String rctItem = "";
+//		rctItem += ", " + Integer.toString(p_no);
+//		Cookie cookie = new Cookie("recentItems", rctItem);
 //		cookie.setMaxAge(60*60*24); // 1년
 //		response.addCookie(cookie);
-//		
+		
 		List<prodVO> detailImageList = service.getDetailImage(p_no);
 		m.addAttribute("list", detailImageList);
 		m.addAttribute("detail",vo);
@@ -141,15 +146,23 @@ public class ClientController {
 	}
 	
 	@RequestMapping("mypage")
-	public String mypageGet(String id, Model m) {
+	public String mypage(String id, Model m) {
+		m.addAttribute("target", "mypage");
+		m.addAttribute("u_id", id);
+		return "client/template";
+	}
+	
+	@RequestMapping("userInfo")
+	public String userInfoGet(String id, Model m) {
 		UserVO vo = service.userInfo(id);
+		m.addAttribute("u_id",id);
 		m.addAttribute("vo",vo);
-		m.addAttribute("target","mypage");
+		m.addAttribute("target","userInfo");
 		return "client/template";
 	}
 	
 	@RequestMapping(value="mypage", method=RequestMethod.POST)
-	public String mypagePost(UserVO vo) {
+	public String userInfoPost(UserVO vo) {
 		service.userInfoUpdate(vo);
 		return "redirect:mypage";
 	}
@@ -164,8 +177,13 @@ public class ClientController {
 	
 	@RequestMapping("addToCartAjax")
 	public String addToCart(String u_id, int amount, int p_no, HttpSession session) {
-		System.out.println("uid : " + u_id + " amount : " + amount + " pno : " + p_no);
-		service.cartInsert(p_no, u_id, amount);
+		System.out.println("uid : " + u_id + ", amount : " + amount + ", pno : " + p_no);
+		int isExistProduct = service.isExist(p_no, u_id);
+		if(isExistProduct != 0) {
+			service.cartAmountUpdate(amount, u_id, p_no);
+		} else {
+			service.cartInsert(p_no, u_id, amount);
+		}
 		int c_count = service.cartCount(u_id);
 		session.setAttribute("c_count", c_count);
 		return "redirect:list";
@@ -173,8 +191,11 @@ public class ClientController {
 	
 	@RequestMapping("goCart")
 	public String goCart(Model m, String u_id) {
-		List<cartVO> list = service.getCartList(u_id);
-		m.addAttribute("list",list);
+		if(u_id != "anonymousUser") {
+			System.out.println("anony 아님");
+			List<cartVO> list = service.getCartList(u_id);
+			m.addAttribute("list",list);
+		}
 		m.addAttribute("target","cart");
 		return "client/template";
 	}
@@ -188,7 +209,7 @@ public class ClientController {
 	@RequestMapping("buyProd")
 	public String buyProduct(int p_no, String u_id, String p_name, int amount, String p_price, Model m) {
 		int u_no = service.getUserNo(u_id);
-		String totalPrice = service.priceAndDelcostAdd(p_price);
+		String totalPrice = service.priceAndDelcostAdd(p_price, amount);
 		UserVO vo = service.userInfo(u_id);
 		m.addAttribute("uVo", vo);
 		m.addAttribute("u_no",u_no);
@@ -201,14 +222,29 @@ public class ClientController {
 		return "client/template";
 	}
 	
+	@RequestMapping("buyProductsInCart")
+	public String buyProductsInCart(Model m) {
+		
+		m.addAttribute("target","cartPurchaseComple");	
+		return "client/template";
+	}
+	
+	
 	@RequestMapping(value="purchaseComplete", method=RequestMethod.POST)
-	public String buyProductPost(Model m,purchaseVO vo, String mainAddr, String subAddr ) {
+	public String buyProductPost(Model m,purchaseVO vo, String mainAddr, String subAddr, String totalPrice) {
+		delVO dVo = new delVO();
+		
+		String removeComma = totalPrice.replace(",", "");
+		vo.setB_paytotal(Integer.parseInt(removeComma));
+		
 		String b_address = mainAddr+ " "+ subAddr;
 		vo.setB_address(b_address);
-		service.buyProduct(vo);
+		
+		service.buyProduct(vo, dVo);
 		
 		vo  = service.getPurchaseInfo(vo.getB_no(), vo.getB_u_no());
 		m.addAttribute("vo", vo);
+		m.addAttribute("totalPrice", totalPrice);
 		m.addAttribute("target","purchaseComplete");
 		return "client/template";
 	}
@@ -232,14 +268,27 @@ public class ClientController {
 	
 	@RequestMapping("cartDeleteAjax")
 	public String cartDelete(int c_no, String u_id, RedirectAttributes ra, HttpServletRequest request) {
+		service.cartDelete(c_no, u_id);
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		String username = auth.getName();
 		int cnt = service.cartCount(username);
 		HttpSession session = request.getSession(true);
 		session.setAttribute("cnt", cnt);
-		service.cartDelete(c_no, u_id);
 		ra.addAttribute("u_id", u_id);
 		return "redirect:goCart";
+	}
+	
+	@RequestMapping("otoInquire")
+	public String otoInquire(String u_id, Model m) {
+		m.addAttribute("u_id", u_id);
+		m.addAttribute("target", "oneToOneInquirePage");
+		return "client/template";
+	}
+	
+	@RequestMapping("otoInquireReg")
+	public String otoInquireReg(String u_id, inqVO vo) {
+		service.otoInquireReg(u_id, vo);
+		return "redirect:list";
 	}
 
 }

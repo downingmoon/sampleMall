@@ -3,18 +3,18 @@ package com.sample.shop.admin;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.FileCopyUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.sample.shop.admin.dao.AdminMapper;
+import com.sample.shop.model.delVO;
 import com.sample.shop.model.prodVO;
+import com.sample.shop.model.salesVO;
 
 @Service
 public class AdminService {
@@ -225,6 +225,29 @@ public class AdminService {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	/*
+	 *  주문관리
+	 */
+	
+	public List<salesVO> saleListView() {
+		return mapper.saleListView();
+	}
+	
+	public int saleCount() {
+		return mapper.saleCount();
+	}
+	
+	public void deliverComplete(String b_no) {
+		//발송대기 목록에서 삭제
+		mapper.deliverComplete(b_no);
+		//배송테이블에 status update
+		mapper.deliverStatusUpdate(b_no);
+	}
+	
+	public List<delVO> deliverStatusView() {
+		return mapper.deliverStatusView();
 	}
 
 }

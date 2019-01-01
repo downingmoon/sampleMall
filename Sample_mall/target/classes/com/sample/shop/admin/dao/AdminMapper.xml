@@ -70,4 +70,27 @@
 		SELECT NVL(MAX(m_no), 0) + 1 AS m_no FROM mall_mainimage
 	</select>
 	
+	<!-- Sales Management -->
+	
+	<select id="saleListView" resultType="salesVO">
+		SELECT b_no, b_u_no, b_p_name, b_amount, b_paytype, TO_CHAR(b_regdate, 'YYYYMMDD') as b_regdate
+		, TO_CHAR(b_paytotal, '999G999G999') as b_paytotal FROM prod_buy
+	</select>
+	
+	<select id="saleCount" resultType="_int">
+		SELECT COUNT(*) AS cnt FROM prod_buy 
+	</select>
+	
+	<delete id="deliverComplete">
+		DELETE FROM prod_buy WHERE b_no = #{b_no}
+	</delete>
+	
+	<select id="deliverStatusView" resultType="delVO">
+		SELECT * FROM prod_delivery
+	</select>
+	
+	<update id="deliverStatusUpdate">
+		UPDATE prod_delivery SET d_status = '발송완료' WHERE d_b_no = #{b_no}
+	</update>
+	
 </mapper>

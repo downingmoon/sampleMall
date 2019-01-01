@@ -1,9 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <script src="${pageContext.request.contextPath}/resources/js/admProdMod.js"></script>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/admProdInsert.css">
-<script src="//d1p7wdleee1q2z.cloudfront.net/post/search.min.js"></script>
-<script> $(function() { $("#postcodify_search_button").postcodifyPopUp(); }); </script>
 
 <form action="purchaseComplete" method="post" onsubmit="return chkSubmit()" onreset="return chkReset()" name="frm" enctype="multipart/form-data">
 <div class="container">
@@ -41,9 +40,16 @@
 										<td>결제수단 : </td>
 										<td><div class="col-md-6">${vo.b_paytype}</div></td>
 									</tr>
+									<c:set value="${vo.b_paytype}" var="data"/>
+									<c:if test="${data == '계좌이체'}">
+										<tr>
+											<td>입금계좌 : </td>
+											<td><div class="col-md-6">대구은행 031 - 07 - 025862 - 1 문다운</div></td>
+										</tr>
+									</c:if>
 									<tr>
 										<td>결제금액 : </td>
-										<td><div class="col-md-6">${vo.b_paytotal}</div></td>
+										<td><div class="col-md-6">${totalPrice}원</div></td>
 									</tr>
 									<tr>
 										<td>받는사람 : </td>
@@ -69,14 +75,6 @@
 							</table>
 						</div>
 					</div>
-				<div class="panel-footer"> 
-					<button type="reset" class="btn btn-sm btn-secondory">
-						<i class="glyphicon glyphicon-return">뒤로가기</i></button>
-					<span class="center">
-						<button type="submit" class="btn btn-sm btn-danger">
-							<i class="glyphicon glyphicon-check">구매하기</i></button>
-					</span>
-				</div>
 			</div>
 		</div>
 	</div>

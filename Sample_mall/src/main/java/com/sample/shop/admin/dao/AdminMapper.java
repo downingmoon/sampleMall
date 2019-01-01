@@ -4,7 +4,9 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
+import com.sample.shop.model.delVO;
 import com.sample.shop.model.prodVO;
+import com.sample.shop.model.salesVO;
 
 public interface AdminMapper {
 	
@@ -37,4 +39,19 @@ public interface AdminMapper {
 	
 	public int getImageNo();
 
+	
+	/*
+	 *  주문관리
+	 */
+	
+	public List<salesVO> saleListView();
+	
+	public int saleCount();
+	
+	public void deliverComplete(String b_no);
+	
+	public List<delVO> deliverStatusView();
+	
+	public void deliverStatusUpdate(String b_no);
+	
 }

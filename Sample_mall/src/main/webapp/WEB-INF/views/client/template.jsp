@@ -91,8 +91,9 @@
 
 		<jsp:include page="default/header.jsp" />
 
-		<jsp:include page="${target}.jsp" />
-		
+		<div class="container">
+			<jsp:include page="${target}.jsp" />
+		</div>
 		<jsp:include page="default/footer.jsp" />
 
 	</div>
