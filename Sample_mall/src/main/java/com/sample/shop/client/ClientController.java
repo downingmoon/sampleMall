@@ -312,5 +312,14 @@ public class ClientController {
 		m.addAttribute("target", "wishListView");
 		return "client/template";
 	}
+	
+	@RequestMapping("otoInquireList")
+	public String otoInquireListView(Model m, String u_id) {
+		List<inqVO> list = service.otoInquireList(u_id);
+		m.addAttribute("u_id",u_id);
+		m.addAttribute("list", list);
+		m.addAttribute("target", "otoInquireListView");
+		return "client/template";
+	}
 
 }

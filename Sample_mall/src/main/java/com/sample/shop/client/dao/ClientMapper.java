@@ -76,4 +76,6 @@ public interface ClientMapper {
 	public void otoInquireReg(inqVO vo);
 	
 	public List<wishVO> wishListView(int u_no);
+	
+	public List<inqVO> otoInquireList(int u_no);
 }

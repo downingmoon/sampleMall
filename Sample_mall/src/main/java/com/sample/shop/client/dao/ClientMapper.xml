@@ -172,4 +172,9 @@
 		, TO_CHAR(w_regdate, 'YYYY.MM.DD') AS w_regdate, p_no FROM mall_wishlist WHERE u_no = #{u_no}
 	</select>
 	
+	<select id="otoInquireList" resultType="inqVO">
+		SELECT i_no, i_title, i_status, TO_CHAR(i_regdate, 'YYYY.MM.DD') as i_regdate
+		, i_u_no FROM otoinquire WHERE i_u_no = #{u_no}
+	</select>
+	
 </mapper>

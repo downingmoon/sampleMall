@@ -28,6 +28,10 @@ public class AdminController {
 	
 	@RequestMapping("adminPage")
 	public String adminPage(Model m) {
+		int otoCnt = service.getOtoCount();
+		int delCnt = service.saleCount();
+		m.addAttribute("otoCnt",otoCnt);
+		m.addAttribute("delCnt", delCnt);
 		m.addAttribute("target","adminMainPage");
 		m.addAttribute("subTitle","홈");
 		return "admin/adminTemplate";
@@ -51,6 +55,8 @@ public class AdminController {
 	
 	@RequestMapping("custMgr")
 	public String custMgr(Model m) {
+		int cnt = service.getOtoCount();
+		m.addAttribute("cnt", cnt);
 		m.addAttribute("target","custMgr/custManagement");
 		m.addAttribute("subTitle","고객관리");
 		return "admin/adminTemplate";

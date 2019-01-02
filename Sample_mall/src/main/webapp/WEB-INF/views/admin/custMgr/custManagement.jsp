@@ -2,5 +2,5 @@
     pageEncoding="UTF-8"%>
 
 <ul>
-	<li><a href="otoListView">1:1문의 조회&nbsp;<span class="badge">카운트</span></a></li>
+	<li><a href="otoListView">1:1문의 조회&nbsp;<span class="badge">${cnt}</span></a></li>
 </ul>

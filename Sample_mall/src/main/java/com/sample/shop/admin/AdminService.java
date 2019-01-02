@@ -255,6 +255,10 @@ public class AdminService {
 	 *  고객관리
 	 */
 	
+	public int getOtoCount() {
+		return mapper.getOtoCount();
+	}
+	
 	public List<inqVO> otoListView() {
 		return mapper.otoListView();
 	}

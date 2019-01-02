@@ -215,5 +215,11 @@ public class ClientService {
 		int u_no = mapper.getUserNo(u_id);
 		return mapper.wishListView(u_no);
 	}
+	
+	//1:1 문의 글 조회
+	public List<inqVO> otoInquireList(String u_id) {
+		int u_no = mapper.getUserNo(u_id);
+		return mapper.otoInquireList(u_no);
+	}
 
 }

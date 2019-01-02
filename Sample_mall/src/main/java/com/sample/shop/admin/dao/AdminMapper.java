@@ -59,6 +59,8 @@ public interface AdminMapper {
 	 *  고객관리
 	 */
 	
+	public int getOtoCount();
+	
 	public List<inqVO> otoListView();
 	
 	public inqVO goOtoDetail(int i_no);

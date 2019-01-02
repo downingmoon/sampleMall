@@ -95,6 +95,10 @@
 	
 	<!-- Cust Management -->
 	
+	<select id="getOtoCount" resultType="_int">
+		SELECT COUNT(*) FROM otoinquire
+	</select>
+	
 	<select id="otoListView" resultType="inqVO">
 		SELECT i_no, (SELECT u_name FROM mall_user WHERE u_no = i_u_no) AS i_u_name,
 		TO_CHAR(i_regdate, 'YYYY.MM.DD') AS i_regdate
