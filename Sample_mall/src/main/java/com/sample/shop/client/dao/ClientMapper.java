@@ -13,6 +13,7 @@ import com.sample.shop.model.inqVO;
 import com.sample.shop.model.mainImgVO;
 import com.sample.shop.model.prodVO;
 import com.sample.shop.model.purchaseVO;
+import com.sample.shop.model.wishVO;
 
 public interface ClientMapper {
 	
@@ -56,6 +57,8 @@ public interface ClientMapper {
 	
 	public void userInfoUpdate(UserVO vo);
 	
+	public int wishExistChk(@Param("u_no")int u_no, @Param("p_no")int p_no);
+	
 	public void wishInsert(@Param("u_id")String u_id, @Param("p_no")int p_no);
 	
 	public int getUserNo(@Param("u_id")String u_id);
@@ -71,4 +74,6 @@ public interface ClientMapper {
 	public void doMinusStock(@Param("stock")int stock, @Param("p_no")int p_no);
 	
 	public void otoInquireReg(inqVO vo);
+	
+	public List<wishVO> wishListView(int u_no);
 }

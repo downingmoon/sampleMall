@@ -3,7 +3,23 @@ package com.sample.shop.model;
 public class inqVO {
 
 	private int i_no, i_u_no;
-	private String i_regdate, i_title, i_content, i_answer;
+	private String i_regdate, i_title, i_content, i_answer, i_status, i_u_name;
+
+	public String getI_u_name() {
+		return i_u_name;
+	}
+
+	public void setI_u_name(String i_u_name) {
+		this.i_u_name = i_u_name;
+	}
+
+	public String getI_status() {
+		return i_status;
+	}
+
+	public void setI_status(String i_status) {
+		this.i_status = i_status;
+	}
 
 	public int getI_no() {
 		return i_no;

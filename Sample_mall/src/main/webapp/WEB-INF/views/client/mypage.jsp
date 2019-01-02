@@ -9,7 +9,7 @@
 		        <div class="card-body">
 		            <div class="row">
 		                <div class="col-md-12">
-		                    <h4>${u_id}님 회원정보</h4>
+		                    <h4>${u_id}님 마이페이지</h4>
 		                    <hr>
 		                </div>
 		            </div>

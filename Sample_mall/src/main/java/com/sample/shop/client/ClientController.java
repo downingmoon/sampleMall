@@ -14,6 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.sample.shop.model.UserVO;
@@ -24,6 +25,7 @@ import com.sample.shop.model.inqVO;
 import com.sample.shop.model.mainImgVO;
 import com.sample.shop.model.prodVO;
 import com.sample.shop.model.purchaseVO;
+import com.sample.shop.model.wishVO;
 
 @Controller
 @RequestMapping("client")
@@ -175,8 +177,16 @@ public class ClientController {
 		return "client/template";
 	}
 	
+	@RequestMapping("wishExistChkAjax")
+	@ResponseBody
+	public int wishExistChkAjax(String u_id, int p_no) {
+		int result = service.wishExistChk(p_no, u_id);
+		return result;
+	}
+	
 	@RequestMapping("addToCartAjax")
-	public String addToCart(String u_id, int amount, int p_no, HttpSession session) {
+	@ResponseBody
+	public void addToCart(String u_id, int amount, int p_no, HttpSession session) {
 		System.out.println("uid : " + u_id + ", amount : " + amount + ", pno : " + p_no);
 		int isExistProduct = service.isExist(p_no, u_id);
 		if(isExistProduct != 0) {
@@ -186,7 +196,6 @@ public class ClientController {
 		}
 		int c_count = service.cartCount(u_id);
 		session.setAttribute("c_count", c_count);
-		return "redirect:list";
 	}
 	
 	@RequestMapping("goCart")
@@ -201,9 +210,10 @@ public class ClientController {
 	}
 	
 	@RequestMapping("wishListInsertAjax")
-	public String wishListInsert(String u_id, int p_no) {
+	@ResponseBody
+	public void wishListInsert(String u_id, int p_no) {
+		System.out.println("u_id : " + u_id);
 		service.wishInsert(u_id, p_no);
-		return "redirect:wishList";
 	}
 	
 	@RequestMapping("buyProd")
@@ -267,15 +277,16 @@ public class ClientController {
 	}
 	
 	@RequestMapping("cartDeleteAjax")
-	public String cartDelete(int c_no, String u_id, RedirectAttributes ra, HttpServletRequest request) {
+	@ResponseBody
+	public void cartDelete(int c_no, String u_id, HttpServletRequest request) {
 		service.cartDelete(c_no, u_id);
+		
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		String username = auth.getName();
+		
 		int cnt = service.cartCount(username);
 		HttpSession session = request.getSession(true);
 		session.setAttribute("cnt", cnt);
-		ra.addAttribute("u_id", u_id);
-		return "redirect:goCart";
 	}
 	
 	@RequestMapping("otoInquire")
@@ -289,6 +300,17 @@ public class ClientController {
 	public String otoInquireReg(String u_id, inqVO vo) {
 		service.otoInquireReg(u_id, vo);
 		return "redirect:list";
+	}
+	
+	@RequestMapping("wishList")
+	public String wishListView(String u_id, Model m) {
+		System.out.println("wishListView 진입");
+		System.out.println("uid : " + u_id);
+		List<wishVO> list = service.wishListView(u_id);
+		m.addAttribute("u_id", u_id);
+		m.addAttribute("list", list);
+		m.addAttribute("target", "wishListView");
+		return "client/template";
 	}
 
 }

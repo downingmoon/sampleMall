@@ -17,6 +17,7 @@ import com.sample.shop.model.inqVO;
 import com.sample.shop.model.mainImgVO;
 import com.sample.shop.model.prodVO;
 import com.sample.shop.model.purchaseVO;
+import com.sample.shop.model.wishVO;
 
 @Service
 public class ClientService {
@@ -98,6 +99,11 @@ public class ClientService {
 	public void cartAmountUpdate(int amount, String u_id, int p_no) {
 		int u_no = mapper.getUserNo(u_id);
 		mapper.cartAmountUpdate(amount, u_no, p_no);
+	}
+	
+	public int wishExistChk(int p_no, String u_id) {
+		int u_no = mapper.getUserNo(u_id);
+		return mapper.wishExistChk(u_no, p_no);
 	}
 	
 	public void cartInsert(int p_no, String u_id, int amount) {
@@ -202,6 +208,12 @@ public class ClientService {
 		int u_no = mapper.getUserNo(u_id);
 		vo.setI_u_no(u_no);
 		mapper.otoInquireReg(vo);
+	}
+	
+	//wishList 조회
+	public List<wishVO> wishListView(String u_id) {
+		int u_no = mapper.getUserNo(u_id);
+		return mapper.wishListView(u_no);
 	}
 
 }

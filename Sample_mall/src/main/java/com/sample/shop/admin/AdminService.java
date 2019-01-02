@@ -13,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.sample.shop.admin.dao.AdminMapper;
 import com.sample.shop.model.delVO;
+import com.sample.shop.model.inqVO;
 import com.sample.shop.model.prodVO;
 import com.sample.shop.model.salesVO;
 
@@ -248,6 +249,22 @@ public class AdminService {
 	
 	public List<delVO> deliverStatusView() {
 		return mapper.deliverStatusView();
+	}
+	
+	/*
+	 *  고객관리
+	 */
+	
+	public List<inqVO> otoListView() {
+		return mapper.otoListView();
+	}
+	
+	public inqVO goOtoDetail(int i_no) {
+		return mapper.goOtoDetail(i_no);
+	}
+	
+	public void otoAnswerUpdate(inqVO vo) {
+		mapper.otoAnswerUpdate(vo);
 	}
 
 }

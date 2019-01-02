@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 import com.sample.shop.model.delVO;
+import com.sample.shop.model.inqVO;
 import com.sample.shop.model.prodVO;
 import com.sample.shop.model.salesVO;
 
@@ -53,5 +54,15 @@ public interface AdminMapper {
 	public List<delVO> deliverStatusView();
 	
 	public void deliverStatusUpdate(String b_no);
+	
+	/*
+	 *  고객관리
+	 */
+	
+	public List<inqVO> otoListView();
+	
+	public inqVO goOtoDetail(int i_no);
+	
+	public void otoAnswerUpdate(inqVO vo);
 	
 }

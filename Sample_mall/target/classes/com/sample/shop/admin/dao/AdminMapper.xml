@@ -86,11 +86,29 @@
 	</delete>
 	
 	<select id="deliverStatusView" resultType="delVO">
-		SELECT * FROM prod_delivery
+		SELECT * FROM prod_delivery ORDER BY d_no 
 	</select>
 	
 	<update id="deliverStatusUpdate">
 		UPDATE prod_delivery SET d_status = '발송완료' WHERE d_b_no = #{b_no}
+	</update>
+	
+	<!-- Cust Management -->
+	
+	<select id="otoListView" resultType="inqVO">
+		SELECT i_no, (SELECT u_name FROM mall_user WHERE u_no = i_u_no) AS i_u_name,
+		TO_CHAR(i_regdate, 'YYYY.MM.DD') AS i_regdate
+		, i_title, i_status FROM otoinquire ORDER BY i_no DESC
+	</select>
+	
+	<select id="goOtoDetail" resultType="inqVO">
+		SELECT i_no, (SELECT u_name FROM mall_user WHERE u_no = i_u_no) AS i_u_name
+		, TO_CHAR(i_regdate, 'YYYY.MM.DD') AS i_regdate
+		, i_title, i_content, i_answer, i_status FROM otoinquire WHERE i_no = 1001
+	</select>
+	
+	<update id="otoAnswerUpdate">
+		UPDATE otoinquire SET i_answer = #{i_answer}, i_status = '답변완료' WHERE i_no = #{i_no}
 	</update>
 	
 </mapper>

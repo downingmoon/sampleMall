@@ -13,5 +13,6 @@
 		<typeAlias alias="salesVO" type="com.sample.shop.model.salesVO" />
 		<typeAlias alias="delVO" type="com.sample.shop.model.delVO" />
 		<typeAlias alias="inqVO" type="com.sample.shop.model.inqVO" />
+		<typeAlias alias="wishVO" type="com.sample.shop.model.wishVO" />
 	</typeAliases>
 </configuration>

@@ -11,9 +11,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.sample.shop.model.delVO;
+import com.sample.shop.model.inqVO;
 import com.sample.shop.model.prodVO;
 import com.sample.shop.model.salesVO;
 
@@ -184,11 +186,35 @@ public class AdminController {
 	}
 	
 	
-	
-	
-	
-	
 	/*
 	 *  고객관리
 	 */
+	
+	@RequestMapping("otoListView")
+	public String otoListView(Model m) {
+		List<inqVO> list = service.otoListView();
+		m.addAttribute("list",list);
+		m.addAttribute("subTitle", "1:1문의 조회");
+		m.addAttribute("target", "custMgr/otoListView");
+		return "admin/adminTemplate";
+	}
+	
+	@RequestMapping("goOtoDetail")
+	public String goOtoDetail(Model m, int i_no) {
+		inqVO vo = service.goOtoDetail(i_no);
+		m.addAttribute("vo", vo);
+		m.addAttribute("target", "custMgr/otoDetail");
+		return "admin/adminTemplate";
+	}
+	
+	@RequestMapping("otoAnswerUpdate")
+	public String otoAnswerUpdate(inqVO vo) { 
+		service.otoAnswerUpdate(vo);
+		return "redirect:otoListView";
+	}
+	
+//	@RequestMapping("deleteOto")
+//	public String deleteOto(int i_no) {
+//		return "redirect:otoListView";
+//	}
 }

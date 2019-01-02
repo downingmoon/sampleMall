@@ -111,11 +111,16 @@
     ]]>
 	</select>
 	
+	<select id="wishExistChk" resultType="_int">
+		SELECT count(*) FROM mall_wishlist WHERE u_no = #{u_no} AND p_no = #{p_no}
+	</select>
+	
 	<insert id="wishInsert">
 		INSERT INTO mall_wishlist
-		(w_no, u_no, p_no)
+		(wish_seq, w_no, u_no, p_no)
 		VALUES
-		((SELECT NVL(MAX(w_no), 0) + 1 FROM mall_wishlist WHERE u_no = (SELECT u_no FROM mall_user WHERE u_id = #{u_id}))
+		((SELECT NVL(MAX(wish_seq), 0) + 1 FROM mall_wishlist)
+		,(SELECT NVL(MAX(w_no), 0) + 1 FROM mall_wishlist WHERE u_no = (SELECT u_no FROM mall_user WHERE u_id = #{u_id}))
 		, (SELECT u_no FROM mall_user WHERE u_id = #{u_id}), #{p_no})
 	</insert>
 	
@@ -161,5 +166,10 @@
 		((SELECT NVL(MAX(i_no), 1000) + 1 FROM otoinquire)
 		, #{i_u_no}, #{i_title}, #{i_content})
 	</insert>
+	
+	<select id="wishListView" resultType="wishVO">
+		SELECT w_no, (SELECT p.p_name FROM prod p, mall_wishlist w WHERE p.p_no = w.p_no) AS p_name
+		, TO_CHAR(w_regdate, 'YYYY.MM.DD') AS w_regdate, p_no FROM mall_wishlist WHERE u_no = #{u_no}
+	</select>
 	
 </mapper>
