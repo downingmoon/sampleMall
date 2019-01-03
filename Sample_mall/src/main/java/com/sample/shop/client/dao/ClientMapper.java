@@ -85,6 +85,8 @@ public interface ClientMapper {
 	public List<purchaseVO> getPurchaseList(int u_no);
 	public void doMinusStock(@Param("stock")int stock, @Param("p_no")int p_no);
 	public void doAddSaleCount(@Param("amount")int amount, @Param("p_no")int p_no);
+	public String getProductPrice(int p_no);
+	public int getAmount(@Param("u_no") int u_no, @Param("p_no") int p_no);
 	
 	
 	/*

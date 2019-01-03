@@ -25,7 +25,7 @@
 									<c:forEach var="list" items="${prodList}">
 										<tr>
 											<td>${list.b_p_name}</td>
-											<td>${list.b_p_name}</td>
+											<td>${list.b_p_price}</td>
 											<td>${list.b_amount}</td>
 										</tr>
 									</c:forEach>
@@ -90,8 +90,7 @@
 					<p>사용가능 포인트 : 1000 point</p>
 				</div>
 				<div class="col-md-12">
-					<h3 style="color:red;"><b>총 결제금액</b> : ${p_price}원<small>(상품가격)</small> X ${amount} <small>(수량)</small> + 2,500원<small>(배송비)</small></h3><br>
-					<h4 style="color:red;">= ${totalPrice}원</h4>
+					<h3 style="color:red;"><b>총 결제금액</b> : ${totalPrice}원<small>(상품가격+배송비)</small>
 				</div>
 				</div>
 				<div class="panel-footer"> 
@@ -106,9 +105,11 @@
 		</div>
 	</div>
 </div>
-<input type="hidden" name="b_p_no" value="${p_no}">
 <input type="hidden" name="b_u_no" value="${u_no}">
-<input type="hidden" name="b_p_name" value="${p_name}">
-<input type="hidden" name="b_amount" value="${amount}">
 <input type="hidden" name="totalPrice" value="${totalPrice}">
+<c:forEach var="list" items="${prodList}" varStatus="i" >
+	<input type="hidden" name="pList[${i.index}].b_p_no" value="${list.b_p_no}">
+	<input type="hidden" name="pList[${i.index}].b_p_name" value="${list.b_p_name}">
+	<input type="hidden" name="pList[${i.index}].b_amount" value="${list.b_amount}">
+</c:forEach>
 </form>

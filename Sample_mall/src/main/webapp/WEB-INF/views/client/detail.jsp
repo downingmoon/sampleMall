@@ -87,14 +87,14 @@
 					<div class="btn-group" role="group">
 						<button type="submit" class="btn btn-primary">
 							<span style="margin-right: 20px" class="glyphicon glyphicon-ok"
-								aria-hidden="true"></span> 바로구매<small>비회원도구현하기</small>
+								aria-hidden="true"></span> 바로구매
 						</button>
 					</div>
 				</div>
 				<div class="btn-group btn-group-justified" role="group"
 					style="padding-bottom: 20px; width: 70%;">
 					<div class="btn-group" role="group">
-						<button type="button" class="btn btn-secondary">
+						<button type="button" onclick="alert('준비중')" class="btn btn-secondary">
 							<span style="margin-right: 20px" class="glyphicon glyphicon-user"
 								aria-hidden="true"></span> 비회원 구매
 						</button>

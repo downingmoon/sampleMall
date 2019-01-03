@@ -150,6 +150,14 @@
 		SELECT u_no FROM mall_user WHERE u_id = #{u_id}
 	</select>
 	
+	<select id="getProductPrice" resultType="String">
+		SELECT TO_CHAR(p_price, '999G999G999') AS p_price FROM prod WHERE p_no = #{p_no}
+	</select>
+	
+	<select id="getAmount" resultType="_int">
+		SELECT amount FROM mall_cart WHERE u_no = #{u_no} AND p_no = #{p_no}
+	</select>
+	
 	<insert id="buyProduct">
 		INSERT INTO prod_buy
 		(seq_buy, b_no, b_u_no, b_p_no, b_p_name, b_amount, b_receivername, b_receiverphone, b_address, d_del_msg, b_paytype, b_paytotal)

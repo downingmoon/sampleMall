@@ -1,5 +1,7 @@
 package com.sample.shop.model;
 
+import java.util.List;
+
 public class purchaseVO {
 
 	private String b_no;
@@ -17,6 +19,18 @@ public class purchaseVO {
 	private String b_receivername;
 	private String b_receiverphone;
 	private String d_del_msg;
+	
+	private List<purchaseVO> pList;
+	
+	
+
+	public List<purchaseVO> getpList() {
+		return pList;
+	}
+
+	public void setpList(List<purchaseVO> pList) {
+		this.pList = pList;
+	}
 
 	public String getB_p_price() {
 		return b_p_price;

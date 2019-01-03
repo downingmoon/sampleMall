@@ -134,12 +134,10 @@ public class ClientService {
 	public List<cartVO> getCartList(String u_id) {
 		System.out.println("u_id:" + u_id);
 		if(u_id != "anonymousUser") {
-			System.out.println("if 진입");
 			int u_no = mapper.getUserNo(u_id);
 			return mapper.getCartList(u_no);
 			
 		} else {
-			System.out.println("else 진입");
 			return null;
 		}
 	}
@@ -156,42 +154,50 @@ public class ClientService {
 	
 	// ----------물건구매----------
 	
-	// product 가격 + 배송비 합계 출력용
-	public String priceAndDelcostAdd(String[] p_price, int[] amount) {
-		int beforePrice = 0;
-			for(int i = 0; i < amount.length; i++) {
-				System.out.println("p_price : " + p_price[i]);
-				String removeSpace = p_price[i].replace(" ", "");
-				String removeComma = removeSpace.replace(",", "");
-				System.out.println("rem comma : " + removeComma);
-				beforePrice += (Integer.parseInt(removeComma) * amount[i]);	
-			}
-			
-		beforePrice = beforePrice + 2500;
-		String afterPrice = String.format("%,d", beforePrice);
-		return afterPrice;
+	public String getProductPrice(int p_no) {
+		return mapper.getProductPrice(p_no);
 	}
 	
-	public void buyProduct(purchaseVO vo, delVO dVo) {
+	public int getAmount(String u_id, int p_no) {
+		int u_no = mapper.getUserNo(u_id);
+		return mapper.getAmount(u_no, p_no);
+	}
+	
+	// product 가격 + 배송비 합계 출력용
+	public int priceAndDelcostAdd(String p_price, int amount) {
+		int beforePrice = 0;
+		String removeSpace = p_price.replace(" ", "");
+		String removeComma = removeSpace.replace(",", "");
+		beforePrice += (Integer.parseInt(removeComma) * amount);
+		
+		return beforePrice;
+	}
+	
+	public void buyProduct(purchaseVO vo, int u_no) {
+		delVO dVo = new delVO();
 		//주문번호 만들기
 		int random = (int) (Math.random() * 10000) + 1;
 		String date = new SimpleDateFormat("yyyyMMdd").format(Calendar.getInstance().getTime());
-		System.out.println("day + pno + uno : "+ date + vo.getB_p_no() + vo.getB_u_no());
-		String b_no = date + Integer.toString(vo.getB_p_no())+"-"+ Integer.toString(vo.getB_u_no())
-						   + Integer.toString(random);
-		vo.setB_no(b_no);
-		mapper.buyProduct(vo);
+		String b_no = date + "-"+ u_no + Integer.toString(random);
+		vo.setB_no(b_no); 
+		
+		for(int i = 0; i < vo.getpList().size(); i++) {
+			vo.setB_p_no(vo.getpList().get(i).getB_p_no());
+			vo.setB_p_name(vo.getpList().get(i).getB_p_name());
+			vo.setB_amount(vo.getpList().get(i).getB_amount());
+			mapper.buyProduct(vo);
+		}
 		
 		//배송테이블에 INSERT
-		dVo.setD_b_no(vo.getB_no());
-		dVo.setD_p_no(vo.getB_p_no());
-		dVo.setD_u_no(vo.getB_u_no());
-		dVo.setD_receive_name(vo.getB_receivername());
-		dVo.setD_receive_address(vo.getB_address());
-		dVo.setD_del_msg(vo.getD_del_msg());
-		mapper.insertToDelivery(dVo);
-		mapper.doMinusStock(vo.getB_amount(), vo.getB_p_no());
-		mapper.doAddSaleCount(vo.getB_amount(), vo.getB_p_no());
+//		dVo.setD_b_no(vo.getB_no());
+//		dVo.setD_p_no(vo.getB_p_no());
+//		dVo.setD_u_no(vo.getB_u_no());
+//		dVo.setD_receive_name(vo.getB_receivername());
+//		dVo.setD_receive_address(vo.getB_address());
+//		dVo.setD_del_msg(vo.getD_del_msg());
+//		mapper.insertToDelivery(dVo);
+		//mapper.doMinusStock(vo.getB_amount(), vo.getB_p_no());
+		//mapper.doAddSaleCount(vo.getB_amount(), vo.getB_p_no());
 	}
 	
 	//주문내역 (구매직후)

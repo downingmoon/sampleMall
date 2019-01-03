@@ -13,6 +13,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -241,7 +242,6 @@ public class ClientController {
 	@RequestMapping("goCart")
 	public String goCart(Model m, String u_id, HttpSession session) {
 		if(u_id != "anonymousUser") {
-			System.out.println("anony 아님");
 			List<cartVO> list = service.getCartList(u_id);
 			m.addAttribute("list",list);
 		}
@@ -255,69 +255,58 @@ public class ClientController {
 	@RequestMapping("wishListInsertAjax")
 	@ResponseBody
 	public void wishListInsert(String u_id, int p_no) {
-		System.out.println("u_id : " + u_id);
 		service.wishInsert(u_id, p_no);
 	}
 	
 	@RequestMapping("wishDeleteAjax")
 	@ResponseBody
 	public void wishDeleteAjax(int w_no, String u_id) {
-		System.out.println("w_no : " + w_no + " \nu_id : " + u_id);
 		service.wishDelete(w_no, u_id);
 	}
 	
 	@RequestMapping({"buyProd","buyProductsInCart"})
-	public String buyProduct(int[] p_no, String u_id, String[] p_name, int[] amount, String[] p_price, Model m) {
-		for(int i = 0; i < p_price.length; i++) {
-			System.out.println("price::::" + p_price[i]);
-		}
-		
-		System.out.println("u_id : " + u_id);
+	public String buyProduct(String u_id, Model m, int[] p_no, String[] p_name) {
 		int u_no = service.getUserNo(u_id);
-		
-		String totalPrice = "";
-		List<purchaseVO> list = new ArrayList<purchaseVO>();
 		UserVO uVo = service.userInfo(u_id);
+		List<purchaseVO> prodList = new ArrayList<purchaseVO>();
 		
-		System.out.println("pPrice[] : " + p_price[0]);
-		System.out.println("pPrice[1] : " + p_price[1]);
+		int beforePrice = 0;
 		for(int i = 0; i < p_no.length; i++) {
 			purchaseVO pVo = new purchaseVO();
-			totalPrice = service.priceAndDelcostAdd(p_price, amount);
-			System.out.println("totalPrice : " + totalPrice);
+			String p_price = service.getProductPrice(p_no[i]);
+			int amount = service.getAmount(u_id, p_no[i]);
+			
 			pVo.setB_p_name(p_name[i]);
-			pVo.setB_amount(amount[i]);
-			pVo.setB_p_price(p_price[i]);
-			System.out.println(pVo.getB_p_name());
-			list.add(pVo);
+			pVo.setB_amount(amount);
+			pVo.setB_p_price(p_price);
+			pVo.setB_p_no(p_no[i]);
+			System.out.println(pVo.getB_p_price());
+			prodList.add(pVo);
+			beforePrice += service.priceAndDelcostAdd(p_price, amount);
 		}
-		
+		String totalPrice = String.format("%,d", (beforePrice + 2500));
+		System.out.println("totalPrice : " + totalPrice);
 		m.addAttribute("uVo", uVo);
 		m.addAttribute("u_no",u_no);
-		m.addAttribute("p_no",p_no);
-		m.addAttribute("prodList",list);
-		//m.addAttribute("p_name",p_name);
-		//m.addAttribute("amount",amount);
-		//m.addAttribute("p_price", p_price);
+		m.addAttribute("prodList",prodList);
 		m.addAttribute("totalPrice", totalPrice);
 		m.addAttribute("target","purchasePage");
 		return "client/template";
 	}
 	
-	@RequestMapping("buyProd")
-	public String buyProductsInCart(Model m, int p_no, int amount, String u_id) {
-		
-		
-		m.addAttribute("u_id", u_id);
-		m.addAttribute("target22","cartPurchaseComplete");
-		m.addAttribute("target", "testTarget");
-		return "client/template";
-	}
+//	@RequestMapping("buyProd")
+//	public String buyProductsInCart(Model m, int p_no, int amount, String u_id) {
+//		
+//		
+//		m.addAttribute("u_id", u_id);
+//		m.addAttribute("target22","cartPurchaseComplete");
+//		m.addAttribute("target", "testTarget");
+//		return "client/template";
+//	}
 	
 	
 	@RequestMapping(value="purchaseComplete", method=RequestMethod.POST)
-	public String buyProductPost(Model m,purchaseVO vo, String mainAddr, String subAddr, String totalPrice) {
-		delVO dVo = new delVO();
+	public String buyProductPost(Model m,purchaseVO vo, String mainAddr, String subAddr, String totalPrice, int b_u_no) {
 		
 		String removeComma = totalPrice.replace(",", "");
 		vo.setB_paytotal(Integer.parseInt(removeComma));
@@ -325,8 +314,8 @@ public class ClientController {
 		String b_address = mainAddr+ " "+ subAddr;
 		vo.setB_address(b_address);
 		
-		service.buyProduct(vo, dVo);
-		
+		service.buyProduct(vo, b_u_no);
+		//purchaseVO vo = new purchaseVO();
 		vo  = service.getPurchaseInfo(vo.getB_no(), vo.getB_u_no());
 		m.addAttribute("vo", vo);
 		m.addAttribute("totalPrice", totalPrice);
