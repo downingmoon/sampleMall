@@ -76,16 +76,16 @@
 							<a href='mainTypeList?mainType=clothes'>의류</a>
 							<ul>
 								<li>
-									<a href='mtm'>맨투맨/후드</a>
+									<a href='detailTypeList?type=mtm'>맨투맨/후드</a>
 								</li>
 								<li>
-									<a href='slacks'>슬랙스</a>
+									<a href='detailTypeList?type=slacks'>슬랙스</a>
 								</li>
 								<li>
-									<a href='jeans'>청바지/면바지</a>
+									<a href='detailTypeList?type=jeans'>청바지/면바지</a>
 								</li>
 								<li class='last'>
-									<a href='coat'>코트/점퍼</a>
+									<a href='detailTypeList?type=coat'>코트/점퍼</a>
 								</li>
 							</ul>
 						</li>
@@ -93,10 +93,10 @@
 							<a href='mainTypeList?mainType=shoes'>신발</a>
 							<ul>
 								<li>
-									<a href='workingShoes'>운동화</a>
+									<a href='detailTypeList?type=workingshoes'>운동화</a>
 								</li>
 								<li class='last'>
-									<a href='walker'>워커/정장화</a>
+									<a href='detailTypeList?type=walker'>워커/정장화</a>
 								</li>
 							</ul>
 						</li>
@@ -104,13 +104,13 @@
 							<a href='mainTypeList?mainType=others'>잡화</a>
 							<ul>
 								<li>
-									<a href='cap'>모자</a>
+									<a href='detailTypeList?type=cap'>모자</a>
 								</li>
 								<li>
-									<a href='socks'>양말</a>
+									<a href='detailTypeList?type=socks'>양말</a>
 								</li>
 								<li class='last'>
-									<a href='acc'>악세서리</a>
+									<a href='detailTypeList?type=acc'>악세서리</a>
 								</li>
 							</ul>
 						</li>						

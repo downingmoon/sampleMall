@@ -5,6 +5,7 @@ public class purchaseVO {
 	private String b_no;
 	private int b_u_no;
 	private int b_p_no;
+	private String b_p_price;
 	private String b_u_name;
 	private String b_p_name;
 	private int b_amount;
@@ -16,6 +17,14 @@ public class purchaseVO {
 	private String b_receivername;
 	private String b_receiverphone;
 	private String d_del_msg;
+
+	public String getB_p_price() {
+		return b_p_price;
+	}
+
+	public void setB_p_price(String b_p_price) {
+		this.b_p_price = b_p_price;
+	}
 
 	public String getD_del_msg() {
 		return d_del_msg;

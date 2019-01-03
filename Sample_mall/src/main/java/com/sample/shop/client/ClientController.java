@@ -1,11 +1,13 @@
 package com.sample.shop.client;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.tomcat.util.buf.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -15,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.sample.shop.model.UserVO;
 import com.sample.shop.model.boardVO;
@@ -57,6 +58,45 @@ public class ClientController {
 		System.out.println("list.size : " + list.size());
 		m.addAttribute("list",list);
 		m.addAttribute("target","allCategories");
+		return "client/template";
+	}
+	
+	@RequestMapping("detailTypeList")
+	public String detailCategories(Model m, String type) {
+		List<prodVO> list = service.detailTypeList(type);
+		System.out.println("type : " + type);
+		
+		switch(type) {
+			case "mtm" : type = "맨투맨/후드";
+				break;
+					
+			case "slacks" : type = "슬랙스";
+				break;
+				
+			case "jeans" : type = "청바지/면바지";
+				break;
+			
+			case "coat" : type = "코트/점퍼";
+				break;
+				
+			case "workingShoes" : type = "운동화";
+				break;
+					
+			case "walker" : type = "워커/정장화";
+				break;
+				
+			case "cap" : type = "모자";
+				break;
+				
+			case "socks" : type = "양말";
+				break;
+
+			case "acc" : type = "악세서리";
+				break;
+		}
+		m.addAttribute("type");
+		m.addAttribute("list", list);
+		m.addAttribute("target", "detailCategories");
 		return "client/template";
 	}
 	
@@ -199,12 +239,15 @@ public class ClientController {
 	}
 	
 	@RequestMapping("goCart")
-	public String goCart(Model m, String u_id) {
+	public String goCart(Model m, String u_id, HttpSession session) {
 		if(u_id != "anonymousUser") {
 			System.out.println("anony 아님");
 			List<cartVO> list = service.getCartList(u_id);
 			m.addAttribute("list",list);
 		}
+		int c_count = service.cartCount(u_id);
+		session.setAttribute("c_count", c_count);
+		m.addAttribute("u_id", u_id);
 		m.addAttribute("target","cart");
 		return "client/template";
 	}
@@ -216,26 +259,58 @@ public class ClientController {
 		service.wishInsert(u_id, p_no);
 	}
 	
-	@RequestMapping("buyProd")
-	public String buyProduct(int p_no, String u_id, String p_name, int amount, String p_price, Model m) {
+	@RequestMapping("wishDeleteAjax")
+	@ResponseBody
+	public void wishDeleteAjax(int w_no, String u_id) {
+		System.out.println("w_no : " + w_no + " \nu_id : " + u_id);
+		service.wishDelete(w_no, u_id);
+	}
+	
+	@RequestMapping({"buyProd","buyProductsInCart"})
+	public String buyProduct(int[] p_no, String u_id, String[] p_name, int[] amount, String[] p_price, Model m) {
+		for(int i = 0; i < p_price.length; i++) {
+			System.out.println("price::::" + p_price[i]);
+		}
+		
+		System.out.println("u_id : " + u_id);
 		int u_no = service.getUserNo(u_id);
-		String totalPrice = service.priceAndDelcostAdd(p_price, amount);
-		UserVO vo = service.userInfo(u_id);
-		m.addAttribute("uVo", vo);
+		
+		String totalPrice = "";
+		List<purchaseVO> list = new ArrayList<purchaseVO>();
+		UserVO uVo = service.userInfo(u_id);
+		
+		System.out.println("pPrice[] : " + p_price[0]);
+		System.out.println("pPrice[1] : " + p_price[1]);
+		for(int i = 0; i < p_no.length; i++) {
+			purchaseVO pVo = new purchaseVO();
+			totalPrice = service.priceAndDelcostAdd(p_price, amount);
+			System.out.println("totalPrice : " + totalPrice);
+			pVo.setB_p_name(p_name[i]);
+			pVo.setB_amount(amount[i]);
+			pVo.setB_p_price(p_price[i]);
+			System.out.println(pVo.getB_p_name());
+			list.add(pVo);
+		}
+		
+		m.addAttribute("uVo", uVo);
 		m.addAttribute("u_no",u_no);
 		m.addAttribute("p_no",p_no);
-		m.addAttribute("p_name",p_name);
-		m.addAttribute("amount",amount);
-		m.addAttribute("p_price", p_price);
+		m.addAttribute("prodList",list);
+		//m.addAttribute("p_name",p_name);
+		//m.addAttribute("amount",amount);
+		//m.addAttribute("p_price", p_price);
 		m.addAttribute("totalPrice", totalPrice);
 		m.addAttribute("target","purchasePage");
 		return "client/template";
 	}
 	
-	@RequestMapping("buyProductsInCart")
-	public String buyProductsInCart(Model m) {
+	@RequestMapping("buyProd")
+	public String buyProductsInCart(Model m, int p_no, int amount, String u_id) {
 		
-		m.addAttribute("target","cartPurchaseComple");	
+		
+		m.addAttribute("u_id", u_id);
+		m.addAttribute("target22","cartPurchaseComplete");
+		m.addAttribute("target", "testTarget");
 		return "client/template";
 	}
 	

@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <script src="${pageContext.request.contextPath}/resources/js/admProdMod.js"></script>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/admProdInsert.css">
 <script src="//d1p7wdleee1q2z.cloudfront.net/post/search.min.js"></script>
@@ -17,17 +18,17 @@
 								<center><h3>${p_name} 구매</h3></center>
 								<tbody>
 									<tr>
-										<td>상품명 : </td>
-										<td><div class="col-md-6">${p_name}</div></td>
+										<th>상품명</th>
+										<th>상품 가격</th>
+										<th>수량</th>
 									</tr>
-									<tr>
-										<td>상품가격 : </td>
-										<td><div class="col-md-6">${p_price}원</div></td>
-									</tr>
-									<tr>
-										<td>수량 : </td>
-										<td><div class="col-md-6">${amount}</div></td>
-									</tr>
+									<c:forEach var="list" items="${prodList}">
+										<tr>
+											<td>${list.b_p_name}</td>
+											<td>${list.b_p_name}</td>
+											<td>${list.b_amount}</td>
+										</tr>
+									</c:forEach>
 								</tbody>
 							</table>
 						</div>
@@ -56,7 +57,7 @@
 					<small>배송지 정보</small>
 						<table class="table table-user-information">
 							<tr>
-								<th>받으시는분 이름 : </th>
+								<th>수령인 이름 : </th>
 								<td><input type="text" class="form-control" name="b_receivername"></td>
 							</tr>
 							<tr>

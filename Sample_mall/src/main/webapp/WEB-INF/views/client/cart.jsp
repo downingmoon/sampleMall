@@ -59,13 +59,15 @@
 						<tbody>
 							<c:forEach var="list" items="${list}">
 								<tr>
-									<td><input class="form-control" type="checkbox" name="checkedProd" value="${list.p_no}"></td>
+									<td><input class="form-control" type="checkbox" name="p_no" value="${list.p_no}"></td>
 									<td>${list.c_no}</td>
 									<td>${list.p_name}</td>
 									<td>${list.p_price}</td>
 									<td>${list.amount}</td>
 									<td><button type="button" class="btn btn-danger" onclick="cartDel(${list.c_no})">삭제</button></td>
 								</tr>
+								<input type="hidden" name="p_name" value="${list.p_name}">
+								<input type="hidden" name="p_price" value="${list.p_price}">
 								<input type="hidden" name="amount" value="${list.amount}">
 							</c:forEach>
 						</tbody>
@@ -79,5 +81,5 @@
 			</c:otherwise>
 		</c:choose>
 	</div>
-	<input type="hidden" id="u_id" value="<%=username%>">
+	<input type="hidden" name="u_id" value="${u_id}">
 </form>

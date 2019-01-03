@@ -20,6 +20,11 @@
 		]]>
 	</select>
 	
+	<select id="detailTypeList" resultType="prodVO">
+		SELECT p_no, p_name, TO_CHAR(p_price,'999G999G999') AS p_price, p_mainimg, stock
+		FROM prod WHERE p_detailtype = #{type} 
+	</select>
+	
 	<select id="getProdDetail" resultType="prodVO">
 		SELECT P_NAME, to_char(p_price, '999G999G999') AS p_price, P_INFO, P_NO, p_mainimg, stock FROM PROD WHERE P_NO = #{P_NO}
 	</select>
@@ -111,18 +116,35 @@
     ]]>
 	</select>
 	
+	
+	<!--  Wish List  -->
+	
+	
 	<select id="wishExistChk" resultType="_int">
 		SELECT count(*) FROM mall_wishlist WHERE u_no = #{u_no} AND p_no = #{p_no}
 	</select>
 	
 	<insert id="wishInsert">
 		INSERT INTO mall_wishlist
-		(wish_seq, w_no, u_no, p_no)
+		(wish_seq, w_no, u_no, p_no, p_name)
 		VALUES
 		((SELECT NVL(MAX(wish_seq), 0) + 1 FROM mall_wishlist)
 		,(SELECT NVL(MAX(w_no), 0) + 1 FROM mall_wishlist WHERE u_no = (SELECT u_no FROM mall_user WHERE u_id = #{u_id}))
-		, (SELECT u_no FROM mall_user WHERE u_id = #{u_id}), #{p_no})
+		, (SELECT u_no FROM mall_user WHERE u_id = #{u_id}), #{p_no}, (SELECT p_name FROM prod WHERE p_no = #{p_no}))
 	</insert>
+	
+	<select id="wishListView" resultType="wishVO">
+		SELECT w_no, p_name, TO_CHAR(w_regdate, 'YYYY.MM.DD') AS w_regdate
+		, p_no FROM mall_wishlist WHERE u_no = #{u_no} ORDER BY w_no
+	</select>
+	
+	<delete id="wishDelete">
+		DELETE FROM mall_wishlist WHERE w_no = #{w_no} AND u_no = #{u_no}
+	</delete>
+	
+	
+	<!--  WishList End -->
+	
 	
 	<select id="getUserNo" resultType="_int">
 		SELECT u_no FROM mall_user WHERE u_id = #{u_id}
@@ -155,6 +177,10 @@
 		WHERE b_u_no = #{u_no} ORDER BY seq_buy DESC
 	</select>
 	
+	<update id="doAddSaleCount">
+		UPDATE prod SET p_salecnt = p_salecnt + ${amount} WHERE p_no = #{p_no}
+	</update>
+	
 	<update id="doMinusStock">
 		UPDATE prod SET stock = stock - #{stock} WHERE p_no = #{p_no}
 	</update>
@@ -167,14 +193,9 @@
 		, #{i_u_no}, #{i_title}, #{i_content})
 	</insert>
 	
-	<select id="wishListView" resultType="wishVO">
-		SELECT w_no, (SELECT p.p_name FROM prod p, mall_wishlist w WHERE p.p_no = w.p_no) AS p_name
-		, TO_CHAR(w_regdate, 'YYYY.MM.DD') AS w_regdate, p_no FROM mall_wishlist WHERE u_no = #{u_no}
-	</select>
-	
 	<select id="otoInquireList" resultType="inqVO">
 		SELECT i_no, i_title, i_status, TO_CHAR(i_regdate, 'YYYY.MM.DD') as i_regdate
-		, i_u_no FROM otoinquire WHERE i_u_no = #{u_no}
+		, i_u_no FROM otoinquire WHERE i_u_no = #{u_no} ORDER BY i_no
 	</select>
 	
 </mapper>

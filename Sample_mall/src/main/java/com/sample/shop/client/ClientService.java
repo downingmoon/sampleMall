@@ -32,6 +32,10 @@ public class ClientService {
 		return mapper.getProdListNew();
 	}
 	
+	public List<prodVO> detailTypeList(String type) {
+		return mapper.detailTypeList(type);
+	}
+	
 	public List<mainImgVO> getMainImages() {
 		return mapper.getMainImages();
 	}
@@ -153,26 +157,22 @@ public class ClientService {
 	// ----------물건구매----------
 	
 	// product 가격 + 배송비 합계 출력용
-	public String priceAndDelcostAdd(String p_price, int amount) {
-		System.out.println("p_price : " + p_price);
-		String removeSpace = p_price.replace(" ", "");
-		String removeComma = removeSpace.replace(",", "");
-		System.out.println("rem comma : " + removeComma);
-		int beforePrice = (Integer.parseInt(removeComma) * amount) + 2500;
+	public String priceAndDelcostAdd(String[] p_price, int[] amount) {
+		int beforePrice = 0;
+			for(int i = 0; i < amount.length; i++) {
+				System.out.println("p_price : " + p_price[i]);
+				String removeSpace = p_price[i].replace(" ", "");
+				String removeComma = removeSpace.replace(",", "");
+				System.out.println("rem comma : " + removeComma);
+				beforePrice += (Integer.parseInt(removeComma) * amount[i]);	
+			}
+			
+		beforePrice = beforePrice + 2500;
 		String afterPrice = String.format("%,d", beforePrice);
 		return afterPrice;
 	}
 	
 	public void buyProduct(purchaseVO vo, delVO dVo) {
-		System.out.println("bpno : " + vo.getB_p_no());
-		System.out.println("bpname : " + vo.getB_p_name());
-		System.out.println("buno : " + vo.getB_u_no());
-		System.out.println("bpamount : " + vo.getB_amount());
-		System.out.println("b_rec name : " + vo.getB_receivername());
-		System.out.println("b_rec phone : " + vo.getB_receiverphone());
-		System.out.println("b_del_msg : " + vo.getD_del_msg());
-		System.out.println("paytype  : " + vo.getB_paytype());
-		System.out.println("paytotal : " + vo.getB_paytotal());
 		//주문번호 만들기
 		int random = (int) (Math.random() * 10000) + 1;
 		String date = new SimpleDateFormat("yyyyMMdd").format(Calendar.getInstance().getTime());
@@ -191,6 +191,7 @@ public class ClientService {
 		dVo.setD_del_msg(vo.getD_del_msg());
 		mapper.insertToDelivery(dVo);
 		mapper.doMinusStock(vo.getB_amount(), vo.getB_p_no());
+		mapper.doAddSaleCount(vo.getB_amount(), vo.getB_p_no());
 	}
 	
 	//주문내역 (구매직후)
@@ -214,6 +215,12 @@ public class ClientService {
 	public List<wishVO> wishListView(String u_id) {
 		int u_no = mapper.getUserNo(u_id);
 		return mapper.wishListView(u_no);
+	}
+	
+	//wishList 삭제
+	public void wishDelete(int w_no, String u_id) {
+		int u_no = mapper.getUserNo(u_id);
+		mapper.wishDelete(w_no, u_no);
 	}
 	
 	//1:1 문의 글 조회

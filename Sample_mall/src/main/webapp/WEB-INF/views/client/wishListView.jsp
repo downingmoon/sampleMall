@@ -13,6 +13,26 @@
 	function goDetail(p_no) {
 		location.href="detail?p_no="+p_no;
 	}
+	
+	function wishDel(w_no, u_id) {
+		if(confirm('정말로 삭제하시겠습니까?') == true) {
+			$.ajax({
+				url: 'wishDeleteAjax',
+				type: 'post',
+				data: {
+					w_no : w_no,
+					u_id : u_id
+				},
+				success : function() {
+					alert()
+					location.reload();
+				},
+				error : function() {
+					alert('삭제도중 에러가 발생했습니다.');
+				}
+			});	
+		}
+	}
 </script>
 <div class="col-md-12" >
 		    <div class="card">
@@ -52,11 +72,11 @@
 						<thead>
 						<tbody>
 							<c:forEach var="list" items="${list}">
-								<tr class="wishTr" onclick="goDetail(${list.p_no})" style="cursor:pointer;">
-									<td style="text-align:center;">${list.w_no}</td>
-									<td class="wishTd">${list.p_name}</td>
-									<td class="wishTd">${list.w_regdate}</td>
-									<td><button type="button" class="btn btn-danger" onclick="wishDel(${list.w_no})">삭제</button></td>
+								<tr class="wishTr" style="cursor:pointer;">
+									<td onclick="goDetail(${list.p_no})" style="text-align:center;">${list.w_no}</td>
+									<td onclick="goDetail(${list.p_no})" class="wishTd wishTr">${list.p_name}</td>
+									<td onclick="goDetail(${list.p_no})" class="wishTd wishTr">${list.w_regdate}</td>
+									<td><button type="button" class="btn btn-danger" onclick="wishDel(${list.w_no}, '${u_id}')">삭제</button></td>
 								</tr>
 							</c:forEach>
 						</tbody>
