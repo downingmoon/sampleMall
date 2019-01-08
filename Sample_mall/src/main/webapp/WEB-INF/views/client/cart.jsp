@@ -27,6 +27,14 @@
 			}
 		});
 	}
+	
+	function chkAll() {
+		if($('.chkPno').is(':checked')) {
+			$('input[name=p_no]').prop('checked',false);
+		} else {
+			$('input[name=p_no]').prop('checked',true);
+		}
+	}
 </script>
 <form action="buyProductsInCart" name="frm" method="post"
 	class="col-md-12">
@@ -48,7 +56,7 @@
 					<table class="table table-bordered table-list">
 						<thead>
 							<tr>
-								<th></th>
+								<th><input type="checkbox" onclick="chkAll()" id="allChk">모두선택</th>
 								<th>번호</th>
 								<th>상품명</th>
 								<th>상품가격</th>
@@ -59,7 +67,7 @@
 						<tbody>
 							<c:forEach var="list" items="${list}">
 								<tr>
-									<td><input class="form-control" type="checkbox" name="p_no" value="${list.p_no}"></td>
+									<td><input class="chkPno" type="checkbox" name="p_no" value="${list.p_no}"></td>
 									<td>${list.c_no}</td>
 									<td>${list.p_name}</td>
 									<td>${list.p_price}</td>
@@ -69,6 +77,7 @@
 								<input type="hidden" name="p_name" value="${list.p_name}">
 								<input type="hidden" name="p_price" value="${list.p_price}">
 								<input type="hidden" name="amount" value="${list.amount}">
+								<input type="hidden" name="c_no" value="${list.c_no}">
 							</c:forEach>
 						</tbody>
 					</table>
@@ -81,5 +90,5 @@
 			</c:otherwise>
 		</c:choose>
 	</div>
-	<input type="hidden" name="u_id" value="${u_id}">
+	<input type="hidden" id="u_id" name="u_id" value="${u_id}">
 </form>

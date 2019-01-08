@@ -59,7 +59,7 @@
             <c:choose>
             	<c:when test="${data != 0}">
             	
-			<form action="buyProd" method="post" name="frm" onsubmit="return chkBeforePay()">
+			<form action="buyProd" method="post" name="frm" onsubmit="return chkBeforePay(<%=username%>)">
 				<div class="section" style="padding-bottom: 20px;">
 					<h6 class="title-attr">
 						<small style="color: #337ab7;">수량</small>

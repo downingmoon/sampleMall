@@ -19,10 +19,17 @@ public class purchaseVO {
 	private String b_receivername;
 	private String b_receiverphone;
 	private String d_del_msg;
-	
+	private int cnt;
+
+	public int getCnt() {
+		return cnt;
+	}
+
+	public void setCnt(int cnt) {
+		this.cnt = cnt;
+	}
+
 	private List<purchaseVO> pList;
-	
-	
 
 	public List<purchaseVO> getpList() {
 		return pList;

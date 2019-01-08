@@ -90,7 +90,7 @@
 					<p>사용가능 포인트 : 1000 point</p>
 				</div>
 				<div class="col-md-12">
-					<h3 style="color:red;"><b>총 결제금액</b> : ${totalPrice}원<small>(상품가격+배송비)</small>
+					<h3 style="color:red;"><b>총 결제금액</b> : ${totalPrice}원<small>(상품가격+배송비)</small></h3>
 				</div>
 				</div>
 				<div class="panel-footer"> 
@@ -107,6 +107,10 @@
 </div>
 <input type="hidden" name="b_u_no" value="${u_no}">
 <input type="hidden" name="totalPrice" value="${totalPrice}">
+<input type="hidden" name="u_id" value="${u_id}">
+<c:forEach var="cno" items="${c_no}" varStatus="i">
+	<input type="hidden" name="c_no" value="${cno}">
+</c:forEach>
 <c:forEach var="list" items="${prodList}" varStatus="i" >
 	<input type="hidden" name="pList[${i.index}].b_p_no" value="${list.b_p_no}">
 	<input type="hidden" name="pList[${i.index}].b_p_name" value="${list.b_p_name}">

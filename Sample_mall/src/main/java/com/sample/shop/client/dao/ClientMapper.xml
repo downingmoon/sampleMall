@@ -64,11 +64,21 @@
 		FROM prod WHERE p_maintype = #{mainType}
 	</select>
 	
+	<!--  SEARCH -->
 	<select id="searchItems" resultType="prodVO">
 		SELECT p_no, p_name, to_char(p_price, '999G999G999') AS p_price, p_mainimg, stock
 		FROM prod WHERE p_name LIKE '%'||#{searchKeyword}||'%'
 		OR p_info LIKE '%'||#{searchKeyword}||'%'
 	</select>
+	
+	<select id="detailSearch" resultType="prodVO">
+		SELECT p_no, p_name, to_char(p_price, '999G999G999') AS p_price, p_mainimg, stock
+		FROM prod WHERE p_name LIKE '%'||#{searchKeyword}||'%'
+		AND p_maintype LIKE '%'||#{mainCategory}||'%' 
+		AND p_detailtype LIKE '%'||#{subCategory}||'%'
+	</select>
+	
+	<!--  -->
 	
 	<select id="userInfo" resultType="userVO">
 		SELECT * FROM mall_user WHERE u_id = #{u_id}
@@ -185,6 +195,10 @@
 		WHERE b_u_no = #{u_no} ORDER BY seq_buy DESC
 	</select>
 	
+	<select id="getPnameCoutFromBuy" resultType="_int">
+		SELECT COUNT(*) FROM prod_buy WHERE b_no = #{b_no}
+	</select>
+	
 	<update id="doAddSaleCount">
 		UPDATE prod SET p_salecnt = p_salecnt + ${amount} WHERE p_no = #{p_no}
 	</update>
@@ -204,6 +218,11 @@
 	<select id="otoInquireList" resultType="inqVO">
 		SELECT i_no, i_title, i_status, TO_CHAR(i_regdate, 'YYYY.MM.DD') as i_regdate
 		, i_u_no FROM otoinquire WHERE i_u_no = #{u_no} ORDER BY i_no
+	</select>
+	
+	<select id="otoDetail" resultType="inqVO">
+		SELECT i_no, i_title, i_status, TO_CHAR(i_regdate, 'YYYY.MM.DD') as i_regdate
+		, i_content, i_answer FROM otoinquire WHERE i_no = #{i_no} AND i_u_no = #{i_u_no}
 	</select>
 	
 </mapper>

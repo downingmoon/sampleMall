@@ -7,13 +7,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.apache.tomcat.util.buf.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -22,7 +20,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.sample.shop.model.UserVO;
 import com.sample.shop.model.boardVO;
 import com.sample.shop.model.cartVO;
-import com.sample.shop.model.delVO;
 import com.sample.shop.model.inqVO;
 import com.sample.shop.model.mainImgVO;
 import com.sample.shop.model.prodVO;
@@ -236,7 +233,7 @@ public class ClientController {
 			service.cartInsert(p_no, u_id, amount);
 		}
 		int c_count = service.cartCount(u_id);
-		session.setAttribute("c_count", c_count);
+		session.setAttribute("cnt", c_count);
 	}
 	
 	@RequestMapping("goCart")
@@ -246,7 +243,7 @@ public class ClientController {
 			m.addAttribute("list",list);
 		}
 		int c_count = service.cartCount(u_id);
-		session.setAttribute("c_count", c_count);
+		session.setAttribute("cnt", c_count);
 		m.addAttribute("u_id", u_id);
 		m.addAttribute("target","cart");
 		return "client/template";
@@ -265,48 +262,42 @@ public class ClientController {
 	}
 	
 	@RequestMapping({"buyProd","buyProductsInCart"})
-	public String buyProduct(String u_id, Model m, int[] p_no, String[] p_name) {
-		int u_no = service.getUserNo(u_id);
-		UserVO uVo = service.userInfo(u_id);
-		List<purchaseVO> prodList = new ArrayList<purchaseVO>();
-		
-		int beforePrice = 0;
-		for(int i = 0; i < p_no.length; i++) {
-			purchaseVO pVo = new purchaseVO();
-			String p_price = service.getProductPrice(p_no[i]);
-			int amount = service.getAmount(u_id, p_no[i]);
+	public String buyProduct(HttpServletRequest request, String u_id, Model m, int[] p_no, String[] p_name, int[] c_no) {
+		if(u_id == "anonymousUser") {
+			HttpSession session = request.getSession(true);
+		} else {
+			int u_no = service.getUserNo(u_id);
+			UserVO uVo = service.userInfo(u_id);
+			List<purchaseVO> prodList = new ArrayList<purchaseVO>();
 			
-			pVo.setB_p_name(p_name[i]);
-			pVo.setB_amount(amount);
-			pVo.setB_p_price(p_price);
-			pVo.setB_p_no(p_no[i]);
-			System.out.println(pVo.getB_p_price());
-			prodList.add(pVo);
-			beforePrice += service.priceAndDelcostAdd(p_price, amount);
+			int beforePrice = 0;
+			for(int i = 0; i < p_no.length; i++) {
+				purchaseVO pVo = new purchaseVO();
+				String p_price = service.getProductPrice(p_no[i]);
+				int amount = service.getAmount(u_id, p_no[i]);
+				
+				pVo.setB_p_name(p_name[i]);
+				pVo.setB_amount(amount);
+				pVo.setB_p_price(p_price);
+				pVo.setB_p_no(p_no[i]);
+				prodList.add(pVo);
+				beforePrice += service.priceAndDelcostAdd(p_price, amount);
+			}
+			String totalPrice = String.format("%,d", (beforePrice + 2500));
+			m.addAttribute("u_id", u_id);
+			m.addAttribute("c_no", c_no);
+			m.addAttribute("uVo", uVo);
+			m.addAttribute("u_no",u_no);
+			m.addAttribute("prodList",prodList);
+			m.addAttribute("totalPrice", totalPrice);
+			m.addAttribute("target","purchasePage");
 		}
-		String totalPrice = String.format("%,d", (beforePrice + 2500));
-		System.out.println("totalPrice : " + totalPrice);
-		m.addAttribute("uVo", uVo);
-		m.addAttribute("u_no",u_no);
-		m.addAttribute("prodList",prodList);
-		m.addAttribute("totalPrice", totalPrice);
-		m.addAttribute("target","purchasePage");
+		
 		return "client/template";
 	}
 	
-//	@RequestMapping("buyProd")
-//	public String buyProductsInCart(Model m, int p_no, int amount, String u_id) {
-//		
-//		
-//		m.addAttribute("u_id", u_id);
-//		m.addAttribute("target22","cartPurchaseComplete");
-//		m.addAttribute("target", "testTarget");
-//		return "client/template";
-//	}
-	
-	
 	@RequestMapping(value="purchaseComplete", method=RequestMethod.POST)
-	public String buyProductPost(Model m,purchaseVO vo, String mainAddr, String subAddr, String totalPrice, int b_u_no) {
+	public String buyProductPost(Model m,purchaseVO vo, String mainAddr, String subAddr, String totalPrice, int b_u_no, int[] c_no, String u_id) {
 		
 		String removeComma = totalPrice.replace(",", "");
 		vo.setB_paytotal(Integer.parseInt(removeComma));
@@ -314,10 +305,9 @@ public class ClientController {
 		String b_address = mainAddr+ " "+ subAddr;
 		vo.setB_address(b_address);
 		
-		service.buyProduct(vo, b_u_no);
-		//purchaseVO vo = new purchaseVO();
-		vo  = service.getPurchaseInfo(vo.getB_no(), vo.getB_u_no());
-		m.addAttribute("vo", vo);
+		List<purchaseVO> list = service.buyProduct(vo, b_u_no);
+		service.cartDelete(c_no, u_id);
+		m.addAttribute("list", list);
 		m.addAttribute("totalPrice", totalPrice);
 		m.addAttribute("target","purchaseComplete");
 		return "client/template";
@@ -332,17 +322,18 @@ public class ClientController {
 		m.addAttribute("u_no", u_no);
 		return "client/template";
 	}
+	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	@RequestMapping("orderDetail")
 	public String orderDetail(Model m,String b_no, int u_no) {
-		purchaseVO vo = service.getPurchaseInfo(b_no, u_no);
+		List<purchaseVO> list = service.getPurchaseInfo(b_no, u_no);
 		m.addAttribute("target","purchaseComplete");
-		m.addAttribute("vo", vo);
+		m.addAttribute("list", list);
 		return "client/template";
 	}
 	
 	@RequestMapping("cartDeleteAjax")
 	@ResponseBody
-	public void cartDelete(int c_no, String u_id, HttpServletRequest request) {
+	public void cartDelete(int[] c_no, String u_id, HttpServletRequest request) {
 		service.cartDelete(c_no, u_id);
 		
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -383,6 +374,26 @@ public class ClientController {
 		m.addAttribute("u_id",u_id);
 		m.addAttribute("list", list);
 		m.addAttribute("target", "otoInquireListView");
+		return "client/template";
+	}
+	
+	@RequestMapping("otoDetail")
+	public String otoDetailView(Model m, int i_no, int i_u_no, String u_id) {
+		inqVO vo = service.otoDetailView(i_no, i_u_no);
+		m.addAttribute("u_id",u_id);
+		m.addAttribute("vo", vo);
+		m.addAttribute("target", "otoDetail");
+		return "client/template";
+	}
+	
+	@RequestMapping("detailSearch")
+	public String detailSearch(Model m, String searchKeyword, String mainCategory, String subCategory) {
+		List<prodVO> list = service.detailSearch(searchKeyword, mainCategory, subCategory);
+		System.out.println("main : " + mainCategory);
+		System.out.println("sub : "  + subCategory);
+		m.addAttribute("target", "searchPage");
+		m.addAttribute("word", searchKeyword);
+		m.addAttribute("list", list);
 		return "client/template";
 	}
 

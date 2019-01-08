@@ -10,17 +10,17 @@ $(document).ready(function() {
     var mainCategoryObject = new Object();
      
     mainCategoryObject = new Object();
-    mainCategoryObject.main_category_id = "1";
+    mainCategoryObject.main_category_id = "clothes";
     mainCategoryObject.main_category_name = "의류";
     mainCategoryArray.push(mainCategoryObject);
      
     mainCategoryObject = new Object();
-    mainCategoryObject.main_category_id = "2";
+    mainCategoryObject.main_category_id = "shoes";
     mainCategoryObject.main_category_name = "신발";
     mainCategoryArray.push(mainCategoryObject);
     
     mainCategoryObject = new Object();
-    mainCategoryObject.main_category_id = "3";
+    mainCategoryObject.main_category_id = "others";
     mainCategoryObject.main_category_name = "잡화";
     mainCategoryArray.push(mainCategoryObject);
      
@@ -28,56 +28,56 @@ $(document).ready(function() {
     var subCategoryObject = new Object();
      
     subCategoryObject = new Object();
-    subCategoryObject.main_category_id = "1";
-    subCategoryObject.sub_category_id = "1"
+    subCategoryObject.main_category_id = "clothes";
+    subCategoryObject.sub_category_id = "mtm"
     subCategoryObject.sub_category_name = "맨투맨/후드" 
     subCategoryArray.push(subCategoryObject);
      
     subCategoryObject = new Object();
-    subCategoryObject.main_category_id = "1";
-    subCategoryObject.sub_category_id = "2"
+    subCategoryObject.main_category_id = "clothes";
+    subCategoryObject.sub_category_id = "slacks"
     subCategoryObject.sub_category_name = "슬랙스" 
     subCategoryArray.push(subCategoryObject);
      
     subCategoryObject = new Object();
-    subCategoryObject.main_category_id = "1";
-    subCategoryObject.sub_category_id = "3"
+    subCategoryObject.main_category_id = "clothes";
+    subCategoryObject.sub_category_id = "jeans"
     subCategoryObject.sub_category_name = "청바지/면바지" 
     subCategoryArray.push(subCategoryObject);
     
     subCategoryObject = new Object();
-    subCategoryObject.main_category_id = "1";
-    subCategoryObject.sub_category_id = "4"
+    subCategoryObject.main_category_id = "clothes";
+    subCategoryObject.sub_category_id = "coat"
     subCategoryObject.sub_category_name = "코트/점퍼" 
     subCategoryArray.push(subCategoryObject);
      
     subCategoryObject = new Object();
-    subCategoryObject.main_category_id = "2";
-    subCategoryObject.sub_category_id = "1"
+    subCategoryObject.main_category_id = "shoes";
+    subCategoryObject.sub_category_id = "workingshoes"
     subCategoryObject.sub_category_name = "운동화" 
     subCategoryArray.push(subCategoryObject);
      
     subCategoryObject = new Object();
-    subCategoryObject.main_category_id = "2";
-    subCategoryObject.sub_category_id = "2"
+    subCategoryObject.main_category_id = "shoes";
+    subCategoryObject.sub_category_id = "walker"
     subCategoryObject.sub_category_name = "워커/정장화"
     subCategoryArray.push(subCategoryObject);
     
    	subCategoryObject = new Object();
-   	subCategoryObject.main_category_id = "3";
-   	subCategoryObject.sub_category_id = "1"
+   	subCategoryObject.main_category_id = "others";
+   	subCategoryObject.sub_category_id = "cap"
    	subCategoryObject.sub_category_name = "모자"
    	subCategoryArray.push(subCategoryObject);
    	
    	subCategoryObject = new Object();
-   	subCategoryObject.main_category_id = "3";
-   	subCategoryObject.sub_category_id = "2"
+   	subCategoryObject.main_category_id = "others";
+   	subCategoryObject.sub_category_id = "socks"
    	subCategoryObject.sub_category_name = "양말"
    	subCategoryArray.push(subCategoryObject);
    	
    	subCategoryObject = new Object();
-   	subCategoryObject.main_category_id = "3";
-   	subCategoryObject.sub_category_id = "3"
+   	subCategoryObject.main_category_id = "others";
+   	subCategoryObject.sub_category_id = "acc"
    	subCategoryObject.sub_category_name = "악세서리"
    	subCategoryArray.push(subCategoryObject);
     var mainCategorySelectBox = $("select[name='mainCategory']");
@@ -115,24 +115,20 @@ $(document).ready(function() {
 			<td></td>
 		</tr>
 		<tr>
-			<th>검색어 : </th>
-			<td><input type="text" name="searchKeyword" placeholder="Search"></td>
+			<td colspan="2"><input class="form-control" type="text" name="searchKeyword" placeholder="Search"></td>
+			<td colspan="1"><input type="submit" class="btn btn-primary" value="검색"></td>
 		</tr>
 		<tr>
-			<th>카테고리</th>
 			<td>
-				<select name="mainCategory">
-					<option value="all">전체</option>
+				<select class="form-control" name="mainCategory">
+					<option class="form-control" value="">카테고리선택</option>
 				</select>
 			</td>
 			<td>
-				<select name="subCategory">
-					<option value="all">전체</option>
+				<select class="form-control" name="subCategory">
+					<option class="form-control" value="">전체</option>
 				</select>
 			</td>
-		</tr>
-		<tr>
-			<td><input type="submit" value="검색"></td>
 		</tr>
 	</table>
 </form>
@@ -144,9 +140,9 @@ $(document).ready(function() {
 	<c:otherwise>
 <div class="row">
 		<c:forEach items="${list}" var="list">
-			<div class="col-md-3 col-xs-6 col-lg-3 col-xl-2">
+			<div class="col-md-3 col-xs-6 col-lg-3 col-xl-2" style="margin-right:15px;">
 				<a href="detail?p_no=${list.p_no}"> 
-				<img style="size: width:600px; height: 300px;" 
+				<img style="width:300px; height: 300px;" 
 				src="/shop/resources/img/product/mainImg/${list.p_no}/${list.p_mainimg}.jpg"><br>
 					${list.p_name}<br>
 					<c:set var="data" value="${list.stock}" />

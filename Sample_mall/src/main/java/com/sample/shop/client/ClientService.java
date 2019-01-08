@@ -1,6 +1,7 @@
 package com.sample.shop.client;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -114,12 +115,12 @@ public class ClientService {
 		mapper.cartInsert(p_no, u_id, amount);
 	}
 	
-	public void cartDelete(int c_no, String u_id) {
-		System.out.println("c_no : " + c_no);
+	public void cartDelete(int[] c_no, String u_id) {
 		System.out.println("u_id : " + u_id);
 		int u_no = mapper.getUserNo(u_id);
-		System.out.println("u_no : " + u_no);
-		mapper.cartDelete(c_no, u_no);
+		for(int i = 0; i < c_no.length; i++) {
+			mapper.cartDelete(c_no[i], u_no);
+		}
 	}
 	
 	public int cartCount(String u_id) {
@@ -173,7 +174,7 @@ public class ClientService {
 		return beforePrice;
 	}
 	
-	public void buyProduct(purchaseVO vo, int u_no) {
+	public List<purchaseVO> buyProduct(purchaseVO vo, int u_no) {
 		delVO dVo = new delVO();
 		//주문번호 만들기
 		int random = (int) (Math.random() * 10000) + 1;
@@ -181,33 +182,52 @@ public class ClientService {
 		String b_no = date + "-"+ u_no + Integer.toString(random);
 		vo.setB_no(b_no); 
 		
+		dVo.setD_b_no(b_no);
+		dVo.setD_u_no(vo.getB_u_no());
+		dVo.setD_receive_name(vo.getB_receivername());
+		dVo.setD_receive_address(vo.getB_address());
+		dVo.setD_del_msg(vo.getD_del_msg());		
+		
 		for(int i = 0; i < vo.getpList().size(); i++) {
 			vo.setB_p_no(vo.getpList().get(i).getB_p_no());
 			vo.setB_p_name(vo.getpList().get(i).getB_p_name());
 			vo.setB_amount(vo.getpList().get(i).getB_amount());
 			mapper.buyProduct(vo);
+			
+			//배송 INSERT
+			dVo.setD_p_no(vo.getB_p_no());
+			mapper.insertToDelivery(dVo);
+			mapper.doMinusStock(vo.getB_amount(), vo.getB_p_no());
+			mapper.doAddSaleCount(vo.getB_amount(), vo.getB_p_no());
 		}
-		
-		//배송테이블에 INSERT
-//		dVo.setD_b_no(vo.getB_no());
-//		dVo.setD_p_no(vo.getB_p_no());
-//		dVo.setD_u_no(vo.getB_u_no());
-//		dVo.setD_receive_name(vo.getB_receivername());
-//		dVo.setD_receive_address(vo.getB_address());
-//		dVo.setD_del_msg(vo.getD_del_msg());
-//		mapper.insertToDelivery(dVo);
-		//mapper.doMinusStock(vo.getB_amount(), vo.getB_p_no());
-		//mapper.doAddSaleCount(vo.getB_amount(), vo.getB_p_no());
+		List<purchaseVO> list = mapper.getPurchaseInfo(b_no, u_no);
+		//mapper.cartDelete(c_no, u_no);
+		//TODO : 장바구니에서 구매할때 c_no도 같이넘기기
+		return list;
 	}
 	
 	//주문내역 (구매직후)
-	public purchaseVO getPurchaseInfo(String b_no, int b_u_no) {
+	public List<purchaseVO> getPurchaseInfo(String b_no, int b_u_no) {
 		return mapper.getPurchaseInfo(b_no, b_u_no);
 	}
 	
 	//주문내역 (header)
 	public List<purchaseVO> getPurchaseList(int u_no) {
-		return mapper.getPurchaseList(u_no);
+		List<purchaseVO> originList = mapper.getPurchaseList(u_no);
+		List<purchaseVO> resultList = originList;
+		for(int i = 0; i < originList.size(); i++) {
+			for(int j = 0; j < originList.size(); j++) {
+				String originB_no = originList.get(i).getB_no();
+				String resultB_no = resultList.get(j).getB_no();
+				if(resultB_no.contains(originB_no)) {
+					resultList.remove(j);
+				}
+			}
+			String resultB_no = resultList.get(i).getB_no();
+			int cnt = mapper.getPnameCoutFromBuy(resultB_no);
+			resultList.get(i).setCnt(cnt);
+		}
+		return resultList;
 	}
 	
 	//1:1 문의 글 등록
@@ -233,6 +253,16 @@ public class ClientService {
 	public List<inqVO> otoInquireList(String u_id) {
 		int u_no = mapper.getUserNo(u_id);
 		return mapper.otoInquireList(u_no);
+	}
+	
+	//1:1 문의 상세조회
+	public inqVO otoDetailView(int i_no, int i_u_no) {
+		return mapper.otoDetail(i_no, i_u_no);
+	}
+	
+	//상세 검색
+	public List<prodVO> detailSearch(String searchKeyword, String mainCategory, String subCategory) {
+		return mapper.detailSearch(searchKeyword, mainCategory, subCategory);
 	}
 
 }

@@ -118,3 +118,13 @@ $(function() {
 		});
 	});
 	
+	function chkBeforePay(u_id) {
+		var frm = document.frm;
+		if(u_id == 'anonymousUser') {
+			alert('회원가입 후 가능합니다.');
+			location.href='join';
+		} else {
+			frm.submit();
+		}
+	}
+	

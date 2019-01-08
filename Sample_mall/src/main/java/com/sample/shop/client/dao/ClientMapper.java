@@ -30,9 +30,16 @@ public interface ClientMapper {
 	public List<prodVO> detailTypeList(String type);
 	public List<prodVO> getProdList();
 	public List<prodVO> getMainTypeList(String mainType);
-	public List<prodVO> searchItems(String searchKeyword);
 	public prodVO getProdDetail(int p_no);
 	public List<prodVO> bestItemList();
+	
+	
+	/*
+	 *  Search
+	 */
+	public List<prodVO> detailSearch(@Param("searchKeyword")String searchKeyword, @Param("mainCategory")String mainCategory, @Param("subCategory")String subCategory);
+	public List<prodVO> searchItems(String searchKeyword);
+	
 	
 	/*
 	 *  Image
@@ -81,8 +88,7 @@ public interface ClientMapper {
 	 */
 	public void buyProduct(purchaseVO vo);
 	public void insertToDelivery(delVO vo);
-	public purchaseVO getPurchaseInfo(@Param("b_no")String b_no, @Param("b_u_no")int b_u_no);
-	public List<purchaseVO> getPurchaseList(int u_no);
+	public List<purchaseVO> getPurchaseInfo(@Param("b_no")String b_no, @Param("b_u_no")int b_u_no);
 	public void doMinusStock(@Param("stock")int stock, @Param("p_no")int p_no);
 	public void doAddSaleCount(@Param("amount")int amount, @Param("p_no")int p_no);
 	public String getProductPrice(int p_no);
@@ -90,8 +96,16 @@ public interface ClientMapper {
 	
 	
 	/*
+	 *  OrderList
+	 */
+	public int getPnameCoutFromBuy(String b_no);
+	public List<purchaseVO> getPurchaseList(int u_no);
+	
+	
+	/*
 	 * One to One Inquire
 	 */
 	public void otoInquireReg(inqVO vo);
 	public List<inqVO> otoInquireList(int u_no);
+	public inqVO otoDetail(@Param("i_no")int i_no, @Param("i_u_no")int i_u_no);
 }
