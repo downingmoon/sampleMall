@@ -30,7 +30,7 @@
 									<tr>
 										<td>
 											<div>
-												<textarea name="i_answer"class="form-control" style="resize:none;" rows="10"></textarea>
+												<textarea name="i_answer"class="form-control" style="resize:none;" rows="10">${fn:replace(vo.i_answer, cn, br)}</textarea>
 											</div>
 										</td>
 									</tr>

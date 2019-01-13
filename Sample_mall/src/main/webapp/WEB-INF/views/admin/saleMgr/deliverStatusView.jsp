@@ -28,7 +28,16 @@
 							<tr>
 								<td>${list.d_no}</td>
 								<td>${list.d_p_no}</td>
-								<td>${list.d_u_no}</td>
+								<td>
+									<c:choose>
+										<c:when test="${list.d_u_no == 999999999}">
+											비회원
+										</c:when>
+										<c:otherwise>
+											${list.d_u_no}
+										</c:otherwise>
+									</c:choose>
+								</td>
 								<td>${list.d_receive_name}</td>
 								<td>${list.d_receive_address}</td>
 								<c:choose>
@@ -40,7 +49,16 @@
 									</c:otherwise>
 								</c:choose>	
 								<td>${list.d_b_no}</td>
-								<td>${list.d_status}</td>
+								<td>
+									<c:choose>
+										<c:when test="${list.d_status == '발송완료'}">
+											<b style="color:blue">${list.d_status}</b>
+										</c:when>
+										<c:otherwise>
+											<b>${list.d_status}</b>
+										</c:otherwise>
+									</c:choose>
+								</td>
 							</tr>
 						</c:forEach>
 					</tbody>

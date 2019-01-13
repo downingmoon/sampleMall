@@ -30,6 +30,9 @@ import com.sample.shop.model.wishVO;
 @RequestMapping("client")
 public class ClientController {
 	
+	private final int pageCnt = 10;
+	private final int page = 1;
+	
 	@Autowired
 	private ClientService service;
 	
@@ -158,7 +161,12 @@ public class ClientController {
 	}
 	
 	@RequestMapping("noticeAndEvents")
-	public String noticeAndEvects(Model m) {
+	public String noticeAndEvects(Model m, @RequestParam(value="page", defaultValue="1")int page) {
+		
+		int boardCnt = service.getBoardPageCount();
+		int startCnt = (page-1) * pageCnt +1;
+		
+		System.out.println("pageCnt : " + pageCnt);
 		List<boardVO> list = service.getBoardList();
 		m.addAttribute("list", list);
 		m.addAttribute("target","notice");
@@ -262,43 +270,89 @@ public class ClientController {
 	}
 	
 	@RequestMapping({"buyProd","buyProductsInCart"})
-	public String buyProduct(HttpServletRequest request, String u_id, Model m, int[] p_no, String[] p_name, int[] c_no) {
-		if(u_id == "anonymousUser") {
-			HttpSession session = request.getSession(true);
-		} else {
-			int u_no = service.getUserNo(u_id);
-			UserVO uVo = service.userInfo(u_id);
-			List<purchaseVO> prodList = new ArrayList<purchaseVO>();
+	public String buyProduct(HttpServletRequest request, int amount, String u_id, Model m, int[] p_no, String[] p_name, @RequestParam(value="c_no", defaultValue="-1")int[] c_no) {
+		int u_no = service.getUserNo(u_id);
+		UserVO uVo = service.userInfo(u_id);
+		List<purchaseVO> prodList = new ArrayList<purchaseVO>();
 			
-			int beforePrice = 0;
-			for(int i = 0; i < p_no.length; i++) {
-				purchaseVO pVo = new purchaseVO();
-				String p_price = service.getProductPrice(p_no[i]);
-				int amount = service.getAmount(u_id, p_no[i]);
-				
-				pVo.setB_p_name(p_name[i]);
-				pVo.setB_amount(amount);
-				pVo.setB_p_price(p_price);
-				pVo.setB_p_no(p_no[i]);
-				prodList.add(pVo);
-				beforePrice += service.priceAndDelcostAdd(p_price, amount);
+		System.out.println("cno : " + c_no[0]);
+		System.out.println("amount : " + amount);
+			
+		int beforePrice = 0;
+		for(int i = 0; i < p_no.length; i++) {
+			purchaseVO pVo = new purchaseVO();
+			String p_price = service.getProductPrice(p_no[i]);
+			if(c_no[0] != -1) {
+				amount = service.getAmount(u_id, p_no[i]);	
 			}
-			String totalPrice = String.format("%,d", (beforePrice + 2500));
-			m.addAttribute("u_id", u_id);
-			m.addAttribute("c_no", c_no);
-			m.addAttribute("uVo", uVo);
-			m.addAttribute("u_no",u_no);
-			m.addAttribute("prodList",prodList);
-			m.addAttribute("totalPrice", totalPrice);
-			m.addAttribute("target","purchasePage");
+			pVo.setB_p_name(p_name[i]);
+			pVo.setB_amount(amount);
+			pVo.setB_p_price(p_price);
+			pVo.setB_p_no(p_no[i]);
+			prodList.add(pVo);
+			beforePrice += service.priceAndDelcostAdd(p_price, amount);
 		}
-		
+		String totalPrice = String.format("%,d", (beforePrice + 2500));
+		m.addAttribute("u_id", u_id);
+		m.addAttribute("c_no", c_no);
+		m.addAttribute("uVo", uVo);
+		m.addAttribute("u_no",u_no);
+		m.addAttribute("prodList",prodList);
+		m.addAttribute("totalPrice", totalPrice);
+		m.addAttribute("target","purchasePage");
+	
 		return "client/template";
 	}
 	
 	@RequestMapping(value="purchaseComplete", method=RequestMethod.POST)
-	public String buyProductPost(Model m,purchaseVO vo, String mainAddr, String subAddr, String totalPrice, int b_u_no, int[] c_no, String u_id) {
+	public String buyProductPost(Model m,purchaseVO vo, String mainAddr, String subAddr, String totalPrice, int b_u_no, 
+			@RequestParam(value="c_no", defaultValue="-1")int[] c_no, String u_id) {
 		
+		String removeComma = totalPrice.replace(",", "");
+		vo.setB_paytotal(Integer.parseInt(removeComma));
+		
+		String b_address = mainAddr+ " "+ subAddr;
+		vo.setB_address(b_address);
+		if(c_no[0] != -1) {
+			service.cartDelete(c_no, u_id);
+		}
+		
+		List<purchaseVO> list = service.buyProduct(vo, b_u_no);
+		m.addAttribute("list", list);
+		m.addAttribute("totalPrice", totalPrice);
+		m.addAttribute("target","purchaseComplete");
+		return "client/template";
+	}
+	
+	@RequestMapping("nonMemberPurchase")
+	public String nonMemberPurchase(Model m, int p_no, String p_name, String p_price, int amount) {
+		
+		List<purchaseVO> prodList = new ArrayList<purchaseVO>();
+			
+		purchaseVO pVo = new purchaseVO();
+		pVo.setB_p_name(p_name);
+		pVo.setB_amount(amount);
+		pVo.setB_p_price(p_price);
+		pVo.setB_p_no(p_no);
+		prodList.add(pVo);
+		m.addAttribute("prodList",prodList);
+		
+		//비회원은 구매자 정보도 모두 입력해야함.
+		//멤버가 아닐땐 nonmemberpurchasepage 에서 모두 입력 후 submit시 purchaseVO에서  isMem에 SET 해줘야함
+		int beforePrice = service.priceAndDelcostAdd(p_price, amount);
+		String totalPrice = String.format("%,d", (beforePrice + 2500));
+		m.addAttribute("totalPrice", totalPrice);
+		m.addAttribute("p_no", p_no);
+		m.addAttribute("p_name", p_name);
+		m.addAttribute("p_price", p_price);
+		m.addAttribute("amount", amount);
+		m.addAttribute("target", "nonMemberPurchasePage");
+		return "client/template";
+	}
+	
+	@RequestMapping("nonMemberPurchaseComplete")
+	public String nonMemberPurchaseComplete(Model m, purchaseVO vo, String mainAddr, String subAddr, String totalPrice) {
+		int b_u_no = 999999999; // 비회원
 		String removeComma = totalPrice.replace(",", "");
 		vo.setB_paytotal(Integer.parseInt(removeComma));
 		
@@ -306,7 +360,7 @@ public class ClientController {
 		vo.setB_address(b_address);
 		
 		List<purchaseVO> list = service.buyProduct(vo, b_u_no);
-		service.cartDelete(c_no, u_id);
+		list.get(0).setB_u_name("비회원");
 		m.addAttribute("list", list);
 		m.addAttribute("totalPrice", totalPrice);
 		m.addAttribute("target","purchaseComplete");
@@ -315,6 +369,10 @@ public class ClientController {
 	
 	@RequestMapping("orderView")
 	public String getPurchaseList(Model m, String u_id) {
+		if(u_id.equals("anonymousUser")) {
+			m.addAttribute("target", "orderViewAnonyMous");
+			return "client/template";
+		}
 		int u_no = service.getUserNo(u_id);
 		List<purchaseVO> list = service.getPurchaseList(u_no);
 		m.addAttribute("target", "orderList");
@@ -324,9 +382,16 @@ public class ClientController {
 	}
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	@RequestMapping("orderDetail")
-	public String orderDetail(Model m,String b_no, int u_no) {
-		List<purchaseVO> list = service.getPurchaseInfo(b_no, u_no);
+	public String orderDetail(Model m,String b_no, @RequestParam(value="u_no", defaultValue="-1")int u_no) {
+		List<purchaseVO> list;
+		if(u_no == -1) {
+			list = service.anonymousOrderDetail(b_no);
+		} else {
+			list = service.getPurchaseInfo(b_no, u_no);
+		}
+		String totalPrice = service.getPayTotal(b_no);
 		m.addAttribute("target","purchaseComplete");
+		m.addAttribute("totalPrice", totalPrice);
 		m.addAttribute("list", list);
 		return "client/template";
 	}
@@ -398,3 +463,5 @@ public class ClientController {
 	}
 
 }
+
+

@@ -49,7 +49,16 @@
 								<td>${list.i_u_name}</td>
 								<td>${list.i_title}</td>
 								<td>${list.i_regdate}</td>
-								<td>${list.i_status}</td>
+								<td>
+									<c:choose>
+										<c:when test="${list.i_status == '접수완료'}">
+											<b>${list.i_status}</b>
+										</c:when>
+										<c:otherwise>
+											<b style="color: blue">${list.i_status}</b>
+										</c:otherwise>
+									</c:choose>
+								</td>
 								<!-- <td>
 									<button type="button" onclick="deleteOto(${list.i_no})"
 										class="btn btn-info btn-sm blue">

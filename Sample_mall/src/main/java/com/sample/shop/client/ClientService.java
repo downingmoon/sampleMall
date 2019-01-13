@@ -29,6 +29,11 @@ public class ClientService {
 	@Autowired 
 	private BCryptPasswordEncoder bpe;
 	
+	//paging
+	public int getBoardPageCount() {
+		return mapper.getBoardPageCount();
+	}
+	
 	public List<prodVO> getProdListNew() {
 		return mapper.getProdListNew();
 	}
@@ -175,15 +180,21 @@ public class ClientService {
 	}
 	
 	public List<purchaseVO> buyProduct(purchaseVO vo, int u_no) {
+		System.out.println("u_no : " + u_no);
 		delVO dVo = new delVO();
 		//주문번호 만들기
-		int random = (int) (Math.random() * 10000) + 1;
+		int random = (int) (Math.random() * 100000) + 1;
 		String date = new SimpleDateFormat("yyyyMMdd").format(Calendar.getInstance().getTime());
-		String b_no = date + "-"+ u_no + Integer.toString(random);
+		String b_no = "";
+		if(u_no != 999999999) {
+			b_no = date + "-"+ u_no + Integer.toString(random);
+		} else {
+			b_no = "NM" + date + "-"+ Integer.toString(random);
+		}
 		vo.setB_no(b_no); 
 		
 		dVo.setD_b_no(b_no);
-		dVo.setD_u_no(vo.getB_u_no());
+		dVo.setD_u_no(u_no);
 		dVo.setD_receive_name(vo.getB_receivername());
 		dVo.setD_receive_address(vo.getB_address());
 		dVo.setD_del_msg(vo.getD_del_msg());		
@@ -211,23 +222,39 @@ public class ClientService {
 		return mapper.getPurchaseInfo(b_no, b_u_no);
 	}
 	
+	//주문내역(비회원)
+	public List<purchaseVO> anonymousOrderDetail(String b_no) {
+		return mapper.anonymousOrderDetail(b_no);
+	}
+	
 	//주문내역 (header)
 	public List<purchaseVO> getPurchaseList(int u_no) {
 		List<purchaseVO> originList = mapper.getPurchaseList(u_no);
 		List<purchaseVO> resultList = originList;
+		System.out.println("list size : "+ resultList.size());
 		for(int i = 0; i < originList.size(); i++) {
+			System.out.println("i : " + i);
 			for(int j = 0; j < originList.size(); j++) {
+				System.out.println("for 바로밑 j : " + j);
 				String originB_no = originList.get(i).getB_no();
 				String resultB_no = resultList.get(j).getB_no();
-				if(resultB_no.contains(originB_no)) {
+				if(resultB_no.contains(originB_no) && resultB_no.contains(resultList.get(j+1).getB_no())) {
 					resultList.remove(j);
+					System.out.println(" j : " + j);
 				}
+				
 			}
 			String resultB_no = resultList.get(i).getB_no();
+			System.out.println("resultbno : " + resultB_no);
 			int cnt = mapper.getPnameCoutFromBuy(resultB_no);
 			resultList.get(i).setCnt(cnt);
 		}
 		return resultList;
+	}
+	
+	//Header에 있는 주문조회시 사용
+	public String getPayTotal(String b_no) {
+		return mapper.getPayTotal(b_no);
 	}
 	
 	//1:1 문의 글 등록

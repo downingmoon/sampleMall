@@ -52,7 +52,11 @@
 											</c:if>
 										<tr>
 											<td>결제금액 : </td>
-											<td><div class="col-md-6">${totalPrice}원</div></td>
+											<td><div class="col-md-6">
+												<c:choose>
+													<c:when test="${list[0].totalPrice == null}">${totalPrice}원</c:when>
+													<c:otherwise>${list[0].totalPrice}원</c:otherwise>
+												</c:choose></div></td>
 										</tr>
 										<tr>
 											<td>받는사람 : </td>

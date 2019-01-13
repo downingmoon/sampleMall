@@ -20,6 +20,15 @@ public class purchaseVO {
 	private String b_receiverphone;
 	private String d_del_msg;
 	private int cnt;
+	private String totalPrice;
+
+	public String getTotalPrice() {
+		return totalPrice;
+	}
+
+	public void setTotalPrice(String totalPrice) {
+		this.totalPrice = totalPrice;
+	}
 
 	public int getCnt() {
 		return cnt;

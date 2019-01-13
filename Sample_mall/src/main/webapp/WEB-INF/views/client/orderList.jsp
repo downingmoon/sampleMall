@@ -33,7 +33,10 @@
 							<c:forEach var="list" items="${list}">
 								<tr>
 									<td>${list.b_no}</td>
-									<td><a href="orderDetail?b_no=${list.b_no}&u_no=${u_no}">${list.b_p_name} 외 ${list.cnt-1}개</a></td>
+									<td><a href="orderDetail?b_no=${list.b_no}&u_no=${u_no}">${list.b_p_name}</a>
+										<c:if test="${list.cnt != 1}">
+											<a href="orderDetail?b_no=${list.b_no}&u_no=${u_no}">외 ${list.cnt-1}개</a>
+										</c:if></td>
 									<td>${list.b_paytype}</td>
 									<td>${list.b_regdate}</td>
 								</tr>

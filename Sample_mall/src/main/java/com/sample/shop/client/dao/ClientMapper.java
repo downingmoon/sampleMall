@@ -20,6 +20,7 @@ public interface ClientMapper {
 	/*
 	 * Public 
 	 */
+	public int getBoardPageCount();
 	public int getUserNo(@Param("u_id")String u_id);
 	
 	
@@ -100,6 +101,8 @@ public interface ClientMapper {
 	 */
 	public int getPnameCoutFromBuy(String b_no);
 	public List<purchaseVO> getPurchaseList(int u_no);
+	public List<purchaseVO> anonymousOrderDetail(String b_no);
+	public String getPayTotal(String b_no);
 	
 	
 	/*

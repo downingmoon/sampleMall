@@ -59,7 +59,7 @@
             <c:choose>
             	<c:when test="${data != 0}">
             	
-			<form action="buyProd" method="post" name="frm" onsubmit="return chkBeforePay(<%=username%>)">
+			<form action="buyProd" method="post" name="frm" onsubmit="return chkBeforePay('<%=username%>')">
 				<div class="section" style="padding-bottom: 20px;">
 					<h6 class="title-attr">
 						<small style="color: #337ab7;">수량</small>
@@ -85,7 +85,7 @@
 						</button>
 					</div>
 					<div class="btn-group" role="group">
-						<button type="submit" class="btn btn-primary">
+						<button type="button" class="btn btn-primary" onclick="return chkBeforePay(1,'<%=username%>')">
 							<span style="margin-right: 20px" class="glyphicon glyphicon-ok"
 								aria-hidden="true"></span> 바로구매
 						</button>
@@ -94,7 +94,7 @@
 				<div class="btn-group btn-group-justified" role="group"
 					style="padding-bottom: 20px; width: 70%;">
 					<div class="btn-group" role="group">
-						<button type="button" onclick="alert('준비중')" class="btn btn-secondary">
+						<button type="button" onclick="return chkBeforePay(2,'<%=username%>')" class="btn btn-secondary">
 							<span style="margin-right: 20px" class="glyphicon glyphicon-user"
 								aria-hidden="true"></span> 비회원 구매
 						</button>
@@ -109,8 +109,8 @@
 				</div>
 				<input type="hidden" name="p_no" id="p_no" value="${detail.p_no}">
 				<input type="hidden" name="u_id" id="u_id" value="<%=username%>">
-				<input type="hidden" name="p_name" value="${detail.p_name}">
-				<input type="hidden" name="p_price" value="${detail.p_price}">
+				<input type="hidden" name="p_name" id="p_name" value="${detail.p_name}">
+				<input type="hidden" name="p_price" id="p_price" value="${detail.p_price}">
 			</form>
 			</c:when>
 				<c:otherwise>

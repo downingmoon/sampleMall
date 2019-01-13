@@ -4,7 +4,8 @@ $(function() {
 			var p_no = $('#p_no').val();
 			
 			if(u_id == 'anonymousUser' || u_id == undefined) {
-				alert("비회원입니다.");
+				alert("장바구니는 회원가입 후 이용해주세요.");
+				location.href='join';
 			} else {
 				$.ajax({
 					url:'addToCartAjax',
@@ -118,13 +119,49 @@ $(function() {
 		});
 	});
 	
-	function chkBeforePay(u_id) {
+	function chkBeforePay(idx, u_id) {
 		var frm = document.frm;
-		if(u_id == 'anonymousUser') {
-			alert('회원가입 후 가능합니다.');
-			location.href='join';
-		} else {
-			frm.submit();
+		var amount = $('#amount').val();
+		if(idx == 1) {
+			if(u_id == 'anonymousUser') {
+				alert('비회원은 비회원구매 버튼을 눌러주세요.');
+				return false;
+			} else if(amount == 0) {
+				frm.amount.focus();
+				alert('수량은 1이상 선택해주세요.');
+				return false;
+			} else {
+				frm.action = 'buyProd';
+				frm.submit();
+				return true;
+			}
+		} else if(idx == 2) {
+			if(u_id != 'anonymousUser') {
+				alert('비회원만 비회원구매를 할수있습니다.');
+				return false;
+			} else {
+				frm.action = 'nonMemberPurchase';
+				frm.submit();
+				return true;
+			}
+			
 		}
+	}
+	
+	function nonMemberPurchase(p_no, p_name, p_price) {
+		var amount = $('.amount').val();
+		var form = document.createElement('form');
+		form.action = 'nonMemberPurchase';
+		form.method = 'post';
+		var p_no = document.createElement('input');
+		p_no.setAttribute('type', 'hidden');
+		p_no.setAttribute('name', 'p_no');
+		p_no.setAttribute('value', 'hidden');
+		form.appendChild(p_no);
+		form.appendChild(p_name);
+		form.appendChild(p_price);
+		form.appendChild(p_amount);
+		form.submit();
+		
 	}
 	

@@ -3,6 +3,11 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.sample.shop.client.dao.ClientMapper">
+
+	<!-- paging -->
+	<select id="getBoardPageCount" resultType="_int">
+		SELECT COUNT(*) FROM mall_board
+	</select>
 	
 	<select id="getProdListNew" resultType="prodVO">
 		SELECT p_no, p_name, to_char(p_price,'999G999G999')
@@ -187,7 +192,19 @@
 	<select id="getPurchaseInfo" resultType="purchaseVO">
 		SELECT b_no, (SELECT u_name FROM mall_user WHERE u_no = #{b_u_no}) as b_u_name, b_p_no, b_p_name, 
 		b_amount, b_receivername, b_receiverphone, b_paytype, to_char(b_regdate, 'YYYYMMDD') as b_regdate, 
-		b_paytotal, b_address, b_savingpoint, d_del_msg FROM prod_buy WHERE b_no = #{b_no}
+		b_paytotal, b_address
+		, b_savingpoint, d_del_msg FROM prod_buy WHERE b_no = #{b_no}
+	</select>
+	
+	<select id="anonymousOrderDetail" resultType="purchaseVO">
+		SELECT b_no, '비회원' as b_u_name, b_p_no, b_p_name, b_amount
+		, b_receivername, b_receiverphone, b_paytype, to_char(b_regdate, 'YYYYMMDD') as b_regdate 
+		,TO_CHAR(b_paytotal, '999G999G999') AS totalPrice, b_address
+		, b_savingpoint, d_del_msg FROM prod_buy WHERE b_no = #{b_no}
+	</select>
+	
+	<select id="getPayTotal" resultType="String">
+		SELECT TO_CHAR(b_paytotal, '999G999G999') AS totalPrice FROM prod_buy WHERE b_no = #{b_no}
 	</select>
 	
 	<select id="getPurchaseList" resultType="purchaseVO">
