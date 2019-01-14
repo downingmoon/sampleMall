@@ -21,7 +21,7 @@
 										</tr>
 										<c:forEach var="list" items="${list}">
 										<tr>
-											<td><div class="col-md-6" style="text-align:center;">${list.b_p_name}</div></td>
+											<td><div class="col-md-6" style="text-align:center;"><a href="detail?p_no=${list.b_p_no}">${list.b_p_name}</a></div></td>
 											<td><div class="col-md-6" style="text-align:center;">${list.b_amount}</div></td>
 										</tr>
 										</c:forEach>

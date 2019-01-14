@@ -14,6 +14,7 @@ import com.sample.shop.model.mainImgVO;
 import com.sample.shop.model.prodVO;
 import com.sample.shop.model.purchaseVO;
 import com.sample.shop.model.wishVO;
+import com.sun.org.glassfish.gmbal.ParameterNames;
 
 public interface ClientMapper {
 	
@@ -51,7 +52,7 @@ public interface ClientMapper {
 	/*
 	 *  Board
 	 */
-	public List<boardVO> getBoardList();
+	public List<boardVO> getBoardList(@Param("page")int page, @Param("endpage")int endpage);
 	public void boardWrite(boardVO vo);
 	public boardVO boardDetail(int b_no);
 	

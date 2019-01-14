@@ -5,7 +5,38 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/admProdInsert.css">
 <script src="//d1p7wdleee1q2z.cloudfront.net/post/search.min.js"></script>
 <script> $(function() { $("#postcodify_search_button").postcodifyPopUp(); }); </script>
-
+<script>
+	function chkSubmit() {
+		var frm = document.frm;
+		if(frm.b_receivername.value == "") {
+			alert("수령인 이름을 입력해주세요.");
+			frm.b_receivername.focus();
+			return false;
+		}else if(frm.b_receiverphone.value == "") {
+			alert("수령인 연락처를 입력해주세요.");
+			frm.b_receiverphone.focus();
+			return false;
+		}else if(frm.b_receiverphone.value.length != 13) {
+			alert("연락처는 13자리로 입력해주세요.('-' 포함)");
+			frm.b_receiverphone.focus();
+			return false;
+		}else if(frm.mainAddr.value == "") {
+			alert("배송지를 입력해주세요.");
+			frm.mainAddr.focus();
+			return false;
+		}else if(frm.subAddr.value == "") {
+			alert("배송지를 입력해주세요.");
+			frm.subAddr.focus();
+			return false;
+		}else if(frm.b_paytype.value == "") {
+			alert("결제수단을 선택해주세요.");
+			frm.b_paytype.focus();
+			return false;
+		}else {
+			return true;
+		}
+	}
+</script>
 <form action="nonMemberPurchaseComplete" method="post" onsubmit="return chkSubmit()" onreset="return chkReset()" name="frm" enctype="multipart/form-data">
 <div class="container">
 	<div class="row">

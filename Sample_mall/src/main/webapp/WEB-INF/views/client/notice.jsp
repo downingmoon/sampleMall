@@ -41,15 +41,11 @@
 		<div class="row">
 			<div class="col col-xs-8">
 				<ul class="pagination hidden-xs pull-left">
-					<li><a href="#">1</a></li>
-					<li><a href="#">2</a></li>
-					<li><a href="#">3</a></li>
-					<li><a href="#">4</a></li>
-					<li><a href="#">5</a></li>
-				</ul>
-				<ul class="pagination visible-xs pull-right">
-					<li><a href="#">«</a></li>
-					<li><a href="#">»</a></li>
+					<li><a href="noticeAndEvents?page=1"><i class="glyphicon glyphicon-menu-left"></i></a></li>
+					<c:forEach var="i" begin="1" end="${totalPage}">
+						<li><a href="noticeAndEvents?page=${i}">${i}</a></li>
+					</c:forEach>
+					<li><a href="noticeAndEvents?page=${totalPage}"><i class="glyphicon glyphicon-menu-right"></i></a></li>	
 				</ul>
 				<sec:authorize access="hasRole('ROLE_ADM')">
 					<button type="button" class="btn btn-sm btn-primary pull-right" onclick="location.href='boardWrite'">글쓰기</button>

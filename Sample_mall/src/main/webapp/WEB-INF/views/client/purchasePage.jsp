@@ -5,7 +5,38 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/admProdInsert.css">
 <script src="//d1p7wdleee1q2z.cloudfront.net/post/search.min.js"></script>
 <script> $(function() { $("#postcodify_search_button").postcodifyPopUp(); }); </script>
-
+<script>
+	function chkSubmit() {
+		var frm = document.frm;
+		if(frm.b_receivername.value == "") {
+			alert("수령인 이름을 입력해주세요.");
+			frm.b_receivername.focus();
+			return false;
+		}else if(frm.b_receiverphone.value == "") {
+			alert("수령인 연락처를 입력해주세요.");
+			frm.b_receiverphone.focus();
+			return false;
+		}else if(frm.b_receiverphone.value.length != 13) {
+			alert("연락처는 13자리로 입력해주세요.('-' 포함)");
+			frm.b_receiverphone.focus();
+			return false;
+		}else if(frm.mainAddr.value == "") {
+			alert("배송지를 입력해주세요.");
+			frm.mainAddr.focus();
+			return false;
+		}else if(frm.subAddr.value == "") {
+			alert("배송지를 입력해주세요.");
+			frm.subAddr.focus();
+			return false;
+		}else if(frm.b_paytype.value == "") {
+			alert("결제수단을 선택해주세요.");
+			frm.b_paytype.focus();
+			return false;
+		}else {
+			return true;
+		}
+	}
+</script>
 <form action="purchaseComplete" method="post" onsubmit="return chkSubmit()" onreset="return chkReset()" name="frm" enctype="multipart/form-data">
 <div class="container">
 	<div class="row">
@@ -24,7 +55,7 @@
 									</tr>
 									<c:forEach var="list" items="${prodList}">
 										<tr>
-											<td>${list.b_p_name}</td>
+											<td><a href="detail?p_no=${list.b_p_no}">${list.b_p_name}</a></td>
 											<td>${list.b_p_price}</td>
 											<td>${list.b_amount}</td>
 										</tr>
@@ -38,7 +69,7 @@
 					<p>배송비 : 2,500원</p>
 				</div> -->
 				<div class="col-md-6">
-					<small><b>구매자 정보</b></small> 기본배송지<input type="radio" name="shipAddress" checked="checked"> 신규배송지<input type="radio" name="shipAddress">
+					<small><b>구매자 정보</b></small>
 						<table class="table table-user-information">
 							<tr>
 								<th>이름 : </th>
@@ -54,15 +85,15 @@
 						</table>
 				</div>
 				<div class="col-md-6">
-					<small>배송지 정보</small>
+					<small><b>배송지 정보</b></small>
 						<table class="table table-user-information">
 							<tr>
 								<th>수령인 이름 : </th>
 								<td><input type="text" class="form-control" name="b_receivername"></td>
 							</tr>
 							<tr>
-								<th>전화번호 : </th>
-								<td><input type="text" class="form-control" name="b_receiverphone"></td>
+								<th>전화번호(13자리) : </th>
+								<td><input type="text" class="form-control" name="b_receiverphone" placeholder="'-'포함 해서 입력하세요."></td>
 							</tr>
 							<tr>
 								<th>배송지 설정 </th>
@@ -75,7 +106,7 @@
 						</table>
 				</div>
 				<div class="col-md-12">
-					<small style="color:#ddd12;">배송메시지를 입력해주세요.</small>
+					<small style="color:#ddd12;">배송메시지를 입력해주세요. (선택)</small>
 					<textarea class="form-control" rows="5" name="d_del_msg" placeholder="배송메시지는 최대 30자까지 입력가능합니다."></textarea><br>
 				</div>
 				<div class="col-md-12">

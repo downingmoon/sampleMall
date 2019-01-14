@@ -30,9 +30,6 @@ import com.sample.shop.model.wishVO;
 @RequestMapping("client")
 public class ClientController {
 	
-	private final int pageCnt = 10;
-	private final int page = 1;
-	
 	@Autowired
 	private ClientService service;
 	
@@ -159,15 +156,24 @@ public class ClientController {
 		m.addAttribute("target", "searchPage");
 		return "client/template";
 	}
-	
+	//TODO : ddd
 	@RequestMapping("noticeAndEvents")
 	public String noticeAndEvects(Model m, @RequestParam(value="page", defaultValue="1")int page) {
+		int listCount = 10; //   한 페이지에 출력할 글 갯수 ( block)
+		int totalCount = service.getBoardPageCount(); // 총 게시물 갯수
+		int totalPage = totalCount / listCount; // 총 페이지 갯수
 		
-		int boardCnt = service.getBoardPageCount();
-		int startCnt = (page-1) * pageCnt +1;
+		if(page == 0) {page = 1;} //page가 0일때 1로 바꿔서 출력
+		if(totalCount % listCount > 0) {totalPage++;}
+		if(totalPage < page) {page = totalPage;}// 총 페이지 수보다 높은 page가 들어왔을때 가장 큰 페이지로 변경
 		
-		System.out.println("pageCnt : " + pageCnt);
-		List<boardVO> list = service.getBoardList();
+		int startPage = (page-1) * listCount +1; // 시작페이지
+		int endPage = listCount * page; // 마지막페이지
+		
+		List<boardVO> list = service.getBoardList(startPage, endPage);
+		m.addAttribute("startPage", startPage);
+		m.addAttribute("endPage", endPage);
+		m.addAttribute("totalPage", totalPage);
 		m.addAttribute("list", list);
 		m.addAttribute("target","notice");
 		return "client/template";

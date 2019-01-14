@@ -39,8 +39,15 @@
 	</select>
 	
 	<select id="getBoardList" resultType="boardVO">
-		SELECT b_no, b_title, to_char(b_regdate,'YY.MM.DD') as b_regdate, b_type FROM mall_board
-		ORDER BY b_no DESC
+	<![CDATA[
+		SELECT * FROM (
+        	SELECT A.b_no, A.b_title, A.b_content, A.b_type
+        	,TO_CHAR(A.b_regdate,'YY.MM.DD') AS b_regdate, ROWNUM AS RNUM
+        	FROM (
+        		SELECT * FROM mall_board ORDER BY b_no desc ) A
+        	WHERE ROWNUM <= #{endpage})
+		WHERE rnum >= #{page}
+		]]>
 	</select>
 	
 	<select id="boardDetail" resultType="boardVO">
@@ -204,7 +211,8 @@
 	</select>
 	
 	<select id="getPayTotal" resultType="String">
-		SELECT TO_CHAR(b_paytotal, '999G999G999') AS totalPrice FROM prod_buy WHERE b_no = #{b_no}
+		SELECT TO_CHAR(b_paytotal, '999G999G999') AS totalPrice FROM prod_buy 
+		WHERE b_no = #{b_no} AND ROWNUM = 1
 	</select>
 	
 	<select id="getPurchaseList" resultType="purchaseVO">

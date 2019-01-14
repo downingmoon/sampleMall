@@ -50,8 +50,8 @@ public class ClientService {
 		return mapper.getProdList();
 	}
 	
-	public List<boardVO> getBoardList() {
-		return mapper.getBoardList();
+	public List<boardVO> getBoardList(int page, int endpage) {
+		return mapper.getBoardList(page, endpage);
 	}
 	
 	public void boardWrite(boardVO vo) {
@@ -212,8 +212,6 @@ public class ClientService {
 			mapper.doAddSaleCount(vo.getB_amount(), vo.getB_p_no());
 		}
 		List<purchaseVO> list = mapper.getPurchaseInfo(b_no, u_no);
-		//mapper.cartDelete(c_no, u_no);
-		//TODO : 장바구니에서 구매할때 c_no도 같이넘기기
 		return list;
 	}
 	
@@ -238,11 +236,12 @@ public class ClientService {
 				System.out.println("for 바로밑 j : " + j);
 				String originB_no = originList.get(i).getB_no();
 				String resultB_no = resultList.get(j).getB_no();
-				if(resultB_no.contains(originB_no) && resultB_no.contains(resultList.get(j+1).getB_no())) {
-					resultList.remove(j);
-					System.out.println(" j : " + j);
+				if(originList.size() > 1) {
+					if(resultB_no.contains(originB_no) && resultB_no.contains(resultList.get(j+1).getB_no())) {
+						resultList.remove(j);
+						System.out.println(" j : " + j);
+					}
 				}
-				
 			}
 			String resultB_no = resultList.get(i).getB_no();
 			System.out.println("resultbno : " + resultB_no);
