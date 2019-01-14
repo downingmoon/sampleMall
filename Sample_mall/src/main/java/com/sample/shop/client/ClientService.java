@@ -290,5 +290,36 @@ public class ClientService {
 	public List<prodVO> detailSearch(String searchKeyword, String mainCategory, String subCategory) {
 		return mapper.detailSearch(searchKeyword, mainCategory, subCategory);
 	}
+	
+	//아이디 중복체크
+	public String idCheckAjax(String u_id) {
+		return mapper.idCheckAjax(u_id);
+	}
+	
+	//ID찾기
+	public String findId(String u_name, String u_phone) {
+		String result = mapper.findId(u_name, u_phone);
+		if(result == null || result == "") {
+			result = "-1";
+		}
+		return result;
+	}
+	
+	//PW찾기 질문가져오기
+	public String findPwQnA(String u_id) {
+		return mapper.findPwQnA(u_id);
+	}
+	
+	//아이디에 해당하는 pw찾기 답변이 맞는지
+	public String pwAnswerChk(String u_id, String answer) {
+		return mapper.pwAnswerChk(u_id, answer);
+	}
+	
+	//PW Change
+	public void pwChange(String u_id, String u_pw) {
+		int u_no = mapper.getUserNo(u_id);
+		String cryptoPw = bpe.encode(u_pw);
+		mapper.pwChange(cryptoPw, u_no);
+	}
 
 }

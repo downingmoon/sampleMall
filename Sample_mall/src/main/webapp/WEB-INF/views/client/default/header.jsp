@@ -9,6 +9,7 @@
 	String username = auth.getName();
 %>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/menuBar.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/login_new.css">
 <script>
 
 	function otoInquire(u_id) {
@@ -22,11 +23,15 @@
 	
 	function goCartClk(u_id) {
 		if(u_id == 'anonymousUser') {
-			alert('비회원 장바구니 구현 준비중');
+			alert('회원가입 후 이용해주세요.');
 			location.href='join';
 		} else {
 			location.href='goCart?u_id='+u_id;
 		}
+	}
+	
+	function loginFrm() {
+		
 	}
 	
 </script>
@@ -38,20 +43,21 @@
 	</div>
 	<div class="headText col-md-7 navbar-right">
 		<ol class="breadcrumb" style="background-color: #fff">
-  			<li>
-				<sec:authorize access="isAnonymous()">
-					<a href="login">로그인</a>
-				</sec:authorize> 
+  			<sec:authorize access="isAnonymous()">
+				<li><a href="#" data-toggle="modal" data-target="#login-modal">로그인</a></li>
+			</sec:authorize>
+				 
+			<sec:authorize access="isAuthenticated()">
+				<li><a href="<c:url value="/j_spring_security_logout"/>">로그아웃</a></li>
+			</sec:authorize>
 				
-				<sec:authorize access="isAuthenticated()">
-					<a href="<c:url value="/j_spring_security_logout"/>">로그아웃</a>
-				</sec:authorize>
-				
-				<sec:authorize access="hasRole('ROLE_ADM')">
-					<a href="${pageContext.request.contextPath}/admin/adminPage">관리자페이지</a>
-				</sec:authorize>
-			</li>
-			<li><a href="join">회원가입</a></li>
+			<sec:authorize access="hasRole('ROLE_ADM')">
+				<li><a href="${pageContext.request.contextPath}/admin/adminPage">관리자페이지</a></li>
+			</sec:authorize>
+			
+			<sec:authorize access="isAnonymous()">
+				<li><a href="join">회원가입</a></li>
+			</sec:authorize>
 			<li><a href="mypage?id=<%=username%>">마이페이지</a></li>
 			<li><a onclick="goCartClk('<%=username%>')" style="cursor:pointer;">장바구니&nbsp;<span class="badge">${cnt}</span></a></li>
 			<li><a href="orderView?u_id=<%=username%>">주문조회</a></li>
@@ -122,7 +128,24 @@
 				<li class='last'>
 					<form action="searchItem" method="post">
 						<input type="text" name="searchKeyword" placeholder="Search">
+						<button type="submit" value="Search" class="btn"><span class="glyphicon glyphicon-search"></span></button>
 					</form>
 				</li>
 			</ul>
 		</div>
+
+<div class="modal fade" id="login-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+	<div class="modal-dialog">
+		<div class="loginmodal-container">
+			<h1>SampleMall 로그인</h1><br>
+				<form action="login" method="post" onsubmit="return loginFrm()" name="loginForm">
+					<input class="form-control" type="text" id="username" name="username" maxlength="20" placeholder="아이디 입력">
+					<input class="form-control" type="password" id="password" name="password" maxlength="20" placeholder="비밀번호 입력">
+					<input class="login loginmodal-submit" type="submit" value="LOGIN" class="submitBtn">
+				</form>
+				<div class="login-help">
+					<a href="forgotPw">비밀번호 찾기</a>
+				</div>
+		</div>
+	</div>
+</div>

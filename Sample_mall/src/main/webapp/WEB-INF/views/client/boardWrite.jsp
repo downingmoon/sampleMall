@@ -2,8 +2,26 @@
 	pageEncoding="UTF-8"%>
 <script src="${pageContext.request.contextPath}/resources/js/admProdInsert.js"></script>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/admProdInsert.css">
-	
-
+<script>
+	function chkSubmit() {
+		var frm = document.frm;
+		if(frm.b_title.value == "") {
+			alert('제목을 입력해주세요.');
+			frm.b_title.focus();
+			return false;
+		} else if(frm.b_type.value == "") {
+			alert('글 종류를 선택해주세요.');
+			frm.b_type.focus();
+			return false;
+		} else if(frm.b_content.value == "") {
+			alert('내용을 입력해주세요.');
+			frm.b_content.focus();
+			return false;
+		} else {
+			return true;
+		}
+	}
+</script>
 
 <form action="boardWrite" method="post" onsubmit="return chkSubmit()" onreset="return chkReset()" name="frm">
 <div class="container">
@@ -22,6 +40,7 @@
 									<tr>
 										<td>글 종류 : </td>
 										<td><select class="form-control" name="b_type">
+											<option value="">----- 글 종류 -----</option>
 											<option value="공지사항">공지사항</option>
 											<option value="이벤트">이벤트</option>
 											<option value="기타">기타</option>

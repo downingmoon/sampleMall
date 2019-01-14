@@ -250,4 +250,24 @@
 		, i_content, i_answer FROM otoinquire WHERE i_no = #{i_no} AND i_u_no = #{i_u_no}
 	</select>
 	
+	<select id="idCheckAjax" resultType="string">
+		SELECT u_id FROM mall_user WHERE u_id = #{u_id}
+	</select>
+	
+	<select id="findId" resultType="string">
+		SELECT u_id FROM mall_User WHERE u_name = #{u_name} AND u_phone = #{u_phone}
+	</select>
+	
+	<select id="findPwQnA" resultType="string">
+		SELECT u_findpw_question FROM mall_user WHERE u_id = #{u_id}
+	</select>
+	
+	<select id="pwAnswerChk" resultType="string">
+		SELECT u_name FROM mall_user WHERE u_id = #{u_id} AND u_findpw_answer = #{answer}
+	</select>
+	
+	<update id="pwChange">
+		UPDATE mall_user SET u_pw = #{u_pw} WHERE u_no = #{u_no}
+	</update>
+	
 </mapper>

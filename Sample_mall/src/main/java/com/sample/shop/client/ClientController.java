@@ -136,7 +136,7 @@ public class ClientController {
 	public String joinPost(UserVO vo, Model m) {
 		System.out.println("JOIN POST VO.NAME : " + vo.getU_name());
 		service.userJoin(vo);
-		return "redirect:login";
+		return "redirect:list";
 	}
 	
 	@RequestMapping("mainTypeList")
@@ -156,7 +156,49 @@ public class ClientController {
 		m.addAttribute("target", "searchPage");
 		return "client/template";
 	}
-	//TODO : ddd
+	//TODO : forgotPw 하세유
+	
+	@RequestMapping("forgotPw")
+	public String forgotPw(Model m) {
+		m.addAttribute("target", "forgotPw");
+		return "client/template";
+	}
+	
+	@RequestMapping(value="forgotPw", method=RequestMethod.POST)
+	public String forgotPwPost(Model m, String u_id) {
+		String q = service.findPwQnA(u_id);
+		m.addAttribute("question", q);
+		m.addAttribute("target","forgotPwSecond");
+		m.addAttribute("u_id", u_id);
+		return "client/template";
+	}
+	
+	@RequestMapping("pwAnswerChkAjax")
+	@ResponseBody
+	public boolean pwAnswerChkAjax(String u_id, String answer) {
+		boolean result = false;
+		String name = service.pwAnswerChk(u_id, answer);
+		if(name == null || name == "") {
+			result = false;
+		} else {
+			result = true;
+		}
+		return result;
+	}
+	
+	@RequestMapping("pwChange")
+	public String pwChange(Model m, String u_id, String u_pw) {
+		service.pwChange(u_id, u_pw);
+		return "redirect:list";
+	}
+	
+	@RequestMapping("findIdAjax")
+	@ResponseBody
+	public String findIdAjax(String u_name, String u_phone) {
+		String result = service.findId(u_name, u_phone);
+		return result;
+	}
+	
 	@RequestMapping("noticeAndEvents")
 	public String noticeAndEvects(Model m, @RequestParam(value="page", defaultValue="1")int page) {
 		int listCount = 10; //   한 페이지에 출력할 글 갯수 ( block)
@@ -466,6 +508,22 @@ public class ClientController {
 		m.addAttribute("word", searchKeyword);
 		m.addAttribute("list", list);
 		return "client/template";
+	}
+	
+	@RequestMapping("idCheckAjax")
+	@ResponseBody
+	public boolean idCheckAjax(String u_id) {
+		System.out.println("u_id : " + u_id);
+		boolean result = false;
+		String isExist = service.idCheckAjax(u_id);
+		System.out.println("isExist : " + isExist);
+		
+		if(isExist == null || isExist == "") {
+			result = true;
+		} else if(isExist != "") {
+			result = false;
+		}
+		return result;
 	}
 
 }
