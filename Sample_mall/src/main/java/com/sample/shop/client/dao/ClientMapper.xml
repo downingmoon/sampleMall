@@ -98,7 +98,12 @@
 	
 	<update id="userInfoUpdate">
 		UPDATE mall_user SET u_name = #{u_name}, u_mainaddress = #{u_mainaddress}, u_subaddress = #{u_subaddress}
-		, u_phone = #{u_phone}, u_birth = #{u_birth} WHERE u_no = #{u_no}
+		, u_phone = #{u_phone} WHERE u_no = #{u_no}
+	</update>
+	
+	<update id="userInfoUpdateWithPw">
+		UPDATE mall_user SET u_name = #{u_name}, u_mainaddress = #{u_mainaddress}, u_subaddress = #{u_subaddress}
+		, u_phone = #{u_phone}, u_pw = #{u_pw} WHERE u_no = #{u_no}
 	</update>
 	
 	<insert id="cartInsert">
@@ -269,5 +274,9 @@
 	<update id="pwChange">
 		UPDATE mall_user SET u_pw = #{u_pw} WHERE u_no = #{u_no}
 	</update>
+	
+	<select id="getPasswordById" resultType="string">
+		SELECT u_pw FROM mall_user WHERE u_id = #{u_id}
+	</select>
 	
 </mapper>

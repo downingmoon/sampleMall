@@ -15,23 +15,6 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/slideMenu.css">
 <script src="${pageContext.request.contextPath}/resources/js/slideMenu.js"></script>
 <script>
-	function loginFrm() {
-		var frm = document.loginForm;
-
-		if (frm.u_id.value == "") {
-			frm.u_id.focus();
-			alert("ID가 입력되지 않았습니다.");
-			return false;
-		} else if (frm.u_pw.value == "") {
-			frm.u_pw.focus();
-			alert("비밀번호가 입력되지 않았습니다.");
-			return false;
-		}
-		// TODO: function 한개 추가하기, 로그인한 사용자 이름 가져오는 함수
-		alert("(이름넣기)님 환영합니다.");
-		return false;
-	}
-
 	function clkTr(board_no) {
 		//location.href="detail?board_no=" + board_no;
 		var form = document.createElement("form");

@@ -30,10 +30,60 @@
 		}
 	}
 	
-	function loginFrm() {
-		
+	function goMypage(u_id) {
+		if(u_id == 'anonymousUser') {
+			alert('회원가입 후 이용해주세요.');
+			location.href='join';
+		} else {
+			location.href='mypage?u_id='+u_id;
+		}
 	}
 	
+	function searchFrmChk() {
+		var frm = document.searchFrm;
+		if(frm.searchKeyword.value == "") {
+			alert("검색어를 입력해주세요.");
+			frm.searchKeyword.focus();
+			return false;
+		}
+	}
+	
+	function loginFrm() {
+		var frm = document.loginForm;
+		if(frm.username.value == "") {
+			alert("아이디를 입력해주세요.");
+			frm.username.focus();
+			return false;
+		} else if(frm.password.value == "") {
+			alert("비밀번호를 입력해주세요.");
+			frm.password.focus();
+			return false;
+		} else {
+			$.ajax({
+				url : 'loginCheckAjax',
+				type : 'post',
+				data : {
+					username : $('#username').val(),
+					password : $('#password').val()
+				},
+				success : function(result) {
+					if(result == -1) {
+						alert('비밀번호가 잘못되었습니다.');
+						return false;
+					} else if(result == 0) {
+						alert('아이디가 잘못되었습니다.');
+						return false;
+					} else if(result == 1) {
+						frm.submit();
+					} else {
+						alert('알수없는 오류가 발생했습니다.');
+						return false;
+					}
+				}
+			});
+			return false;
+		}	
+	}
 </script>
 <div class="row">
 	<div class="logo col-md-5">
@@ -44,7 +94,7 @@
 	<div class="headText col-md-7 navbar-right">
 		<ol class="breadcrumb" style="background-color: #fff">
   			<sec:authorize access="isAnonymous()">
-				<li><a href="#" data-toggle="modal" data-target="#login-modal">로그인</a></li>
+				<li><a onclick="clkLogin()" href="#" data-toggle="modal" data-target="#login-modal">로그인</a></li>
 			</sec:authorize>
 				 
 			<sec:authorize access="isAuthenticated()">
@@ -58,7 +108,7 @@
 			<sec:authorize access="isAnonymous()">
 				<li><a href="join">회원가입</a></li>
 			</sec:authorize>
-			<li><a href="mypage?id=<%=username%>">마이페이지</a></li>
+			<li><a onclick="goMypage('<%=username%>')" style="cursor:pointer;">마이페이지</a></li>
 			<li><a onclick="goCartClk('<%=username%>')" style="cursor:pointer;">장바구니&nbsp;<span class="badge">${cnt}</span></a></li>
 			<li><a href="orderView?u_id=<%=username%>">주문조회</a></li>
 			<li><a onclick="otoInquire('<%=username%>')" style="cursor:pointer;">1:1문의</a></li>
@@ -126,7 +176,7 @@
 					<a href="noticeAndEvents">Notcie/Events</a>
 				</li>
 				<li class='last'>
-					<form action="searchItem" method="post">
+					<form action="searchItem" method="post" name="searchFrm" onsubmit="return searchFrmChk()">
 						<input type="text" name="searchKeyword" placeholder="Search">
 						<button type="submit" value="Search" class="btn"><span class="glyphicon glyphicon-search"></span></button>
 					</form>
@@ -141,7 +191,7 @@
 				<form action="login" method="post" onsubmit="return loginFrm()" name="loginForm">
 					<input class="form-control" type="text" id="username" name="username" maxlength="20" placeholder="아이디 입력">
 					<input class="form-control" type="password" id="password" name="password" maxlength="20" placeholder="비밀번호 입력">
-					<input class="login loginmodal-submit" type="submit" value="LOGIN" class="submitBtn">
+					<input class="login loginmodal-submit" type="submit" onclick="return loginFrm()" value="LOGIN" class="submitBtn">
 				</form>
 				<div class="login-help">
 					<a href="forgotPw">비밀번호 찾기</a>

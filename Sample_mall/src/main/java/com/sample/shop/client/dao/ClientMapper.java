@@ -63,11 +63,13 @@ public interface ClientMapper {
 	public void userJoin(UserVO vo);
 	public UserVO userInfo(String u_id);
 	public void userInfoUpdate(UserVO vo);
+	public void userInfoUpdateWithPw(UserVO vo);
 	public String idCheckAjax(String u_id);
 	public String findId(@Param("u_name")String u_name, @Param("u_phone")String u_phone);
 	public String findPwQnA(String u_id);
 	public String pwAnswerChk(@Param("u_id")String u_id, @Param("answer")String answer);
 	public void pwChange(@Param("u_pw")String u_pw, @Param("u_no")int u_no);
+	public String getPasswordById(String u_id);
 	
 	
 	/*

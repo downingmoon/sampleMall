@@ -94,7 +94,17 @@ public class ClientService {
 	}
 	
 	public void userInfoUpdate(UserVO vo) {
-		mapper.userInfoUpdate(vo);
+		System.out.println("vo.getpw : " + vo.getU_pw());
+		if(vo.getU_pw() != "") {
+			String cryptoPw = bpe.encode(vo.getU_pw());
+			vo.setU_pw(cryptoPw);
+			System.out.println("crypto pw : " + cryptoPw);
+			System.out.println("new vo pw : " + vo.getU_pw());
+			mapper.userInfoUpdateWithPw(vo);
+		} else {
+			mapper.userInfoUpdate(vo);
+		}
+		
 	}
 	
 	public int isExist(int p_no, String u_id) {
@@ -320,6 +330,21 @@ public class ClientService {
 		int u_no = mapper.getUserNo(u_id);
 		String cryptoPw = bpe.encode(u_pw);
 		mapper.pwChange(cryptoPw, u_no);
+	}
+	
+	//Login시 아이디 비밀번호 조회
+	public int loginCheck(String u_id, String u_pw) {
+		System.out.println("service.u_id : " + u_id);
+		int result = 0;
+		String encodedPw = mapper.getPasswordById(u_id);
+		if(bpe.matches(u_pw, encodedPw)) {
+			result = 1;
+		} else if(mapper.idCheckAjax(u_id) == null || mapper.idCheckAjax(u_id) == "") {
+			result = 0;
+		} else {
+			result = -1;
+		}
+		return result;
 	}
 
 }

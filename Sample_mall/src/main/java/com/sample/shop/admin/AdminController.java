@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -183,9 +184,27 @@ public class AdminController {
 	}
 	
 	@RequestMapping("deliverStatusView")
-	public String deliverStatusView(Model m) {
-		List<delVO> list = service.deliverStatusView();
+	public String deliverStatusView(Model m, @RequestParam(value="page", defaultValue="1")int page) {
+		int listCount = 5; //   한 페이지에 출력할 글 갯수 ( block)
+		int totalCount = service.getDeliverStatusPageCount(); // 총 게시물 갯수
+		int totalPage = totalCount / listCount; // 총 페이지 갯수
+		int startPage = (page-1) * listCount +1; // 시작페이지
+		int endPage = listCount * page; // 마지막페이지
+		
+		if(page == 0) {page = 1;} //page가 0일때 1로 바꿔서 출력
+		if(totalCount % listCount > 0) {totalPage++;}
+		if(totalPage < page) {page = totalPage;}// 총 페이지 수보다 높은 page가 들어왔을때 가장 큰 페이지로 변경
+		
+		System.out.println("totalCount : " + totalCount);
+		System.out.println("startPage : " + startPage);
+		System.out.println("endPage : " + endPage);
+		System.out.println("totalPage : " + totalPage);
+		
+		List<delVO> list = service.deliverStatusView(startPage, endPage);
 		m.addAttribute("list", list);
+		m.addAttribute("startPage", startPage);
+		m.addAttribute("endPage", endPage);
+		m.addAttribute("totalPage", totalPage);
 		m.addAttribute("subTitle", "배송현황 조회");
 		m.addAttribute("target", "saleMgr/deliverStatusView");
 		return "admin/adminTemplate";

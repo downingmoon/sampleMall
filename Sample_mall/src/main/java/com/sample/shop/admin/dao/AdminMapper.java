@@ -51,9 +51,11 @@ public interface AdminMapper {
 	
 	public void deliverComplete(String b_no);
 	
-	public List<delVO> deliverStatusView();
+	public List<delVO> deliverStatusView(@Param("page")int page, @Param("endPage")int endPage);
 	
 	public void deliverStatusUpdate(String b_no);
+	
+	public int getDeliverStatusPageCount();
 	
 	/*
 	 *  고객관리

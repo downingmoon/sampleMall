@@ -64,6 +64,13 @@
 					</tbody>
 				</table>
 			</div>
-		</div>
+				<ul class="pagination hidden-xs pull-left">
+					<li><a href="deliverStatusView?page=1">&lt;<i class="glyphicon glyphicon-menu-left"></i></a></li>
+					<c:forEach var="i" begin="1" end="${totalPage}">
+						<li><a href="deliverStatusView?page=${i}">${i}</a></li>
+					</c:forEach>
+					<li><a href="deliverStatusView?page=${totalPage}">&gt;<i class="glyphicon glyphicon-menu-right"></i></a></li>	
+				</ul>
+			</div>
 	</c:otherwise>
 </c:choose>

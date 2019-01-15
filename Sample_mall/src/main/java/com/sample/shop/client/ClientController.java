@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.sample.shop.model.UserVO;
 import com.sample.shop.model.boardVO;
@@ -204,13 +205,14 @@ public class ClientController {
 		int listCount = 10; //   한 페이지에 출력할 글 갯수 ( block)
 		int totalCount = service.getBoardPageCount(); // 총 게시물 갯수
 		int totalPage = totalCount / listCount; // 총 페이지 갯수
+		int startPage = (page-1) * listCount +1; // 시작페이지
+		int endPage = listCount * page; // 마지막페이지
 		
 		if(page == 0) {page = 1;} //page가 0일때 1로 바꿔서 출력
 		if(totalCount % listCount > 0) {totalPage++;}
 		if(totalPage < page) {page = totalPage;}// 총 페이지 수보다 높은 page가 들어왔을때 가장 큰 페이지로 변경
 		
-		int startPage = (page-1) * listCount +1; // 시작페이지
-		int endPage = listCount * page; // 마지막페이지
+
 		
 		List<boardVO> list = service.getBoardList(startPage, endPage);
 		m.addAttribute("startPage", startPage);
@@ -242,24 +244,28 @@ public class ClientController {
 	}
 	
 	@RequestMapping("mypage")
-	public String mypage(String id, Model m) {
-		m.addAttribute("target", "mypage");
-		m.addAttribute("u_id", id);
+	public String mypage(String u_id, Model m) {
+		m.addAttribute("target", "mypageBefore");
+		m.addAttribute("u_id", u_id);
 		return "client/template";
 	}
 	
 	@RequestMapping("userInfo")
-	public String userInfoGet(String id, Model m) {
-		UserVO vo = service.userInfo(id);
-		m.addAttribute("u_id",id);
+	public String userInfoGet(String u_id, Model m) {
+		System.out.println("userInfo u_id : " + u_id);
+		UserVO vo = service.userInfo(u_id);
+		m.addAttribute("u_id",u_id);
 		m.addAttribute("vo",vo);
 		m.addAttribute("target","userInfo");
 		return "client/template";
 	}
 	
-	@RequestMapping(value="mypage", method=RequestMethod.POST)
-	public String userInfoPost(UserVO vo) {
-		service.userInfoUpdate(vo);
+	@RequestMapping(value="mypageUpdate", method=RequestMethod.POST)
+	public String userInfoPost(UserVO vo, RedirectAttributes ra) {
+		System.out.println(vo.getU_pw());
+		service.userInfoUpdate(vo); //TODO : 비밀번호 있으면 변경하는거 추가
+		
+		ra.addAttribute("u_id", vo.getU_id());
 		return "redirect:mypage";
 	}
 	
@@ -319,6 +325,9 @@ public class ClientController {
 	
 	@RequestMapping({"buyProd","buyProductsInCart"})
 	public String buyProduct(HttpServletRequest request, int amount, String u_id, Model m, int[] p_no, String[] p_name, @RequestParam(value="c_no", defaultValue="-1")int[] c_no) {
+		for(int i = 0; i < p_no.length ; i++) {
+			System.out.println("p_no[i] : " + p_no[i]);
+		}
 		int u_no = service.getUserNo(u_id);
 		UserVO uVo = service.userInfo(u_id);
 		List<purchaseVO> prodList = new ArrayList<purchaseVO>();
@@ -525,6 +534,22 @@ public class ClientController {
 		}
 		return result;
 	}
+	
+	@RequestMapping("loginCheckAjax")
+	@ResponseBody
+	public int loginCheckAjax(String username, String password) {
+		System.out.println("username : " + username + " :::: password : " + password);
+		int result = service.loginCheck(username, password);
+		return result;
+	}
+//	
+//	@RequestMapping("passwordCheckAjax")
+//	@ResponseBody
+//	public int passwordCheckAjax(String u_id, String u_pw) {
+//		System.out.println("username : " + u_id + " :::: password : " + u_pw);
+//		int result = service.loginCheck(u_id, u_pw);
+//		return result;
+//	}
 
 }
 

@@ -86,12 +86,20 @@
 	</delete>
 	
 	<select id="deliverStatusView" resultType="delVO">
-		SELECT * FROM prod_delivery ORDER BY d_no 
+		<![CDATA[ SELECT * FROM (
+        	SELECT A.*, ROWNUM AS RNUM
+        	FROM (SELECT * FROM prod_delivery ORDER BY d_no desc ) A
+        	WHERE ROWNUM <= #{endPage})
+		WHERE RNUM >= #{page}]]> 
 	</select>
 	
 	<update id="deliverStatusUpdate">
 		UPDATE prod_delivery SET d_status = '발송완료' WHERE d_b_no = #{b_no}
 	</update>
+	
+	<select id="getDeliverStatusPageCount" resultType="_int">
+		SELECT COUNT(*) FROM prod_delivery
+	</select>
 	
 	<!-- Cust Management -->
 	

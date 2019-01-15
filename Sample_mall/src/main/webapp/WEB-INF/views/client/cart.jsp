@@ -28,6 +28,11 @@
 		});
 	}
 	
+	function chkSubmit() {
+		$('input[name=p_no]').prop('checked',true);
+		return true;
+	}
+	
 	function chkAll() {
 		if($('.chkPno').is(':checked')) {
 			$('input[name=p_no]').prop('checked',false);
@@ -35,9 +40,22 @@
 			$('input[name=p_no]').prop('checked',true);
 		}
 	}
+	
+	function selectedPay() {
+		var frm = document.frm;
+		if($("input:checkbox[name=p_no]:checked").length == 0) {
+			alert('선택된 상품이 없습니다.');
+			return false;
+		} else {
+			frm.submit();
+		}
+	}
+	$("input[name=p_no]:checked").each(function(){ 
+		console.log( $(this).val()); 
+	});
+	
 </script>
-<form action="buyProductsInCart" name="frm" method="post"
-	class="col-md-12">
+<form action="buyProductsInCart" name="frm" method="post" onsubmit="return chkSubmit()" class="col-md-12">
 	<div class="panel panel-default panel-table">
 		<div class="panel-heading">
 			<div class="row">
@@ -73,18 +91,20 @@
 									<td>${list.p_price}</td>
 									<td>${list.amount}</td>
 									<td><button type="button" class="btn btn-danger" onclick="cartDel(${list.c_no})">삭제</button></td>
-								</tr>
-								<input type="hidden" name="p_name" value="${list.p_name}">
+									<input type="hidden" name="p_name" value="${list.p_name}">
 								<input type="hidden" name="p_price" value="${list.p_price}">
 								<input type="hidden" name="amount" value="${list.amount}">
 								<input type="hidden" name="c_no" value="${list.c_no}">
+								</tr>
+								
 							</c:forEach>
 						</tbody>
 					</table>
 				</div>
 				<div class="panel-footer">
 					<div class="row">
-						<button type="submit" class="btn btn-primary">선택한 상품 구매</button>
+						<button type="submit" class="btn btn-primary">전체 상품 구매</button>
+						<!--  <button type="button" onclick="return selectedPay()" class="btn btn-default">선택한 상품 구매</button>-->
 					</div>
 				</div>
 			</c:otherwise>

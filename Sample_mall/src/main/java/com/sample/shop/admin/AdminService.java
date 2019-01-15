@@ -247,8 +247,12 @@ public class AdminService {
 		mapper.deliverStatusUpdate(b_no);
 	}
 	
-	public List<delVO> deliverStatusView() {
-		return mapper.deliverStatusView();
+	public List<delVO> deliverStatusView(int page, int endPage) {
+		return mapper.deliverStatusView(page, endPage);
+	}
+	
+	public int getDeliverStatusPageCount() {
+		return mapper.getDeliverStatusPageCount();
 	}
 	
 	/*

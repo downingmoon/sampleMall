@@ -58,7 +58,7 @@
 						alert('존재하지 않는 아이디입니다.\n아이디를 다시 확인해주세요.');
 						return false;
 					} else {
-						return true;
+						frm.submit();
 					}
 				},
 				error : function() {
@@ -66,7 +66,7 @@
 					return false;
 				}
 			})
-			
+			return false;
 		}
 	}
 </script>
@@ -91,7 +91,7 @@
 	</form>
 </div>
 <div class="col-md-6 col-lg-6">
-	<form action="forgotPw" method="post" name="frm_pw" onsubmit="return chkSubmitPw()">
+	<form method="post" name="frm_pw">
 		<table class="table">
 			<tbody>
 				<tr>
@@ -101,7 +101,7 @@
 					<td><input type="text" name="u_id" class="form-control u_id" placeholder="아이디를 입력해주세요."></td>
 				</tr>
 				<tr>
-					<td><button style="width:100%;"type="submit" class="btn btn-primary">비밀번호 찾기</button></td>
+					<td><button style="width:100%;" onclick="return chkSubmitPw()" type="submit" class="btn btn-primary">비밀번호 찾기</button></td>
 				</tr>
 			</tbody>
 		</table>

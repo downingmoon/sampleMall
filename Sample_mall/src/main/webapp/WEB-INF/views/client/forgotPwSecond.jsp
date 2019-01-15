@@ -33,7 +33,7 @@
 						return false;
 					} else {
 						alert('비밀번호가 변경되었습니다.');
-						return true;	
+						frm.submit();
 					}
 				},
 				error : function() {
@@ -41,10 +41,11 @@
 					return false;
 				}
 			});
+			return false;
 		}
 	}
 </script>
-<form action="pwChange" name="frm" onsubmit="return chkFindPw()">
+<form action="pwChange" name="frm">
 	<div class="row" style="margin-top:15px;">
 			<div class="col-md-12 col-lg-12 toppad">
 				<div class="panel panel-info">
@@ -76,7 +77,7 @@
 					</div>
 					<div class="panel-footer">
 						<input type="hidden" name="u_id" value="${u_id}">
-						<input type="submit" value="비밀번호 재설정" class="btn btn-primary" >
+						<input type="submit" onclick="return chkFindPw()" value="비밀번호 재설정" class="btn btn-primary" >
 					</div>
 				</div>
 			</div>
