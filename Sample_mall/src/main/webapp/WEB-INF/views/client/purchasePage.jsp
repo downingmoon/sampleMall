@@ -39,7 +39,7 @@
 	
 	$(function() {
 		$('.usePoint').change(function() {
-			var originPoint = ${totalPrice};
+			var originPoint = '${totalPrice}';
 			var usingPoint = $('input[name=usePoint]').val();
 			var maxPoint = ${uVo.u_point};
 			if(usingPoint > maxPoint) {
