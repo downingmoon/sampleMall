@@ -91,12 +91,11 @@
 									<td>${list.p_price}</td>
 									<td>${list.amount}</td>
 									<td><button type="button" class="btn btn-danger" onclick="cartDel(${list.c_no})">삭제</button></td>
-									<input type="hidden" name="p_name" value="${list.p_name}">
+								</tr>
+								<input type="hidden" name="p_name" value="${list.p_name}">
 								<input type="hidden" name="p_price" value="${list.p_price}">
 								<input type="hidden" name="amount" value="${list.amount}">
 								<input type="hidden" name="c_no" value="${list.c_no}">
-								</tr>
-								
 							</c:forEach>
 						</tbody>
 					</table>

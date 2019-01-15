@@ -189,6 +189,13 @@ public class ClientService {
 		return beforePrice;
 	}
 	
+	public int getPoint(int price) {
+		int point = 0;
+		point = (int)(price * 0.01);
+		System.out.println("point : " + point);
+		return point;
+	}
+	
 	public List<purchaseVO> buyProduct(purchaseVO vo, int u_no) {
 		System.out.println("u_no : " + u_no);
 		delVO dVo = new delVO();
@@ -198,9 +205,11 @@ public class ClientService {
 		String b_no = "";
 		if(u_no != 999999999) {
 			b_no = date + "-"+ u_no + Integer.toString(random);
+			mapper.pointInsert(vo.getB_savingpoint(), u_no);
 		} else {
 			b_no = "NM" + date + "-"+ Integer.toString(random);
 		}
+		//TODO : vo.get b savingpoint 해서 해당하는 유저한테 point + 시키기
 		vo.setB_no(b_no); 
 		
 		dVo.setD_b_no(b_no);

@@ -102,6 +102,7 @@ public interface ClientMapper {
 	public void doAddSaleCount(@Param("amount")int amount, @Param("p_no")int p_no);
 	public String getProductPrice(int p_no);
 	public int getAmount(@Param("u_no") int u_no, @Param("p_no") int p_no);
+	public void pointInsert(@Param("b_savingpoint")int b_savingpoint, @Param("u_no") int u_no);
 	
 	
 	/*

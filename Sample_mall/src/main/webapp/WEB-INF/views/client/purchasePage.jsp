@@ -36,6 +36,27 @@
 			return true;
 		}
 	}
+	
+	$(function() {
+		$('.usePoint').change(function() {
+			var originPoint = ${totalPrice};
+			var usingPoint = $('input[name=usePoint]').val();
+			var maxPoint = ${uVo.u_point};
+			if(usingPoint > maxPoint) {
+				alert('포인트는 최대 ${uVo.u_point}점 까지 사용가능합니다.');
+				$('input[name=usePoint]').val(${uVo.u_point});
+			} else {
+				var stringPrice = $('.payTotaPrice').text();
+				var intPrice = parseInt(stringPrice.replace(',',''));
+				var resultPrice = (intPrice - usingPoint);
+				var newString = resultPrice.toString();
+			    var newnewString = newString.replace(/(\d)(?=(?:\d{3})+(?!\d))/g, '$1,');
+				
+				$('.payTotaPrice').text(newnewString);	
+			}
+		});
+	});
+	//TODO : 구매시 총결제금액 부분 수정
 </script>
 <form action="purchaseComplete" method="post" onsubmit="return chkSubmit()" onreset="return chkReset()" name="frm" enctype="multipart/form-data">
 <div class="container">
@@ -118,10 +139,22 @@
 					</select>
 				</div>
 				<div class="col-md-12" style="border-top:1px solid #ddd"><br>
-					<p>사용가능 포인트 : 1000 point</p>
+					<div class="col-md-6">
+						<table>
+							<tr>
+								<td>사용가능 포인트 : </td>
+								<td>${uVo.u_point} point</td>
+							</tr>
+							<tr>
+								<td>사용할 포인트 : </td>
+								<td><input style="margin-left:15px;" type="number" name="usePoint" class="usePoint form-control"></td>
+							</tr>
+						</table>
+					</div>
+					<input type="hidden" name="u_point" value="${uVo.u_point}">
 				</div>
 				<div class="col-md-12">
-					<h3 style="color:red;"><b>총 결제금액</b> : ${totalPrice}원<small>(상품가격+배송비)</small></h3>
+					<h3 style="color:red;"><b>총 결제금액</b> : <b class="payTotaPrice">${totalPrice}</b>원<small>(상품가격+배송비)</small></h3>
 				</div>
 				</div>
 				<div class="panel-footer"> 
@@ -147,4 +180,5 @@
 	<input type="hidden" name="pList[${i.index}].b_p_name" value="${list.b_p_name}">
 	<input type="hidden" name="pList[${i.index}].b_amount" value="${list.b_amount}">
 </c:forEach>
+<input type="hidden" name="b_savingpoint" value="${prodList[0].b_savingpoint}">
 </form>

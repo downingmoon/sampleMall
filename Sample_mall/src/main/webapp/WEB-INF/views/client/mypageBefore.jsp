@@ -45,7 +45,7 @@
 	}
 </script>
 <div class="col-md-10">
-	<form style="margin-top:15px;"action="userInfo" name="myPageForm" method="post" onsubmit="return myPageSubmitChk()">
+	<form style="margin-top:15px;"action="mypage" name="myPageForm" method="post" onsubmit="return myPageSubmitChk()">
 		<small>비밀번호를 입력해주세요.</small><br>
 		<input type="password" class="form-control" name="u_pw" id="u_pw">
 		<input type="hidden" name="u_id" value="${u_id}" id="u_id">

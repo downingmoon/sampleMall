@@ -46,7 +46,7 @@
 		            <div class="row">
 		            		<div class="col-md-2">
 		            			<div class="list-group">
-									<a href="userInfo?id=${u_id}" class="list-group-item">회원정보</a>
+									<a href="userInfo?u_id=${u_id}" class="list-group-item">회원정보</a>
 									<a href="wishList?u_id=${u_id}" class="list-group-item">찜 목록</a>
 									<a href="otoInquireList?u_id=${u_id}" class="list-group-item">1:1문의 내역</a>
 								</div>

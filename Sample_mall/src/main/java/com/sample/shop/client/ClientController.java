@@ -250,6 +250,18 @@ public class ClientController {
 		return "client/template";
 	}
 	
+	@RequestMapping(value="mypage", method=RequestMethod.POST)
+	public String mypagePost(String u_id, Model m) {
+		UserVO uVo = service.userInfo(u_id);
+		System.out.println("vo.name : " + uVo.getU_name());
+		String point = String.format("%,d", uVo.getU_point());
+		m.addAttribute("vo", uVo);
+		m.addAttribute("point", point);
+		m.addAttribute("target", "mypage");
+		m.addAttribute("u_id", u_id);
+		return "client/template";
+	}
+	
 	@RequestMapping("userInfo")
 	public String userInfoGet(String u_id, Model m) {
 		System.out.println("userInfo u_id : " + u_id);
@@ -325,15 +337,9 @@ public class ClientController {
 	
 	@RequestMapping({"buyProd","buyProductsInCart"})
 	public String buyProduct(HttpServletRequest request, int amount, String u_id, Model m, int[] p_no, String[] p_name, @RequestParam(value="c_no", defaultValue="-1")int[] c_no) {
-		for(int i = 0; i < p_no.length ; i++) {
-			System.out.println("p_no[i] : " + p_no[i]);
-		}
 		int u_no = service.getUserNo(u_id);
 		UserVO uVo = service.userInfo(u_id);
 		List<purchaseVO> prodList = new ArrayList<purchaseVO>();
-			
-		System.out.println("cno : " + c_no[0]);
-		System.out.println("amount : " + amount);
 			
 		int beforePrice = 0;
 		for(int i = 0; i < p_no.length; i++) {
@@ -346,9 +352,10 @@ public class ClientController {
 			pVo.setB_amount(amount);
 			pVo.setB_p_price(p_price);
 			pVo.setB_p_no(p_no[i]);
+			beforePrice += service.priceAndDelcostAdd(p_price, amount); //배송비 제외한 상품 총 금액
 			prodList.add(pVo);
-			beforePrice += service.priceAndDelcostAdd(p_price, amount);
 		}
+		prodList.get(0).setB_savingpoint(service.getPoint(beforePrice));
 		String totalPrice = String.format("%,d", (beforePrice + 2500));
 		m.addAttribute("u_id", u_id);
 		m.addAttribute("c_no", c_no);
@@ -363,11 +370,11 @@ public class ClientController {
 	
 	@RequestMapping(value="purchaseComplete", method=RequestMethod.POST)
 	public String buyProductPost(Model m,purchaseVO vo, String mainAddr, String subAddr, String totalPrice, int b_u_no, 
-			@RequestParam(value="c_no", defaultValue="-1")int[] c_no, String u_id) {
+			@RequestParam(value="c_no", defaultValue="-1")int[] c_no, String u_id, int b_savingpoint) {
 		
 		String removeComma = totalPrice.replace(",", "");
 		vo.setB_paytotal(Integer.parseInt(removeComma));
-		
+		vo.setB_savingpoint(b_savingpoint);
 		String b_address = mainAddr+ " "+ subAddr;
 		vo.setB_address(b_address);
 		if(c_no[0] != -1) {

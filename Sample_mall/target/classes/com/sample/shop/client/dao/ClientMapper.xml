@@ -187,10 +187,12 @@
 	
 	<insert id="buyProduct">
 		INSERT INTO prod_buy
-		(seq_buy, b_no, b_u_no, b_p_no, b_p_name, b_amount, b_receivername, b_receiverphone, b_address, d_del_msg, b_paytype, b_paytotal)
+		(seq_buy, b_no, b_u_no, b_p_no, b_p_name, b_amount, b_receivername, b_receiverphone
+		, b_address, d_del_msg, b_paytype, b_paytotal, b_savingpoint)
 		VALUES
 		((SELECT NVL(MAX(seq_buy), 0) + 1 FROM prod_buy), #{b_no}, #{b_u_no}, #{b_p_no}
-		, #{b_p_name}, #{b_amount}, #{b_receivername}, #{b_receiverphone}, #{b_address}, #{d_del_msg}, #{b_paytype}, #{b_paytotal})
+		, #{b_p_name}, #{b_amount}, #{b_receivername}, #{b_receiverphone}, #{b_address}
+		, #{d_del_msg}, #{b_paytype}, #{b_paytotal}, #{b_savingpoint})
 	</insert>
 	
 	<insert id="insertToDelivery">
@@ -204,8 +206,7 @@
 	<select id="getPurchaseInfo" resultType="purchaseVO">
 		SELECT b_no, (SELECT u_name FROM mall_user WHERE u_no = #{b_u_no}) as b_u_name, b_p_no, b_p_name, 
 		b_amount, b_receivername, b_receiverphone, b_paytype, to_char(b_regdate, 'YYYYMMDD') as b_regdate, 
-		b_paytotal, b_address
-		, b_savingpoint, d_del_msg FROM prod_buy WHERE b_no = #{b_no}
+		b_paytotal, b_address, b_savingpoint, d_del_msg FROM prod_buy WHERE b_no = #{b_no}
 	</select>
 	
 	<select id="anonymousOrderDetail" resultType="purchaseVO">
@@ -278,5 +279,9 @@
 	<select id="getPasswordById" resultType="string">
 		SELECT u_pw FROM mall_user WHERE u_id = #{u_id}
 	</select>
+	
+	<update id="pointInsert">
+		UPDATE mall_user SET u_point = u_point + #{b_savingpoint} WHERE u_no = #{u_no}
+	</update>
 	
 </mapper>

@@ -177,8 +177,7 @@
 				</li>
 				<li class='last'>
 					<form action="searchItem" method="post" name="searchFrm" onsubmit="return searchFrmChk()">
-						<input type="text" name="searchKeyword" placeholder="Search">
-						<button type="submit" value="Search" class="btn"><span class="glyphicon glyphicon-search"></span></button>
+						<input type="text" class="form-control" name="searchKeyword" placeholder="Search">
 					</form>
 				</li>
 			</ul>
