@@ -2,8 +2,16 @@ package com.sample.shop.model;
 
 public class delVO {
 
-	private int d_no, d_p_no, d_u_no;
+	private int d_no, d_p_no, d_u_no, cnt;
 	private String d_receive_name, d_receive_address, d_del_msg, d_b_no, d_status;
+
+	public int getCnt() {
+		return cnt;
+	}
+
+	public void setCnt(int cnt) {
+		this.cnt = cnt;
+	}
 
 	public int getD_no() {
 		return d_no;

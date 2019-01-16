@@ -45,18 +45,26 @@
 			if(usingPoint > maxPoint) {
 				alert('포인트는 최대 ${uVo.u_point}점 까지 사용가능합니다.');
 				$('input[name=usePoint]').val(${uVo.u_point});
-			} else {
-				var stringPrice = $('.payTotaPrice').text();
-				var intPrice = parseInt(stringPrice.replace(',',''));
-				var resultPrice = (intPrice - usingPoint);
-				var newString = resultPrice.toString();
-			    var newnewString = newString.replace(/(\d)(?=(?:\d{3})+(?!\d))/g, '$1,');
-				
-				$('.payTotaPrice').text(newnewString);	
 			}
 		});
 	});
-	//TODO : 구매시 총결제금액 부분 수정
+	
+	function usePointSubmit() {
+		var originPoint = '${totalPrice}';
+		var usingPoint = $('input[name=usePoint]').val();
+		var stringPrice = $('.payTotaPrice').text();
+		var intPrice = parseInt(stringPrice.replace(',',''));
+		var resultPriceInt = (intPrice - usingPoint);
+		var parsing = resultPriceInt.toString();
+	    var resultPriceString = parsing.replace(/(\d)(?=(?:\d{3})+(?!\d))/g, '$1,');
+		if(usingPoint == 0) {
+			$('.payTotaPrice').text(originPoint);
+		} else {
+			$('.payTotaPrice').text(resultPriceString);
+		}
+		
+	}
+	//TODO : 사용하는 포인트 차감, 실제 결제가격에서 차감.
 </script>
 <form action="purchaseComplete" method="post" onsubmit="return chkSubmit()" onreset="return chkReset()" name="frm" enctype="multipart/form-data">
 <div class="container">
@@ -143,11 +151,12 @@
 						<table>
 							<tr>
 								<td>사용가능 포인트 : </td>
-								<td>${uVo.u_point} point</td>
+								<td colspan="2">${uVo.u_point} point</td>
 							</tr>
 							<tr>
 								<td>사용할 포인트 : </td>
-								<td><input style="margin-left:15px;" type="number" name="usePoint" class="usePoint form-control"></td>
+								<td><input type="number" name="usePoint" class="usePoint form-control"></td>
+								<td><button type="button" class="btn btn-default" onclick="usePointSubmit()">사용하기</button></td>
 							</tr>
 						</table>
 					</div>
@@ -170,7 +179,7 @@
 	</div>
 </div>
 <input type="hidden" name="b_u_no" value="${u_no}">
-<input type="hidden" name="totalPrice" value="${totalPrice}">
+<input type="hidden" class="totalPrice" name="totalPrice" value="${totalPrice}">
 <input type="hidden" name="u_id" value="${u_id}">
 <c:forEach var="cno" items="${c_no}" varStatus="i">
 	<input type="hidden" name="c_no" value="${cno}">

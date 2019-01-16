@@ -29,13 +29,16 @@
 		default-target-url = 로그인 성공시 타겟
 		failure-url = 실패시 타겟, error 파라미터로 넘김
 		 -->
-		<form-login login-page="/client/login" 
+		<form-login 
 			default-target-url="/client/list" 
 			login-processing-url="/client/login"
 			authentication-failure-url="/client/auth_fail" 
 			username-parameter="username"
 			password-parameter="password" /> 
+			<!-- 
+			 login-page="/client/login"
 			
+			 -->
 		<!-- 로그아웃시 success-url로 이동 -->
 		<logout invalidate-session="true" logout-url="/j_spring_security_logout" 
 				logout-success-url="/" />

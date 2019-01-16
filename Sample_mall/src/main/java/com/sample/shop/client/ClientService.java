@@ -196,7 +196,7 @@ public class ClientService {
 		return point;
 	}
 	
-	public List<purchaseVO> buyProduct(purchaseVO vo, int u_no) {
+	public List<purchaseVO> buyProduct(purchaseVO vo, int u_no, int usePoint) {
 		System.out.println("u_no : " + u_no);
 		delVO dVo = new delVO();
 		//주문번호 만들기
@@ -223,6 +223,7 @@ public class ClientService {
 			vo.setB_p_name(vo.getpList().get(i).getB_p_name());
 			vo.setB_amount(vo.getpList().get(i).getB_amount());
 			mapper.buyProduct(vo);
+			mapper.insertToOrderList(vo);
 			
 			//배송 INSERT
 			dVo.setD_p_no(vo.getB_p_no());
@@ -230,7 +231,12 @@ public class ClientService {
 			mapper.doMinusStock(vo.getB_amount(), vo.getB_p_no());
 			mapper.doAddSaleCount(vo.getB_amount(), vo.getB_p_no());
 		}
+		//TODO : POINT 차감 (user)
+		mapper.pointMinus(usePoint, u_no);
 		List<purchaseVO> list = mapper.getPurchaseInfo(b_no, u_no);
+		list.get(0).setUsePoint(Integer.toString(usePoint));
+		System.out.println(list.get(0).getUsePoint());
+		System.out.println(list.get(0).getTotalPrice() + "totalPrice" + " :::: paytotal : "+ list.get(0).getB_paytotal());
 		return list;
 	}
 	
@@ -256,16 +262,21 @@ public class ClientService {
 				String originB_no = originList.get(i).getB_no();
 				String resultB_no = resultList.get(j).getB_no();
 				if(originList.size() > 1) {
-					if(resultB_no.contains(originB_no) && resultB_no.contains(resultList.get(j+1).getB_no())) {
-						resultList.remove(j);
-						System.out.println(" j : " + j);
+					if(j < (originList.size()-1)) {
+						if(resultB_no.contains(originB_no) && resultB_no.contains(resultList.get(j+1).getB_no())) {
+							resultList.remove(j);
+							System.out.println(" j : " + j);
+						}
 					}
 				}
 			}
-			String resultB_no = resultList.get(i).getB_no();
-			System.out.println("resultbno : " + resultB_no);
-			int cnt = mapper.getPnameCoutFromBuy(resultB_no);
-			resultList.get(i).setCnt(cnt);
+			if(i < (originList.size()-1)) {
+				String resultB_no = resultList.get(i).getB_no();
+				System.out.println("resultbno : " + resultB_no);
+				int cnt = mapper.getPnameCoutFromBuy(resultB_no);
+				resultList.get(i).setCnt(cnt);
+				System.out.println("cnt : " + resultList.get(i).getCnt());
+			}
 		}
 		return resultList;
 	}
@@ -354,6 +365,11 @@ public class ClientService {
 			result = -1;
 		}
 		return result;
+	}
+	
+	//1:1 문의 삭제 ajax
+	public void otoDelete(int i_no) {
+		mapper.otoDelete(i_no);
 	}
 
 }

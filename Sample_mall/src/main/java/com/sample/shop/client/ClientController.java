@@ -370,10 +370,16 @@ public class ClientController {
 	
 	@RequestMapping(value="purchaseComplete", method=RequestMethod.POST)
 	public String buyProductPost(Model m,purchaseVO vo, String mainAddr, String subAddr, String totalPrice, int b_u_no, 
-			@RequestParam(value="c_no", defaultValue="-1")int[] c_no, String u_id, int b_savingpoint) {
+			@RequestParam(value="c_no", defaultValue="-1")int[] c_no, String u_id, int b_savingpoint
+			, @RequestParam(value="usePoint", defaultValue="0")int usePoint) {
 		
 		String removeComma = totalPrice.replace(",", "");
-		vo.setB_paytotal(Integer.parseInt(removeComma));
+		int intPayTotal = Integer.parseInt(removeComma);
+		int resultTotal = (intPayTotal - usePoint);
+		System.out.println("resultTotal : " + resultTotal);
+		String strResultTotal = String.format("%,d", resultTotal);
+		System.out.println("strResultTotal : " + strResultTotal);
+		vo.setB_paytotal(resultTotal);
 		vo.setB_savingpoint(b_savingpoint);
 		String b_address = mainAddr+ " "+ subAddr;
 		vo.setB_address(b_address);
@@ -381,9 +387,10 @@ public class ClientController {
 			service.cartDelete(c_no, u_id);
 		}
 		
-		List<purchaseVO> list = service.buyProduct(vo, b_u_no);
+		List<purchaseVO> list = service.buyProduct(vo, b_u_no, usePoint);
+		list.get(0).setUsePoint(String.format("%,d", usePoint));
 		m.addAttribute("list", list);
-		m.addAttribute("totalPrice", totalPrice);
+		m.addAttribute("totalPrice", strResultTotal);
 		m.addAttribute("target","purchaseComplete");
 		return "client/template";
 	}
@@ -415,7 +422,8 @@ public class ClientController {
 	}
 	
 	@RequestMapping("nonMemberPurchaseComplete")
-	public String nonMemberPurchaseComplete(Model m, purchaseVO vo, String mainAddr, String subAddr, String totalPrice) {
+	public String nonMemberPurchaseComplete(Model m, purchaseVO vo, String mainAddr, String subAddr, String totalPrice
+			,@RequestParam(value="usePoint", defaultValue="0")int usePoint) {
 		int b_u_no = 999999999; // 비회원
 		String removeComma = totalPrice.replace(",", "");
 		vo.setB_paytotal(Integer.parseInt(removeComma));
@@ -423,7 +431,7 @@ public class ClientController {
 		String b_address = mainAddr+ " "+ subAddr;
 		vo.setB_address(b_address);
 		
-		List<purchaseVO> list = service.buyProduct(vo, b_u_no);
+		List<purchaseVO> list = service.buyProduct(vo, b_u_no, usePoint);
 		list.get(0).setB_u_name("비회원");
 		m.addAttribute("list", list);
 		m.addAttribute("totalPrice", totalPrice);
@@ -513,6 +521,12 @@ public class ClientController {
 		m.addAttribute("vo", vo);
 		m.addAttribute("target", "otoDetail");
 		return "client/template";
+	}
+	
+	@RequestMapping("otoDeleteAjax")
+	@ResponseBody
+	public void otoDeleteAjax(int i_no) {
+		service.otoDelete(i_no);
 	}
 	
 	@RequestMapping("detailSearch")

@@ -81,6 +81,14 @@
 		SELECT COUNT(*) AS cnt FROM prod_buy 
 	</select>
 	
+	<select id="getPnameCoutFromProdBuy" resultType="_int">
+		SELECT COUNT(*) AS cnt FROM prod_buy WHERE b_no = #{b_no}
+	</select>
+	
+	<select id="getPnameCoutFromProdDelivery" resultType="_int">
+		SELECT COUNT(*) AS cnt FROM prod_delivery WHERE d_b_no = #{b_no}
+	</select>
+	
 	<delete id="deliverComplete">
 		DELETE FROM prod_buy WHERE b_no = #{b_no}
 	</delete>

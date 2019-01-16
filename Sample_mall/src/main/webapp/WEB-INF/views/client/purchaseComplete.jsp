@@ -58,6 +58,12 @@
 													<c:otherwise>${list[0].totalPrice}원</c:otherwise>
 												</c:choose></div></td>
 										</tr>
+										<c:if test="${list[0].usePoint != null}">
+											<tr>
+												<td>사용한 포인트 : </td>
+												<td><div class="col-md-6">${list[0].usePoint}</div></td>
+											</tr>
+										</c:if>
 										<tr>
 											<td>받는사람 : </td>
 											<td><div class="col-md-6">${list[0].b_receivername}</div></td>

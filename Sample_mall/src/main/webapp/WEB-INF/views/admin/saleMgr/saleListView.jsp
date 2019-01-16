@@ -47,7 +47,14 @@
 							<tr>
 								<td>${list.b_no}</td>
 								<td>${list.b_u_no}</td>
-								<td>${list.b_p_name}</td>
+								<td>
+									<c:choose>
+											<c:when test="${list.cnt == 1}">${list.b_p_name}</c:when>
+											<c:otherwise>
+												${list.b_p_name} 외 ${list.cnt-1}개
+											</c:otherwise>
+										</c:choose>
+								</td>
 								<td>${list.b_amount}</td>
 								<td>${list.b_paytype}</td>
 								<td>${list.b_regdate}</td>

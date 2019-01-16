@@ -9,6 +9,15 @@ public class salesVO {
 	private String b_paytype;
 	private String b_regdate;
 	private String b_paytotal;
+	private int cnt;
+
+	public int getCnt() {
+		return cnt;
+	}
+
+	public void setCnt(int cnt) {
+		this.cnt = cnt;
+	}
 
 	public String getB_no() {
 		return b_no;

@@ -140,7 +140,7 @@ $(document).ready(function() {
 	<c:otherwise>
 <div class="row">
 		<c:forEach items="${list}" var="list">
-			<div class="col-md-3 col-xs-6 col-lg-3 col-xl-2" style="margin-right:15px;">
+			<div style="height:380px;" class="col-xs-12 col-sm-6 col-md-4 col-lg-3 col-xl-2">
 				<a href="detail?p_no=${list.p_no}"> 
 				<img style="width:300px; height: 300px;" 
 				src="/shop/resources/img/product/mainImg/${list.p_no}/${list.p_mainimg}.jpg"><br>

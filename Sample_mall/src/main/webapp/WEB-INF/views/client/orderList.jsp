@@ -35,11 +35,11 @@
 									<td>${list.b_no}</td>
 									<td>
 										<c:choose>
-											<c:when test="${list.cnt == 1}">
+											<c:when test="${list.cnt == 1 || list.cnt == 0}">
 												<a href="orderDetail?b_no=${list.b_no}&u_no=${u_no}">${list.b_p_name}</a>
 											</c:when>
 											<c:otherwise>
-												<a href="orderDetail?b_no=${list.b_no}&u_no=${u_no}">${list.b_p_name} 외 ${list.cnt-1}개</a>
+												<a href="orderDetail?b_no=${list.b_no}&u_no=${u_no}">${list.b_p_name} 외 ${list.cnt}개</a>
 											</c:otherwise>
 										</c:choose>
 									</td>

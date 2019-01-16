@@ -103,6 +103,8 @@ public interface ClientMapper {
 	public String getProductPrice(int p_no);
 	public int getAmount(@Param("u_no") int u_no, @Param("p_no") int p_no);
 	public void pointInsert(@Param("b_savingpoint")int b_savingpoint, @Param("u_no") int u_no);
+	public void pointMinus(@Param("usePoint")int usePoint, @Param("u_no") int u_no);
+	public void insertToOrderList(purchaseVO vo);
 	
 	
 	/*
@@ -120,4 +122,5 @@ public interface ClientMapper {
 	public void otoInquireReg(inqVO vo);
 	public List<inqVO> otoInquireList(int u_no);
 	public inqVO otoDetail(@Param("i_no")int i_no, @Param("i_u_no")int i_u_no);
+	public void otoDelete(int i_no);
 }

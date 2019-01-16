@@ -15,6 +15,7 @@ import com.sample.shop.admin.dao.AdminMapper;
 import com.sample.shop.model.delVO;
 import com.sample.shop.model.inqVO;
 import com.sample.shop.model.prodVO;
+import com.sample.shop.model.purchaseVO;
 import com.sample.shop.model.salesVO;
 
 @Service
@@ -233,7 +234,25 @@ public class AdminService {
 	 */
 	
 	public List<salesVO> saleListView() {
-		return mapper.saleListView();
+		List<salesVO> originList = mapper.saleListView();
+		List<salesVO> resultList = originList;
+		for(int i = 0; i < originList.size(); i++) {
+			for(int j = 0; j < originList.size(); j++) {
+				String originB_no = originList.get(i).getB_no();
+				String resultB_no = resultList.get(j).getB_no();
+				if(originList.size() > 1) {
+					if(j < (originList.size()-1)) {
+						if(resultB_no.contains(originB_no) && resultB_no.contains(resultList.get(j+1).getB_no())) {
+							resultList.remove(j);
+						}
+					}
+				}
+			}
+			String resultB_no = resultList.get(i).getB_no();
+			int cnt = mapper.getPnameCoutFromProdBuy(resultB_no);
+			resultList.get(i).setCnt(cnt);
+		}
+		return resultList;
 	}
 	
 	public int saleCount() {
@@ -248,7 +267,25 @@ public class AdminService {
 	}
 	
 	public List<delVO> deliverStatusView(int page, int endPage) {
-		return mapper.deliverStatusView(page, endPage);
+		List<delVO> originList = mapper.deliverStatusView(page, endPage);
+		List<delVO> resultList = originList;
+		for(int i = 0; i < originList.size(); i++) {
+			for(int j = 0; j < originList.size(); j++) {
+				String originB_no = originList.get(i).getD_b_no();
+				String resultB_no = resultList.get(j).getD_b_no();
+				if(originList.size() > 1) {
+					if(j < (originList.size()-1)) {
+						if(resultB_no.contains(originB_no) && resultB_no.contains(resultList.get(j+1).getD_b_no())) {
+							resultList.remove(j);
+						}
+					}
+				}
+			}
+			String resultB_no = resultList.get(i).getD_b_no();
+			int cnt = mapper.getPnameCoutFromProdDelivery(resultB_no);
+			resultList.get(i).setCnt(cnt);
+		}
+		return resultList;
 	}
 	
 	public int getDeliverStatusPageCount() {

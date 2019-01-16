@@ -24,7 +24,7 @@
 					u_id : u_id
 				},
 				success : function() {
-					alert()
+					alert('삭제되었습니다.');
 					location.reload();
 				},
 				error : function() {

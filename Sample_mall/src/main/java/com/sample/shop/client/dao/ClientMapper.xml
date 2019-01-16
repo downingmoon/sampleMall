@@ -11,7 +11,7 @@
 	
 	<select id="getProdListNew" resultType="prodVO">
 		SELECT p_no, p_name, to_char(p_price,'999G999G999')
-		AS p_price, p_mainimg, stock FROM prod WHERE p_salecnt >= 300
+		AS p_price, p_mainimg, stock FROM prod WHERE p_salecnt >= 100
 	</select>
 	
 	<select id="getMainImages" resultType="mainImgVO">
@@ -195,6 +195,16 @@
 		, #{d_del_msg}, #{b_paytype}, #{b_paytotal}, #{b_savingpoint})
 	</insert>
 	
+	<insert id="insertToOrderList">
+		INSERT INTO orderlist
+		(seq_buy, b_no, b_u_no, b_p_no, b_p_name, b_amount, b_receivername, b_receiverphone
+		, b_address, d_del_msg, b_paytype, b_paytotal, b_savingpoint)
+		VALUES
+		((SELECT NVL(MAX(seq_buy), 0) + 1 FROM orderlist), #{b_no}, #{b_u_no}, #{b_p_no}
+		, #{b_p_name}, #{b_amount}, #{b_receivername}, #{b_receiverphone}, #{b_address}
+		, #{d_del_msg}, #{b_paytype}, #{b_paytotal}, #{b_savingpoint})
+	</insert>
+	
 	<insert id="insertToDelivery">
 		INSERT INTO prod_delivery
 		(d_no, d_p_no, d_u_no, d_receive_name, d_receive_address, d_del_msg, d_b_no, d_status)
@@ -206,23 +216,23 @@
 	<select id="getPurchaseInfo" resultType="purchaseVO">
 		SELECT b_no, (SELECT u_name FROM mall_user WHERE u_no = #{b_u_no}) as b_u_name, b_p_no, b_p_name, 
 		b_amount, b_receivername, b_receiverphone, b_paytype, to_char(b_regdate, 'YYYYMMDD') as b_regdate, 
-		b_paytotal, b_address, b_savingpoint, d_del_msg FROM prod_buy WHERE b_no = #{b_no}
+		b_paytotal, b_address, b_savingpoint, d_del_msg FROM orderlist WHERE b_no = #{b_no}
 	</select>
 	
 	<select id="anonymousOrderDetail" resultType="purchaseVO">
 		SELECT b_no, '비회원' as b_u_name, b_p_no, b_p_name, b_amount
 		, b_receivername, b_receiverphone, b_paytype, to_char(b_regdate, 'YYYYMMDD') as b_regdate 
 		,TO_CHAR(b_paytotal, '999G999G999') AS totalPrice, b_address
-		, b_savingpoint, d_del_msg FROM prod_buy WHERE b_no = #{b_no}
+		, b_savingpoint, d_del_msg FROM orderlist WHERE b_no = #{b_no}
 	</select>
 	
 	<select id="getPayTotal" resultType="String">
-		SELECT TO_CHAR(b_paytotal, '999G999G999') AS totalPrice FROM prod_buy 
+		SELECT TO_CHAR(b_paytotal, '999G999G999') AS totalPrice FROM orderlist 
 		WHERE b_no = #{b_no} AND ROWNUM = 1
 	</select>
 	
 	<select id="getPurchaseList" resultType="purchaseVO">
-		SELECT b_no, b_p_name, b_paytype, to_char(b_regdate, 'YYYYMMDD') as b_regdate, d_del_msg FROM prod_buy
+		SELECT b_no, b_p_name, b_paytype, to_char(b_regdate, 'YYYYMMDD') as b_regdate, d_del_msg FROM orderlist
 		WHERE b_u_no = #{u_no} ORDER BY seq_buy DESC
 	</select>
 	
@@ -256,6 +266,10 @@
 		, i_content, i_answer FROM otoinquire WHERE i_no = #{i_no} AND i_u_no = #{i_u_no}
 	</select>
 	
+	<delete id="otoDelete">
+		DELETE FROM otoinquire WHERE i_no = #{i_no}
+	</delete>
+	
 	<select id="idCheckAjax" resultType="string">
 		SELECT u_id FROM mall_user WHERE u_id = #{u_id}
 	</select>
@@ -282,6 +296,10 @@
 	
 	<update id="pointInsert">
 		UPDATE mall_user SET u_point = u_point + #{b_savingpoint} WHERE u_no = #{u_no}
+	</update>
+	
+	<update id="pointMinus">
+		UPDATE mall_user SET u_point = u_point - #{usePoint} WHERE u_no = #{u_no}
 	</update>
 	
 </mapper>

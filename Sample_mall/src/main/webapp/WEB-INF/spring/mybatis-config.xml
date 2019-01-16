@@ -10,6 +10,7 @@
 		<typeAlias alias="cartVO" type="com.sample.shop.model.cartVO" />
 		<typeAlias alias="mainImgVO" type="com.sample.shop.model.mainImgVO" />
 		<typeAlias alias="purchaseVO" type="com.sample.shop.model.purchaseVO" />
+		<typeAlias alias="orderVO" type="com.sample.shop.model.orderVO" />
 		<typeAlias alias="salesVO" type="com.sample.shop.model.salesVO" />
 		<typeAlias alias="delVO" type="com.sample.shop.model.delVO" />
 		<typeAlias alias="inqVO" type="com.sample.shop.model.inqVO" />

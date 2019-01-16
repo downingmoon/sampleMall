@@ -2,7 +2,7 @@ package com.sample.shop.model;
 
 import java.util.List;
 
-public class purchaseVO {
+public class orderVO {
 
 	private String b_no;
 	private int b_u_no;

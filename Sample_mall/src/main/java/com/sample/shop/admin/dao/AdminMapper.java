@@ -49,6 +49,10 @@ public interface AdminMapper {
 	
 	public int saleCount();
 	
+	public int getPnameCoutFromProdBuy(String b_no);
+	
+	public int getPnameCoutFromProdDelivery(String b_no);
+	
 	public void deliverComplete(String b_no);
 	
 	public List<delVO> deliverStatusView(@Param("page")int page, @Param("endPage")int endPage);

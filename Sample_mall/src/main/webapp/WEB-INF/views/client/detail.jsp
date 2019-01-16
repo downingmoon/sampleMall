@@ -4,9 +4,12 @@
 <%@ page import="org.springframework.security.core.context.SecurityContextHolder"%>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%
 	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 	String username = auth.getName();
+	pageContext.setAttribute("br", "<br>");
+	pageContext.setAttribute("cn", "\n");
 %>
 <script src="${pageContext.request.contextPath}/resources/js/detail.js"></script>
 
@@ -124,7 +127,7 @@
 					<c:forEach var="list" items="${list}">
 						<img src="/shop/resources/img/product/detailImg/${list.p_no}/${list.p_detailimg}.jpg" style="width:70%;height:70%">
 				 	</c:forEach>
-				<p style="padding: 15px;">${detail.p_info}</p>
+				<p style="padding: 15px;">${fn:replace(detail.p_info, cn, br)}</p>
 				</div>
 			</div>
 		</div>

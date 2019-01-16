@@ -14,9 +14,19 @@
 	}
 	
 	function otoDel(i_no) {
-		var i_no = i_no;
 		$.ajax({
-			
+			url : 'otoDeleteAjax',
+			type : 'post',
+			data : {
+				i_no : i_no
+			},
+			success : function() {
+				alert('삭제되었습니다.');
+				location.reload();
+			},
+			error : function() {
+				alert('에러가 발생했습니다.');
+			}
 		})
 	}
 </script>
@@ -59,11 +69,11 @@
 										<thead>
 										<tbody>
 											<c:forEach var="list" items="${list}">
-												<tr class="wishTr" onclick="goOtoDetail(${list.i_no}, ${list.i_u_no})" style="cursor: pointer;">
+												<tr class="wishTr" style="cursor:pointer;">
 													<td style="text-align: center;">${list.i_no}</td>
-													<td class="wishTd">${list.i_title}</td>
-													<td class="wishTd">${list.i_status}</td>
-													<td class="wishTd">${list.i_regdate}</td>
+													<td class="wishTd" onclick="goOtoDetail(${list.i_no}, ${list.i_u_no})">${list.i_title}</td>
+													<td class="wishTd" onclick="goOtoDetail(${list.i_no}, ${list.i_u_no})">${list.i_status}</td>
+													<td class="wishTd" onclick="goOtoDetail(${list.i_no}, ${list.i_u_no})">${list.i_regdate}</td>
 													<td><button type="button" class="btn btn-danger" onclick="otoDel(${list.i_no})">삭제</button></td>
 												</tr>
 											</c:forEach>
